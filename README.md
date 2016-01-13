@@ -14,7 +14,7 @@ TVCalender api with CodeIgniter
 ## 2.使用方法
 ### 2.1按照日期查找美剧
 #### 2.1.1 查找某一天的剧集
->	localhost/TVCalendarAPI/index.php/SearchByDate/selectOneDate/yyyy-mm-dd
+    localhost/TVCalendarAPI/index.php/SearchByDate/selectOneDate/yyyy-mm-dd
 其中，yyyy-mm-dd为查询的日期，格式需要严格遵守，localhost为域名，返回的格式为(给出了部分样例数据)：
 >	[
 >	    {
