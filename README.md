@@ -16,7 +16,7 @@ TVCalender api with CodeIgniter
 #### 2.1.1 查找某一天的剧集
     localhost/TVCalendarAPI/index.php/SearchByDate/selectOneDate/yyyy-mm-dd
 其中，yyyy-mm-dd为查询的日期，格式需要严格遵守，localhost为域名，返回的格式为(给出了部分样例数据)：
-	[
+<pre>	[
 	    {
 	        "n_id":"611",
 	        "e_id":"611",
@@ -39,11 +39,11 @@ TVCalender api with CodeIgniter
 	        "photo_link":"http://www.pogdesign.co.uk/cat/imgs/sibig/QI.jpg",
 	        "e_description":""
 	    },...
-   ]
+   ]</pre>
 #### 2.1.2 查找一个时间范围内的剧集
 	localhost/TVCalendarAPI/index.php/SearchByDate/selectDates/yyyy-mm-dd/yyyy-mm-dd
 其中两个日期缺一不可，分别为起始日期和结束日期，返回的格式为(给出了部分样例数据)：
-	{
+<pre>	{
 	    "2016-01-03":[
 	        {
 	            "n_id":"611",
@@ -81,20 +81,20 @@ TVCalender api with CodeIgniter
 	            "e_description":""
 	        },....
 	    ],...
-	}
+	}</pre>
 ### 2.2 按照ID查找
 #### 2.2.1 按照剧的ID查找
 	localhost/TVCalendarAPI/index.php/SearchById/SearchById/id
 其中最后的id是整数，与上面的n_id一致，返回的格式为(给出了部分样例数据)：
-	{
+<pre>	{
 	    "n_id":"643",
 	    "n_name":"Second-Chance",
 	    "photo_link":"http://www.pogdesign.co.uk/cat/imgs/sibig/Second-Chance.jpg"
-	}
+	}</pre>
 #### 2.2.2按照集的ID查找
 	localhost/TVCalendarAPI/index.php/SearchById/searchByEpiId/id
 其中，id为剧集的id与上方e_id一致，返回的格式为(给出了部分样例数据)：
-	{
+<pre>	{
 	    "n_id":"953",
 	    "e_id":"999",
 	    "n_name":"Mr-Selfridge",
@@ -104,12 +104,12 @@ TVCalender api with CodeIgniter
 	    "on_air":"2016-01-28",
 	    "photo_link":"http://www.pogdesign.co.uk/cat/imgs/sibig/Mr-Selfridge.jpg",
 	    "e_description":""
-	}
+	}</pre>
 ### 2.3 错误反馈
 错误会被按照以下格式反馈:
-	{
+<pre>	{
    	 "error":"ERROR MESSAGE"
-	}
+	}</pre>
 错误（ERROR MESSAGE）目前分为以下几种：
 + Date parameter loss : 缺少参数
 + Date Format Error : 参数格式不正确
