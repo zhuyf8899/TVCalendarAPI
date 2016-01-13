@@ -16,7 +16,7 @@ class SearchByDate extends CI_Controller {
 		$this->load->view('error');
 	}
 
-	public function selectOneDate($date = ""){	//参数格式务必保证是yyyy-mm-dd.
+	public function selectOneDate($date = ''){	//参数格式务必保证是yyyy-mm-dd.
 		if(empty($date)){
 			$date = date('20y-m-d');
 		}
@@ -41,7 +41,7 @@ class SearchByDate extends CI_Controller {
 		$this->load->view('selectOneDate',$data);
 	}
 
-	public function selectDates($dateStart,$dateEnd){
+	public function selectDates($dateStart = '',$dateEnd = ''){
 		$data['result'] = array();
 		$data['errorFlag'] = -1;
 		/*
