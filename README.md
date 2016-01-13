@@ -84,13 +84,13 @@ TVCalender api with CodeIgniter
 >	}
 ### 2.2 按照ID查找
 #### 2.2.1 按照剧的ID查找
->	localhost/TVCalendarAPI/index.php/SearchById/SearchById/id
+	localhost/TVCalendarAPI/index.php/SearchById/SearchById/id
 其中最后的id是整数，与上面的n_id一致，返回的格式为(给出了部分样例数据)：
->	{
->	    "n_id":"643",
->	    "n_name":"Second-Chance",
->	    "photo_link":"http://www.pogdesign.co.uk/cat/imgs/sibig/Second-Chance.jpg"
->	}
+	{
+	    "n_id":"643",
+	    "n_name":"Second-Chance",
+	    "photo_link":"http://www.pogdesign.co.uk/cat/imgs/sibig/Second-Chance.jpg"
+	}
 #### 2.2.2按照集的ID查找
 >	localhost/TVCalendarAPI/index.php/SearchById/searchByEpiId/id
 其中，id为剧集的id与上方e_id一致，返回的格式为(给出了部分样例数据)：
