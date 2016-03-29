@@ -1,5 +1,5 @@
 <?php
-class SearchIdModel extends CI_Model{
+class UserModel extends CI_Model{
 	function __construct(){
 		parent::__construct();
 		$this->db->query('set names utf8');
@@ -18,7 +18,7 @@ class SearchIdModel extends CI_Model{
 				values({$u_name},{$u_phone},{$u_passwd},{$u_token},1)");
 			if ($this->db->affected_rows())
 			{
-				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token FROM user WHERE u_phone = {$u_phone} LIMIT 1")->row_array();
+				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token FROM user WHERE u_phone = '{$u_phone}'' LIMIT 1")->row_array();
 				return $rs;
 			}
 		}
@@ -27,7 +27,7 @@ class SearchIdModel extends CI_Model{
 
 	public function login($u_phone,$u_passwd)
 	{
-		$checker = $this->db->query("SELECT * FROM user WHERE u_phone = {$u_phone} AND u_passwd = {$u_passwd} LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT * FROM user WHERE u_phone = '{$u_phone}' AND u_passwd = '{$u_passwd}' LIMIT 1")->row_array();
 		if (isset($checker['u_id'])) 
 		{
 			return $checker;

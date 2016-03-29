@@ -33,9 +33,12 @@ class UI extends CI_Controller {
 	{
 		$this->load->model('UserModel');
 		if (!empty($this->input->post('u_phone')) && !empty($this->input->post('u_passwd')))
+		#if($_GET['u_phone'] && $_GET['u_passwd'])
 		{
 			$u_phone = $this->input->post('u_phone');
 			$u_passwd = md5($this->input->post('u_passwd'));
+			#$u_phone = $_GET['u_phone'];
+			#$u_passwd = md5($_GET['u_passwd']);
 			$rs = $this->UserModel->login($u_phone,$u_passwd);
 			if (isset($rs['u_id'])) 
 			{

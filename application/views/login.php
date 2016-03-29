@@ -54,48 +54,91 @@
             没有账号？<a href="/TVCalendarAPI/index.php/Ui/webreg">点此注册</a>
           </label>
         </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Login in</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" >Login in</button>
   </form>
 </div> <!-- /container -->
 <script type="text/javascript">
+    
+    
     function checkform(){
+      var flag = false;
       phoneNumber = document.getElementById("inputPhone").value;
-      pwd =  document.getElementById("pw").value;
-      data = {'u_phone':phoneNumber,'u_passwd':pwd}
+      pwd =  document.getElementById("inputPassword").value;
+      data = {'u_phone':phoneNumber,'u_passwd':pwd};
       $.ajax({
-        url:  '/TVCalendarAPI/index.php/Ui/ajaxCheckPw',
-        type: 'post',
-        data:  data,
-        async: false,
-        timeout: 5000,
-        //ajax error
+        type: 'POST',
+        url: '/TVCalendarAPI/index.php/Ui/ajaxCheckPw',
+        data: data,
         error: function(XMLHttpRequest, textStatus, errorThrown)
         {
           alert(XMLHttpRequest.status);
           alert(XMLHttpRequest.readyState);
           alert(textStatus);
         },
-        //ajax success
         success: function(result)
         {
-          toastr[info](result, "DEBUG")
-          if( result == 'OK' )
+          if (result == "OK") 
           {
-            toastr[success]("验证成功", "信息")
+            toastr.success("验证成功", "信息");
+            flag = true;
             return true;
           }
           else if(result == 'WrongPW')
           {
-            toastr[error]("用户名或密码错误", "错误");
-            return false;
+            toastr.error("用户名或密码错误", "错误");
+            flag = false;
           }
           else
           {
-            toastr[error]("未知错误", "错误");
-            return false;
+            toastr.error("参数错误", "错误");
+            flag = false;
           }
+          
+          flag = false;
+        },
+      });
+      alert(flag.toString());
+      toastr.warning(flag.toString(), "DEBUG");
+      return flag;
+    }
+    /*
+  function checkform() {
+    xmlhttp = new XMLHttpRequest();
+    data = {'u_phone':phoneNumber,'u_passwd':pwd};
+    xmlhttp.onreadystatechange=function()
+    {
+      if (xmlhttp.readyState==4 && xmlhttp.status==200)
+      {
+        result = xmlhttp.responseText;
+        if (result == "OK") 
+        {
+          toastr.error("验证成功", "信息");
+          return true;
         }
-    }); 
-  }
+        else if(result == 'WrongPW')
+        {
+          toastr.error("用户名或密码错误", "错误");
+          return false;
+        }
+        else
+        {
+          toastr.error("参数错误", "错误");
+          return false;
+        }
+      }
+      else
+      {
+        //toastr.warning("当前网络连接不正常", "警告");
+        return false;
+      }
+    }
+    xmlhttp.open("POST","/TVCalendarAPI/index.php/Ui/ajaxCheckPw",true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send(data);
+    return false;
+  }*/    
+      
+      
+  
 </script>
 
