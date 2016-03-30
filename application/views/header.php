@@ -10,7 +10,7 @@
     <title><?php if(isset($title))
                     echo $title;
                  else 
-                    echo"美剧日历"?>
+                    echo"TVCalender中文站"?>
     </title>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/TVCalendarAPI/build/css/toastr.css" />
@@ -47,7 +47,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">TvCalendar中文站</a>
+            <a class="navbar-brand" href="/TVCalendarAPI/index.php/UI/">TvCalendar中文站</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -72,8 +72,14 @@
             if ($this->session->u_id) {
             ?>
             <ul class="nav navbar-nav navbar-right">
-              <li><a><?php echo $this->session->u_name; ?></a></li>
-              <li><a href="/TvCalendar/Ui/myCenter?uid=<?php echo $this->session->u_id;?>">个人中心</a></li>
+              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <?php echo $this->session->u_name; ?><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/TVCalendarAPI/index.php/UI/myCenter?uid=<?php echo $this->session->u_id;?>">个人中心</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/myShows?uid=<?php echo $this->session->u_id;?>">我的剧集</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/webLogout">登出</a></li>
+                </ul>
+              </li>
             </ul>
             <?php
             }
@@ -81,12 +87,12 @@
             {
             ?>
             <div id="navbar" class="navbar-collapse collapse"><!--nav navbar-nav navbar-right-->
-              <form class="navbar-form navbar-right">
+              <form class="navbar-form navbar-right" action="/TVCalendarAPI/index.php/UI" method="GET" onsubmit="return checkform();">
                 <div class="form-group">
-                  <input type="text" placeholder="手机号码" id="phoneNumber" class="form-control">
+                  <input type="text" placeholder="手机号码" id="phoneNumber" class="form-control" required >
                 </div>
                 <div class="form-group">
-                  <input type="password" placeholder="密码" id="pwd" class="form-control">
+                  <input type="password" placeholder="密码" id="pwd" class="form-control" required >
                 </div>
                 <button type="submit" class="btn btn-success">登陆</button>
               </form>
@@ -97,5 +103,63 @@
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
+      <script type="text/javascript">
+        function checkform(){
+          var flag = false;
+          phoneNumber = $("#phoneNumber").val();
+          pwd = $("#pwd").val();
+          var regPwd = new RegExp("^\\w*$");
+          var regPh = new RegExp("^\\d*$");
+
+          if (!regPh.test(phoneNumber)) 
+          {
+            toastr.warning("手机号不符合规范", "警告");
+            //toastr.info(phoneNumber, "DEBUG");
+            $("#phoneNumber").focus();
+            return false;
+          }
+          if (!regPwd.test(pwd)) 
+          {
+            toastr.warning("密码含有非法字符", "警告");
+            $("#pwd").focus();
+            return false;
+          }
+
+          data = {'u_phone':phoneNumber,'u_passwd':pwd};
+          $.ajax({
+            type: 'POST',
+            url: '/TVCalendarAPI/index.php/UI/ajaxCheckPw',
+            data: data,
+            async:false,
+            error: function(XMLHttpRequest, textStatus, errorThrown)
+            {
+              alert(XMLHttpRequest.status);
+              alert(XMLHttpRequest.readyState);
+              alert(textStatus);
+            },
+            success: function(result)
+            {
+              if (result == "OK") 
+              {
+                toastr.success("验证成功", "信息");
+                //window.location.href("/TVCalendarAPI/index.php/UI/index");
+                flag = true;
+              }
+              else if(result == 'WrongPW')
+              {
+                toastr.error("用户名或密码错误", "错误");
+                flag = false;
+              }
+              else
+              {
+                toastr.error("参数错误", "错误");
+                flag = false;
+              }
+            },
+          });
+          //toastr.warning(flag.toString(), "DEBUG");
+          return flag;
+        }
+      </script>
 
     

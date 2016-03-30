@@ -116,6 +116,16 @@ class ShowModel extends CI_Model{
 			return null;
 	}
 
+	public function getNumberOfShows()
+	{
+		$rs = $this->db->query("SELECT COUNT(s_id) AS num FROM `shows` 
+			WHERE 1")->row_array();
+		if(!is_null($rs))
+			return $rs;
+		else
+			return null;
+	}
+
 	//根据剧名查找剧名的方法
 	//暂不能使用
 	public function searchByName($id = ''){

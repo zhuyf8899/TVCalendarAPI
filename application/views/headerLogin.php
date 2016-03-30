@@ -24,3 +24,47 @@
     <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="/TVCalendarAPI/build/js/toastr.min.js"></script>
+  <style type="text/css">
+    body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #eee;
+    font-family: "Droid Sans",微软雅黑,"Lucida Grande","Lucida Sans",icomoon,Helvetica,Arial,Sans;
+  }
+
+  .form-signin {
+    max-width: 330px;
+    padding: 15px;
+    margin: 0 auto;
+  }
+  .form-signin .form-signin-heading,
+  .form-signin .checkbox {
+    margin-bottom: 10px;
+  }
+  .form-signin .checkbox {
+    font-weight: normal;
+  }
+  .form-signin .form-control {
+    position: relative;
+    height: auto;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+    padding: 10px;
+    font-size: 16px;
+  }
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
+  .form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+  .form-signin input[type="password"] {
+    margin-bottom: -1px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  </style>

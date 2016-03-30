@@ -15,13 +15,14 @@ class UI extends CI_Controller {
 	//主页
 	public function index()
 	{
+		$this->load->model('ShowModel');
+
+		$date = date('Y-m-d');
+		$data['today'] = $this->ShowModel->searchOneDateBrief($date);
+		$data['showsNumber'] = $this->ShowModel->getNumberOfShows();
 		$this->load->view('header');
-		$this->load->view('home');
+		$this->load->view('home',$data);
 		$this->load->view('footer');
-		// echo "userid:".$this->session->userdata('u_id')."\n";
-		// echo "username:".$this->session->userdata('u_name')."\n";
-		// echo "userphone:".$this->session->userdata('u_phone')."\n";
-		// echo "usertoken:".$this->session->userdata('u_token')."\n";
 	}
 
 	//登陆页面
@@ -32,6 +33,14 @@ class UI extends CI_Controller {
 		$this->load->view('login');
 		$this->load->view('footer');
 
+	}
+
+	//登出页面
+	public function webLogout()
+	{
+		$u_data = array('u_id','u_name','u_phone','u_token');
+		$this->session->unset_userdata($u_data);
+		header("Location: /TVCalendarAPI/index.php/UI/index");
 	}
 
 	//ajax验证密码并写入cookies的方法
