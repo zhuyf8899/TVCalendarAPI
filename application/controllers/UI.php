@@ -12,23 +12,29 @@ class UI extends CI_Controller {
 		header("Content-type: text/html; charset=utf-8");			
 	}
 
+	//主页
 	public function index()
 	{
-		echo "userid:".$this->session->userdata('u_id')."\n";
-		echo "username:".$this->session->userdata('u_name')."\n";
-		echo "userphone:".$this->session->userdata('u_phone')."\n";
-		echo "usertoken:".$this->session->userdata('u_token')."\n";
+		$this->load->view('header');
+		$this->load->view('home');
+		$this->load->view('footer');
+		// echo "userid:".$this->session->userdata('u_id')."\n";
+		// echo "username:".$this->session->userdata('u_name')."\n";
+		// echo "userphone:".$this->session->userdata('u_phone')."\n";
+		// echo "usertoken:".$this->session->userdata('u_token')."\n";
 	}
 
+	//登陆页面
 	public function webLogin()
 	{
 		$header['title'] = '用户登录';
-		$this->load->view('header',$header);
+		$this->load->view('headerLogin',$header);
 		$this->load->view('login');
 		$this->load->view('footer');
 
 	}
 
+	//ajax验证密码并写入cookies的方法
 	public function ajaxCheckPw()
 	{
 		$this->load->model('UserModel');
@@ -45,7 +51,8 @@ class UI extends CI_Controller {
 				$u_data = array(
 					'u_id' => $rs['u_id'],
 					'u_name' => $rs['u_name'],
-					'u_phone' => $rs['u_phone']
+					'u_phone' => $rs['u_phone'],
+					'u_token' => $rs['u_token']
 				);
 				$this->session->set_userdata($u_data);
 				echo "OK";
@@ -58,6 +65,50 @@ class UI extends CI_Controller {
 		else
 		{
 			echo "Error";
+		}
+	}
+
+	//注册界面
+	public function webreg()
+	{
+		$header['title'] = '注册';
+		$this->load->view('headerLogin',$header);
+		$this->load->view('webreg');
+		$this->load->view('footer');
+	}
+
+	//ajax注册验证
+	public function ajaxReg()
+	{
+		$this->load->model('UserModel');
+		if (!empty($this->input->post('u_phone')) && !empty($this->input->post('u_passwd')))
+		{
+			$u_phone = $this->input->post('u_phone');
+			$u_passwd = md5($this->input->post('u_passwd'));
+			$u_name = $this->input->post('u_name');
+			$rs = $this->UserModel->register($u_name,$u_phone,$u_passwd);
+			if (!empty($rs)) 
+			{
+				if ($rs == "PHONEREPEAT") 
+				{
+					echo "WrongPh";
+				}
+				else
+				{
+					$u_data = array(
+						'u_id' => $rs['u_id'],
+						'u_name' => $rs['u_name'],
+						'u_phone' => $rs['u_phone'],
+						'u_token' => $rs['u_token']
+					);
+					$this->session->set_userdata($u_data);
+					echo "OK";
+				}
+			}
+			else
+			{
+				echo "Error";
+			}
 		}
 	}
 	

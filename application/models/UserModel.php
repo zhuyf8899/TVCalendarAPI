@@ -7,7 +7,7 @@ class UserModel extends CI_Model{
 
 	public function register($u_name,$u_phone,$u_passwd)
 	{
-		$checker = $this->db->query("SELECT u_id FROM user WHERE u_phone = {$u_phone} LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_id FROM user WHERE u_phone = '{$u_phone}' LIMIT 1")->row_array();
 		if (!empty($checker)) {
 			return "PHONEREPEAT";
 		}
@@ -15,10 +15,10 @@ class UserModel extends CI_Model{
 		{
 			$u_token = md5($u_name.$u_phone.$u_passwd);
 			$this->db->query("INSERT into user (u_name,u_phone,u_passwd,u_token,u_status) 
-				values({$u_name},{$u_phone},{$u_passwd},{$u_token},1)");
+				values('{$u_name}','{$u_phone}','{$u_passwd}','{$u_token}',1)");
 			if ($this->db->affected_rows())
 			{
-				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token FROM user WHERE u_phone = '{$u_phone}'' LIMIT 1")->row_array();
+				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token FROM user WHERE u_phone = '{$u_phone}' LIMIT 1")->row_array();
 				return $rs;
 			}
 		}
