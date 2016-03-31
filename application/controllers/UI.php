@@ -43,6 +43,65 @@ class UI extends CI_Controller {
 		header("Location: /TVCalendarAPI/index.php/UI/index");
 	}
 
+	//注册界面
+	public function webreg()
+	{
+		$header['title'] = '注册';
+		$this->load->view('headerLogin',$header);
+		$this->load->view('webreg');
+		$this->load->view('footer');
+	}
+
+	//查看某年某月全部剧集的方法页面，参数形如2016-01
+	public function viewMonth($month = '')
+	{
+		//验证是否登录
+		$this->checkLogin();
+
+		$this->load->model('ShowModel');
+		//强制验证month是否符合规范
+		$monthFormat = '/^\d{4}-\d{2}$/';
+		if(!preg_match($monthFormat,$month)){
+			$month = '';
+		}
+
+		if (empty($month)) 
+		{
+			$dateStart = date('Y-m-01');
+			$dateEnd = date('Y-m-d', strtotime("$dateStart +1 month -1 day"));
+			$month = date('Y-m');
+		}
+		else
+		{
+			$dateStart = $month."-01";
+			$dateEnd = date('Y-m-d', strtotime("$dateStart +1 month -1 day"));
+		}
+
+		$shows = $this->ShowModel->searchDates($dateStart,$dateEnd);
+
+		foreach ($shows as $dayDate => &$oneday) 
+		{
+			foreach ($oneday as &$aShow) 
+			{
+				$flag = $this->ShowModel->checkSubscribe($this->session->u_id,$aShow['s_id']);
+				if ($flag) 
+				{
+					$aShow['sub'] = "1";
+				}
+				else
+				{
+					$aShow['sub'] = "0";
+				}
+			}
+		}
+		$data['shows'] = $shows;
+		$data['dateStart'] = $dateStart;
+		$header['title'] = $month."月剧集";
+		$this->load->view('header',$header);
+		$this->load->view('viewMonth',$data);
+		$this->load->view('footer');
+	}
+
 	//ajax验证密码并写入cookies的方法
 	public function ajaxCheckPw()
 	{
@@ -77,15 +136,6 @@ class UI extends CI_Controller {
 		}
 	}
 
-	//注册界面
-	public function webreg()
-	{
-		$header['title'] = '注册';
-		$this->load->view('headerLogin',$header);
-		$this->load->view('webreg');
-		$this->load->view('footer');
-	}
-
 	//ajax注册验证
 	public function ajaxReg()
 	{
@@ -118,6 +168,21 @@ class UI extends CI_Controller {
 			{
 				echo "Error";
 			}
+		}
+	}
+
+	//检查是否已登录，未登录直接强制跳转至登陆界面，已登录返回false
+	public function checkLogin()
+	{
+		if ($this->session->userdata('u_id') == null)
+		{
+			header("Location: /TVCalendarAPI/index.php/UI/webLogin");
+			exit();
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 	

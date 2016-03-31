@@ -116,12 +116,24 @@ class ShowModel extends CI_Model{
 			return null;
 	}
 
+	//获取有多少部剧的方法
 	public function getNumberOfShows()
 	{
 		$rs = $this->db->query("SELECT COUNT(s_id) AS num FROM `shows` 
 			WHERE 1")->row_array();
 		if(!is_null($rs))
 			return $rs;
+		else
+			return null;
+	}
+
+	//获取一部剧是否被用户订阅的方法
+	public function checkSubscribe($u_id,$s_id)
+	{
+		$rs = $this->db->query("SELECT * FROM subscribe 
+			WHERE u_id = {$u_id} AND s_id = {$s_id}")->row_array();
+		if(!is_null($rs))
+			return true;
 		else
 			return null;
 	}
