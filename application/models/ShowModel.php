@@ -138,6 +138,42 @@ class ShowModel extends CI_Model{
 			return null;
 	}
 
+	//向subscribe插入记录的方法
+	public function insertSubscribe($u_id,$s_id,$date)
+	{
+		$this->db->query("INSERT INTO subscribe (u_id, s_id,sub_time) 
+			VALUES ('{$u_id}', '{$s_id}','{$date}')");
+		if ($this->db->affected_rows()) 
+		{
+			$rs = $this->db->query("SELECT s_name FROM shows 
+				WHERE s_id = {$s_id} LIMIT 1")->row_array();
+			return "OK:".$rs['s_name'];
+		}
+		else
+		{
+			return "Repeat";
+		}
+		return null;
+	}
+
+	//从subscribe删除记录的方法
+	public function deleteSubscribe($u_id,$s_id)
+	{
+		$this->db->query("DELETE FROM subscribe WHERE 
+			u_id = '{$u_id}' AND s_id = '{$s_id}' LIMIT 1");
+		if ($this->db->affected_rows()) 
+		{
+			$rs = $this->db->query("SELECT s_name FROM shows 
+				WHERE s_id = {$s_id} LIMIT 1")->row_array();
+			return "OK:".$rs['s_name'];
+		}
+		else
+		{
+			return "None";
+		}
+		return null;
+	}
+
 	//根据剧名查找剧名的方法
 	//暂不能使用
 	public function searchByName($id = ''){

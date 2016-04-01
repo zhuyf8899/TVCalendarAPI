@@ -171,6 +171,42 @@ class UI extends CI_Controller {
 		}
 	}
 
+	//ajax执行订阅某部剧的方法
+	public function ajaxSubscribe()
+	{
+		$this->load->model('ShowModel');
+		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id'))) 
+		{
+			$rs = $this->ShowModel->insertSubscribe($this->input->post('u_id'),$this->input->post('s_id'),date('Y-m-d H:i:s'));
+			if (!empty($rs)) 
+			{
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}
+		}
+	}
+
+	//ajax执行不再订阅某部剧的方法
+	public function ajaxUnsubscribe()
+	{
+		$this->load->model('ShowModel');
+		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id')))
+		{
+			$rs = $this->ShowModel->deleteSubscribe($this->input->post('u_id'),$this->input->post('s_id'));
+			if (!empty($rs)) 
+			{
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}
+		}
+	}
+
 	//检查是否已登录，未登录直接强制跳转至登陆界面，已登录返回false
 	public function checkLogin()
 	{
