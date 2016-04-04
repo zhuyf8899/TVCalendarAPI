@@ -7,6 +7,7 @@ class UI extends CI_Controller {
 		#$this->load->model('ShowModel');
 		$this->load->library('session');
 		$this->baseUrl = $this->config->item('base_url');
+		$this->CalUrl = 'http://www.pogdesign.co.uk/';
 		$this->dateFormat = '/^\d{4}-[0-1][1-9]-[0-3]\d$/';
 		date_default_timezone_set('Asia/Shanghai');
 		header("Content-type: text/html; charset=utf-8");			
@@ -101,6 +102,32 @@ class UI extends CI_Controller {
 		$this->load->view('viewMonth',$data);
 		$this->load->view('footer');
 	}
+
+	//查看一部剧的summary，即一部剧全部内容的方法
+	public function showSummary($sid)
+	{
+		//验证是否登录
+		$this->checkLogin();
+
+		$this->load->model('ShowModel');
+		//验证sid是否符合规范
+		$idFormat = '/^\d*$/';
+		if(!preg_match($idFormat,$sid)){
+			//出现问题直接崩回首页，问题一般出现于利用URL注入
+			header("Location: /TVCalendarAPI/index.php/UI/index.php");
+			exit();
+		}
+
+		$data['showInfo'] = $this->ShowModel->searchByShowId($sid);
+		$data['episodeInfo'] = $this->ShowModel->searchEpsBySid($sid);
+		$data['CUrl'] = $this->CalUrl;
+		$header['title'] = $data['showInfo']['s_name'].'的信息';
+
+		$this->load->view('header',$header);
+		$this->load->view('viewShow',$data);
+		$this->load->view('footer');
+	}
+
 
 	//ajax验证密码并写入cookies的方法
 	public function ajaxCheckPw()

@@ -1,20 +1,21 @@
 </div> <!-- /container -->
-
+<style>
+.navbar-left{
+	margin-left: -15px;
+}
 </style>
 <div class="container">
 <div class="navbar navbar-default" >
-	<div class="navbar-collapse collapse">
-		<ul class="nav navbar-nav">
+	<div class="navbar-collapse collapse" style="text-align: center;">
+		<ul class="nav navbar-nav  navbar-left">
 		  <li>
 		    <a class="btn btn-default" href="/TVCalendarAPI/index.php/UI/viewMonth/<?php if(isset($dateStart)){ echo date('Y-m',strtotime("$dateStart -1 month"));} ?>" role="button">
 		    上月</a>
 		  </li>
 		</ul>
-		<ul class="nav navbar-nav" style="align:center;">
-		  <li>
-		    <a><?php if(isset($dateStart)){ echo date('Y年m月',strtotime($dateStart));} ?></a>
-		  </li>
-		</ul>
+		<span style="line-height: 50px;">
+		  <?php if(isset($dateStart)){ echo date('Y年m月',strtotime($dateStart));} ?>
+		</span>
 		<ul class="nav navbar-nav navbar-right">
 		  <li>
 		    <a class="btn btn-default" href="/TVCalendarAPI/index.php/UI/viewMonth/<?php if(isset($dateStart)){ echo date('Y-m',strtotime("$dateStart +1 month"));} ?>" role="button">
@@ -51,7 +52,7 @@ if (isset($shows)) {
 		  			<button type="button" name="<?php echo 'u'.$this->session->u_id.$aShow['s_id'];?>" onclick="unsubscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-warning" <?php if($aShow['sub'] != "1"){echo "style=\"display:none\"";} ?> >不再订阅</button>
 		  			<button type="button" name="<?php echo 's'.$this->session->u_id.$aShow['s_id'];?>" onclick="subscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-success" <?php if($aShow['sub'] == "1"){echo "style=\"display:none\"";} ?> >订阅</button>
 		  			</th>
-		  			<th class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary?s_id=<?php echo $aShow['s_id']; ?>">剧集详情</a></th>
+		  			<th class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $aShow['s_id']; ?>">剧集详情</a></th>
 		  		</tr>
 		  		<?php
 		  	}
