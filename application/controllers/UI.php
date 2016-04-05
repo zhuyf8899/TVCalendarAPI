@@ -112,7 +112,8 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		//验证sid是否符合规范
 		$idFormat = '/^\d*$/';
-		if(!preg_match($idFormat,$sid)){
+		if(!preg_match($idFormat,$sid))
+		{
 			//出现问题直接崩回首页，问题一般出现于利用URL注入
 			header("Location: /TVCalendarAPI/index.php/UI/index.php");
 			exit();
@@ -120,6 +121,20 @@ class UI extends CI_Controller {
 
 		$data['showInfo'] = $this->ShowModel->searchByShowId($sid);
 		$data['episodeInfo'] = $this->ShowModel->searchEpsBySid($sid);
+
+		foreach ($data['episodeInfo'] as &$anEpisode) 
+		{
+			$synFlag = $this->ShowModel->checkSyn($this->session->u_id,$anEpisode['e_id']);
+			if ($synFlag) 
+			{
+				$anEpisode['syn'] = 1;
+			}
+			else
+			{
+				$anEpisode['syn'] = 0;
+			}
+		}
+
 		$data['CUrl'] = $this->CalUrl;
 		$header['title'] = $data['showInfo']['s_name'].'的信息';
 
@@ -223,6 +238,42 @@ class UI extends CI_Controller {
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id')))
 		{
 			$rs = $this->ShowModel->deleteSubscribe($this->input->post('u_id'),$this->input->post('s_id'));
+			if (!empty($rs)) 
+			{
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}
+		}
+	}
+
+	//Ajax执行观剧同步的方法
+	public function ajaxSynchron()
+	{
+		$this->load->model('ShowModel');
+		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id'))) 
+		{
+			$rs = $this->ShowModel->insertSynchron($this->input->post('u_id'),$this->input->post('e_id'),date('Y-m-d H:i:s'));
+			if (!empty($rs)) 
+			{
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}
+		}
+	}
+
+	//ajax执行不再订阅某部剧的方法
+	public function ajaxUnsynchron()
+	{
+		$this->load->model('ShowModel');
+		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id')))
+		{
+			$rs = $this->ShowModel->deleteSynchron($this->input->post('u_id'),$this->input->post('e_id'));
 			if (!empty($rs)) 
 			{
 				echo $rs;

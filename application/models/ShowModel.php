@@ -135,7 +135,7 @@ class ShowModel extends CI_Model{
 		if(!is_null($rs))
 			return true;
 		else
-			return null;
+			return false;
 	}
 
 	//向subscribe插入记录的方法
@@ -166,6 +166,53 @@ class ShowModel extends CI_Model{
 			$rs = $this->db->query("SELECT s_name FROM shows 
 				WHERE s_id = {$s_id} LIMIT 1")->row_array();
 			return "OK:".$rs['s_name'];
+		}
+		else
+		{
+			return "None";
+		}
+		return null;
+	}
+
+	//检查是否已同步的方法
+	public function checkSyn($uid,$eid)
+	{
+		$rs = $this->db->query("SELECT * FROM synchron 
+			WHERE u_id = {$uid} AND e_id = {$eid}")->row_array();
+		if(!is_null($rs))
+			return true;
+		else
+			return false;
+	}
+
+	//新增一个同步记录
+	public function insertSynchron($u_id,$e_id,$date)
+	{
+		$this->db->query("INSERT INTO synchron (u_id, e_id,syn_time) 
+			VALUES ('{$u_id}', '{$e_id}','{$date}')");
+		if ($this->db->affected_rows()) 
+		{
+			$rs = $this->db->query("SELECT se_id,e_num FROM episode 
+				WHERE e_id = {$e_id} LIMIT 1")->row_array();
+			return "OK:S".$rs['se_id'].",E".$rs['e_num'];
+		}
+		else
+		{
+			return "Repeat";
+		}
+		return null;
+	}
+
+	//从synchrone删除记录的方法
+	public function deleteSynchron($u_id,$e_id)
+	{
+		$this->db->query("DELETE FROM synchron WHERE 
+			u_id = '{$u_id}' AND e_id = '{$e_id}' LIMIT 1");
+		if ($this->db->affected_rows()) 
+		{
+			$rs = $this->db->query("SELECT se_id,e_num FROM episode 
+				WHERE e_id = {$e_id} LIMIT 1")->row_array();
+			return "OK:S".$rs['se_id'].",E".$rs['e_num'];
 		}
 		else
 		{
