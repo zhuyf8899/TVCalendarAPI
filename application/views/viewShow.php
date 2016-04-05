@@ -86,7 +86,7 @@
 	    		<th class="col-md-4"><?php echo $episodeInfo[$i]['e_name']; ?></th>
 		      	<th class="col-md-2">第<?php echo $episodeInfo[$i]['se_id']; ?>季，第<?php echo $episodeInfo[$i]['e_num']; ?>集</th>
 		      	<th class="col-md-3"><?php echo $episodeInfo[$i]['e_time']; ?></th>
-		      	<th class="col-md-2">
+		      	<th class="col-md-3">
 		      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
 		      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
 		      	<button type="button" class="btn btn-info">前往下载链接</button>
