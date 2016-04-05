@@ -37,7 +37,7 @@
               <p>第<?php echo $today[$i*3+$j]['se_id']; ?>季，第<?php echo $today[$i*3+$j]['e_num']; ?>集</p>
               <p>地区：<?php echo $today[$i*3+$j]['area']; ?> 电视台：<?php echo $today[$i*3+$j]['channel']; ?></p>
               <p>今日<?php echo $today[$i*3+$j]['e_time']; ?>（格林尼治时间）</p>
-              <p><a class="btn btn-default" href="/TVCalendarAPI/index.php/UI/showSummary?s_id=<?php echo $today[$i*3+$j]['s_id']; ?>" role="button">点击前往 &raquo;</a></p>
+              <p><a class="btn btn-default" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $today[$i*3+$j]['s_id']; ?>" role="button">点击前往 &raquo;</a></p>
             </div>
             <?php
           }

@@ -121,6 +121,8 @@ class UI extends CI_Controller {
 
 		$data['showInfo'] = $this->ShowModel->searchByShowId($sid);
 		$data['episodeInfo'] = $this->ShowModel->searchEpsBySid($sid);
+		$data['subOrNot'] = $this->ShowModel->checkSubscribe($this->session->u_id,$sid);
+		$data['s_id'] = $sid;
 
 		foreach ($data['episodeInfo'] as &$anEpisode) 
 		{

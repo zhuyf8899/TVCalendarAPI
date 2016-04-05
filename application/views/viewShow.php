@@ -1,7 +1,19 @@
 <!--这个是UI使用的界面信息-->
+<style type="text/css">
+.header-right{
+	text-align: right;
+}
+.header-left{
+	text-align: left;
+}
+</style>
 <div class="container">
   <div class="page-header">
-    <h1><?php if(isset($showInfo['s_name'])){echo $showInfo['s_name'];} ?></h1>
+    <h1 class="header-left"><?php if(isset($showInfo['s_name'])){echo $showInfo['s_name'];} ?></h1>
+    <div class="header-right">
+      <button type="button" class="btn btn-lg btn-success" id="sub" onclick="subscribe();" style="<?php if($subOrNot){echo "display:none";} ?>" >订阅本剧</button>
+      <button type="button" class="btn btn-lg btn-warning" id="unsub" onclick="unSubscribe();" style="<?php if(!$subOrNot){echo "display:none";} ?>" >不再订阅</button>
+    </div>
   </div>
   <div style="text-align:center;">
   	<img class="img-thumbnail"  alt="sibig_box_pic" src="<?php if(isset($showInfo['s_sibox_image'])){echo $CUrl.'cat/imgs/sibig/'.substr($showInfo['s_sibox_image'], 16);} ?>" data-holder-rendered="true">
@@ -74,7 +86,7 @@
 	    		<th class="col-md-4"><?php echo $episodeInfo[$i]['e_name']; ?></th>
 		      	<th class="col-md-2">第<?php echo $episodeInfo[$i]['se_id']; ?>季，第<?php echo $episodeInfo[$i]['e_num']; ?>集</th>
 		      	<th class="col-md-3"><?php echo $episodeInfo[$i]['e_time']; ?></th>
-		      	<th class="col-md-3">
+		      	<th class="col-md-2">
 		      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
 		      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
 		      	<button type="button" class="btn btn-info">前往下载链接</button>
@@ -177,5 +189,80 @@
           },
         });
         //toastr.warning(flag.toString(), "DEBUG");
+	}
+
+	function subscribe() {
+	    data = {'u_id':<?php echo $this->session->u_id; ?>,'s_id':<?php echo $s_id ?>};
+        $.ajax({
+          type: 'POST',
+          url: '/TVCalendarAPI/index.php/UI/ajaxSubscribe',
+          data: data,
+          async:true,
+          error: function(XMLHttpRequest, textStatus, errorThrown)
+          {
+          	toastr.error("Ajax故障", "错误");
+          	toastr.info("Status:"+XMLHttpRequest.status+"\nreadyState:"+XMLHttpRequest.readyState+"\ntext:"+textStatus, "DEBUG");
+          },
+          success: function(result)
+          {
+            if (result.substr(0,3) == "OK:") 
+            {
+              toastr.success("订阅:"+result.substr(3), "操作成功");
+              //window.location.href("/TVCalendarAPI/index.php/UI/index");
+              $("#sub").hide();
+              $("#unsub").show();
+            }
+            else if(result == "Repeat")
+            {
+            	toastr.warning("您已订阅过:"+result.substr(3), "警告");
+            	$("#sub").hide();
+                $("#unsub").show();
+            }
+            else
+            {
+              toastr.error("未知错误", "错误");
+              flag = false;
+            }
+          },
+        });
+        //toastr.warning(flag.toString(), "DEBUG");
+        return flag;
+	}
+
+	function unSubscribe() {
+	    data = {'u_id':<?php echo $this->session->u_id; ?>,'s_id':<?php echo $s_id ?>};
+        $.ajax({
+          type: 'POST',
+          url: '/TVCalendarAPI/index.php/UI/ajaxUnsubscribe',
+          data: data,
+          async:true,
+          error: function(XMLHttpRequest, textStatus, errorThrown)
+          {
+          	toastr.error("Ajax故障", "错误");
+          	toastr.info("Status:"+XMLHttpRequest.status+"\nreadyState:"+XMLHttpRequest.readyState+"\ntext:"+textStatus, "DEBUG");
+          },
+          success: function(result)
+          {
+            if (result.substr(0,3) == "OK:") 
+            {
+              toastr.success("取消订阅:"+result.substr(3), "操作成功");
+              //window.location.href("/TVCalendarAPI/index.php/UI/index");
+              $("#sub").show();
+              $("#unsub").hide();
+            }
+            else if(result == "None")
+            {
+            	toastr.warning("您还未订阅过:"+result.substr(3), "警告");
+            	$("#sub").show();
+                $("#unsub").hide();
+            }
+            else
+            {
+              toastr.error("未知错误", "错误");
+            }
+          },
+        });
+        //toastr.warning(flag.toString(), "DEBUG");
+        return flag;
 	}
 </script>
