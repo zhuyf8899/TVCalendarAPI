@@ -1,4 +1,5 @@
-<!--这个是UI使用的界面信息-->
+<!--每一部剧的具体信息-->
+</div><!-- /container -->
 <style type="text/css">
 .header-right{
 	text-align: right;
@@ -89,7 +90,7 @@
 		      	<th class="col-md-3">
 		      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
 		      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
-		      	<button type="button" class="btn btn-info">前往下载链接</button>
+		      	<button type="button" class="btn btn-info">前往下载链接&raquo;</button>
 		      	</th>
 	    	</tr>
 	    	<?php

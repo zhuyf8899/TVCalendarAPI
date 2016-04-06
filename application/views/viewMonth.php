@@ -1,4 +1,6 @@
-</div> <!-- /container -->
+<!--每个月的剧集列表-->
+ </div><!-- /container -->
+
 <style>
 .navbar-left{
 	margin-left: -15px;
@@ -52,7 +54,7 @@ if (isset($shows)) {
 		  			<button type="button" name="<?php echo 'u'.$this->session->u_id.$aShow['s_id'];?>" onclick="unsubscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-warning" <?php if($aShow['sub'] != "1"){echo "style=\"display:none\"";} ?> >不再订阅</button>
 		  			<button type="button" name="<?php echo 's'.$this->session->u_id.$aShow['s_id'];?>" onclick="subscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-success" <?php if($aShow['sub'] == "1"){echo "style=\"display:none\"";} ?> >订阅</button>
 		  			</th>
-		  			<th class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $aShow['s_id']; ?>">剧集详情</a></th>
+		  			<th class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $aShow['s_id']; ?>">剧集详情&raquo;</a></th>
 		  		</tr>
 		  		<?php
 		  	}
