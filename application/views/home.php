@@ -33,7 +33,7 @@
             <div class="col-md-4">
               <h3><?php echo $today[$i*3+$j]['s_name']; ?></h3>
               <em><?php echo $today[$i*3+$j]['e_name']."\n"; ?></em><br/>
-              <img src="http://www.pogdesign.co.uk<?php echo $today[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $today[$i*3+$j]['s_name']; ?>">
+              <img src="<?php echo $CUrl.$today[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $today[$i*3+$j]['s_name']; ?>">
               <p>第<?php echo $today[$i*3+$j]['se_id']; ?>季，第<?php echo $today[$i*3+$j]['e_num']; ?>集</p>
               <p>地区：<?php echo $today[$i*3+$j]['area']; ?> 电视台：<?php echo $today[$i*3+$j]['channel']; ?></p>
               <p>今日<?php echo $today[$i*3+$j]['e_time']; ?>（格林尼治时间）</p>

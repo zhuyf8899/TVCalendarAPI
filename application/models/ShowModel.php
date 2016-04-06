@@ -221,6 +221,39 @@ class ShowModel extends CI_Model{
 		return null;
 	}
 
+	//查找今天之前beforeDay开始所有关注的集的更新信息
+	public function searchRecentByUid($u_id,$beforeDay=0,$afterDay=0)
+	{
+		$date = date('Y-m-d 00:00:00');
+		$future = $date;
+		$date = date('Y-m-d 00:00:00',strtotime("$date - $beforeDay day"));
+		$future = date('Y-m-d 00:00:00',strtotime("$future + $afterDay day"));
+
+		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,e_num,e_time,e_status 
+			FROM episode 
+			LEFT JOIN shows ON `episode`.`s_id` = `shows`.`s_id` 
+			LEFT JOIN subscribe ON `shows`.`s_id` = `subscribe`.`s_id` 
+			WHERE `subscribe`.`u_id` = {$u_id} AND `episode`.`e_time` >= '{$date}' AND `episode`.`e_time` <='{$future}'
+			ORDER BY `episode`.`e_time` DESC;")->result_array();
+		if(!is_null($rs))
+			return $rs;
+		else
+			return null;
+	}
+
+	public function searchByUidOrderByDate($u_id)
+	{
+		$rs = $this->db->query("SELECT `shows`.`s_id`,s_name,s_sibox_image,status,channel,update_time,area
+			FROM shows 
+			LEFT JOIN subscribe ON `shows`.`s_id` = `subscribe`.`s_id` 
+			WHERE `subscribe`.`u_id` = {$u_id} 
+			ORDER BY  `subscribe`.`sub_time` DESC;")->result_array();
+		if(!is_null($rs))
+			return $rs;
+		else
+			return null;
+	}
+
 	//根据剧名查找剧名的方法
 	//暂不能使用
 	public function searchByName($id = ''){

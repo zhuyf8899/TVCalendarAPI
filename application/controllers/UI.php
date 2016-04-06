@@ -7,7 +7,7 @@ class UI extends CI_Controller {
 		#$this->load->model('ShowModel');
 		$this->load->library('session');
 		$this->baseUrl = $this->config->item('base_url');
-		$this->CalUrl = 'http://www.pogdesign.co.uk/';
+		$this->CalUrl = 'http://www.pogdesign.co.uk';
 		$this->dateFormat = '/^\d{4}-[0-1][1-9]-[0-3]\d$/';
 		date_default_timezone_set('Asia/Shanghai');
 		header("Content-type: text/html; charset=utf-8");			
@@ -21,6 +21,7 @@ class UI extends CI_Controller {
 		$date = date('Y-m-d');
 		$data['today'] = $this->ShowModel->searchOneDateBrief($date);
 		$data['showsNumber'] = $this->ShowModel->getNumberOfShows();
+		$data['CUrl'] = $this->CalUrl;
 		$this->load->view('header');
 		$this->load->view('home',$data);
 		$this->load->view('footer');
@@ -143,6 +144,38 @@ class UI extends CI_Controller {
 		$this->load->view('header',$header);
 		$this->load->view('viewShow',$data);
 		$this->load->view('footer');
+	}
+
+	//注册用户“我的剧集功能”
+	public function myShows()
+	{
+		//验证是否登录
+		$this->checkLogin();
+		$this->load->model('ShowModel');
+
+		$data['rescentEps'] = $this->ShowModel->searchRecentByUid($this->session->u_id,7,7);
+		$data['mySubscribe'] = $this->ShowModel->searchByUidOrderByDate($this->session->u_id);
+
+		foreach ($data['rescentEps'] as &$anEpisode) 
+		{
+			$synFlag = $this->ShowModel->checkSyn($this->session->u_id,$anEpisode['e_id']);
+			if ($synFlag) 
+			{
+				$anEpisode['syn'] = 1;
+			}
+			else
+			{
+				$anEpisode['syn'] = 0;
+			}
+		}
+
+		$data['CUrl'] = $this->CalUrl;
+		$header['title'] = '我的剧集';
+
+		$this->load->view('header',$header);
+		$this->load->view('viewMyShows',$data);
+		$this->load->view('footer');
+
 	}
 
 

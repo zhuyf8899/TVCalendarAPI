@@ -74,8 +74,8 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <?php echo $this->session->u_name; ?><span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/TVCalendarAPI/index.php/UI/myCenter?uid=<?php echo $this->session->u_id;?>">个人中心</a></li>
-                  <li><a href="/TVCalendarAPI/index.php/UI/myShows?uid=<?php echo $this->session->u_id;?>">我的剧集</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/myCenter/<?php echo $this->session->u_id;?>">个人中心</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/myShows/<?php echo $this->session->u_id;?>">我的剧集</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="/TVCalendarAPI/index.php/UI/webLogout">登出</a></li>
                 </ul>
