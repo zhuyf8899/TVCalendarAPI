@@ -11,13 +11,46 @@ class Api extends CI_Controller
 		$this->baseUrl = $this->config->item('base_url');
 		$this->dateFormat = '/^\d{4}-[0-1][1-9]-[0-3]\d$/';
 		$this->pwFormat = '/^\w{32}$/';
+		$this->CalUrl = 'http://www.pogdesign.co.uk';
 		date_default_timezone_set('Asia/Shanghai');
-		header("Content-type: text/html; charset=utf-8");			
+		header("Content-type: text/html; charset=utf-8");
+		$this->errorList = array(
+			0 => null,
+			1 => null,
+			2 => 'Wrong Request:',
+			3 => 'Empty Response:',
+			4 => 'Incorrect Parameter:'
+		);		
 	}
+
+	/*
+	普遍约定：
+	errno：
+	1 - 无错误
+	2 - 错误的请求
+	3 - 空的输出
+	4 - 传参错误
+	*/
 
 	public function index()
 	{
-		$this->load->view('error');
+		$data['ouput'] = array(
+			'errno' => 2,
+			'err' => $this->errorList[2].'request URL is not exist.' ,
+			'rsm' => null
+			); 
+		$this->load->view('apiTemplate');
+	}
+
+	//获取一些默认配置信息的方法
+	public function getConfig()
+	{
+		$data['output'] = array(
+			'errno' => 1,
+			'err' => '',
+			'rsm' => array('CalUrl' => $this->CalUrl)
+			); 
+		$this->load->view('apiTemplate',$data);	
 	}
 
 	//参数格式务必保证是yyyy-mm-dd.
@@ -29,134 +62,134 @@ class Api extends CI_Controller
 		{
 			$date = date('Y-m-d');
 		}
-		$data['result'] =  array();
-		$data['errorFlag'] = -1;
-		/*
-		错误代码：errorFlag：
-		-1:初始值
-		0.无错误
-		1.日期格式错误
-		2.数据库查询结果为空
-		*/
+		$errno = 1;
+		$err = '';
+		$rsm = null;
 		if(preg_match($this->dateFormat,$date))
 		{	//判断是否符合日期格式
-			$data['result'] = $this->ShowModel->searchOneDateBrief($date);
-			$data['errorFlag'] = 0;
-			if ($data['result'] == null) 
+			$rsm = $this->ShowModel->searchOneDateBrief($date);
+			#$data['errorFlag'] = 0;
+			if (empty($rsm)) 
 			{
-				$data['errorFlag'] = 2;
+				$errno = 3;
+				$err = $this->errorList[$errno].'Server response with an empty set';
 			}
 		}
 		else
 		{
-			$data['errorFlag'] = 1;
+			$errno = 4;
+			$err = $this->errorList[$errno].'Date format is incorrect';
 		}
-		$this->load->view('selectOneDateEp',$data);
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
 	}
 
 	public function selectDates($dateStart = '',$dateEnd = '')
 	{
 		$this->load->model('ShowModel');
-		$data['result'] = array();
-		$data['errorFlag'] = -1;
-		/*
-		错误代码：errorFlag：
-		-1:初始值
-		0.无错误
-		1.日期参数缺少
-		2.日期格式错误
-		3.数据库查询结果为空
-		*/
+		$errno = 1;
+		$err = '';
+		$rsm = null;
 		if (empty($dateStart) || empty($dateEnd)) 
 		{
-			$data['errorFlag'] = 1;
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
 		}
-		if(preg_match($this->dateFormat,$dateStart) && preg_match($this->dateFormat,$dateEnd))
+		else if(preg_match($this->dateFormat,$dateStart) && preg_match($this->dateFormat,$dateEnd))
 		{	//判断是否符合日期格式
-			$data['result'] = $this->ShowModel->searchDates($dateStart,$dateEnd);
-			$data['errorFlag'] = 0;
-			if (empty($data['result'])) 
+			$rsm = $this->ShowModel->searchDates($dateStart,$dateEnd);
+			if (empty($rsm)) 
 			{
-				$data['errorFlag'] = 3;
+				$errno = 3;
+				$err = $this->errorList[$errno].'Server response with an empty set';
 			}
 		}
 		else
 		{
-			$data['errorFlag'] = 2;
+			$errno = 4;
+			$err = $this->errorList[$errno].'Date format is incorrect';
 		}
-
-		$this->load->view('selectServeralDates',$data);
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
 	}
 
 	//通过参数id查找集的详细信息
 	public function searchByEpId($id = '')
 	{
 		$this->load->model('ShowModel');
-		$data['result'] = array();
-		$data['errorFlag'] = -1;
-		/*
-		错误代码errorFlag：
-		-1.默认值
-		0.无错误
-		1.缺少id参数 
-		2.参数格式错误
-		3.数据库返回空
-		*/
+		$errno = 1;
+		$err = '';
+		$rsm = null;
 		if (empty($id)) 
 		{
-			$data['errorFlag'] = 1;
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
 		}
 		else if(intval($id))
 		{
-			$data['result'] = $this->ShowModel->searchByEpId(intval($id));
-			$data['errorFlag'] = 0;
-			if (empty($data['result'])) 
+			$rsm = $this->ShowModel->searchByEpId(intval($id));
+			if (empty($rsm)) 
 			{
-				$data['errorFlag'] = 3;
+				$errno = 3;
+				$err = $this->errorList[$errno].'Server response with an empty set';
 			}
 		}
 		else
 		{
-			$data['errorFlag'] = 2;
+			$errno = 4;
+			$err = $this->errorList[$errno].'Id format is incorrect';
 		}
 
-		$this->load->view('idTemplate',$data);
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
 	}
 
 	//通过id查找剧的详细信息
 	public function searchByShowId($id='')
 	{
 		$this->load->model('ShowModel');
-		$data['result'] = array();
-		$data['errorFlag'] = -1;
-		/*
-		错误代码errorFlag：
-		-1.默认值
-		0.无错误
-		1.缺少id参数 
-		2.参数格式错误
-		3.数据库返回空
-		*/
+		$errno = 1;
+		$err = '';
+		$rsm = null;
 		if (empty($id)) 
 		{
-			$data['errorFlag'] = 1;
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
 		}
 		else if(intval($id))
 		{
-			$data['result'] = $this->ShowModel->searchByShowId(intval($id));
-			$data['eps'] = $this->ShowModel->searchEpsBySid(intval($id));
-			$data['errorFlag'] = 0;
-			if (empty($data['result'])) 
+			$rsm['show'] = $this->ShowModel->searchByShowId(intval($id));
+			$rsm['episodes'] = $this->ShowModel->searchEpsBySid($rsm['show']['s_id']);
+			if (empty($rsm['show'])) 
 			{
-				$data['errorFlag'] = 3;
+				$errno = 3;
+				$err = $this->errorList[$errno].'Server response with an empty set';
 			}
 		}
 		else
 		{
-			$data['errorFlag'] = 2;
+			$errno = 4;
+			$err = $this->errorList[$errno].'Id format is incorrect';
 		}
 
-		$this->load->view('viewShowSummary',$data);
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
 	}
 
 	//通过参数name查找剧名的详细信息,效率差不安全，不推荐使用
@@ -190,7 +223,7 @@ class Api extends CI_Controller
 		$this->load->view('idTemplate',$data);
 	}
 
-
+	//暂不能使用
 	public function mobileRegister()
 	{
 		$this->load->model('UserModel');
