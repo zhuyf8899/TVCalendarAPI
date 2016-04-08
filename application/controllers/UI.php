@@ -178,6 +178,21 @@ class UI extends CI_Controller {
 
 	}
 
+	//注册用户浏览自己信息和修改密码的页面方法
+	public function myCenter()
+	{
+		//验证是否登录
+		$this->checkLogin();
+		$this->load->model('UserModel');
+
+		$data['userInfo'] = $this->UserModel->getUserData($this->session->u_id);
+		$header['title'] = '用户中心';
+
+		$this->load->view('header',$header);
+		$this->load->view('userCenter',$data);
+		$this->load->view('footer');
+	}
+
 
 	//ajax验证密码并写入cookies的方法
 	public function ajaxCheckPw()

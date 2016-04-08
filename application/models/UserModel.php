@@ -37,4 +37,17 @@ class UserModel extends CI_Model{
 			return null;
 		}
 	}
+
+	public function getUserData($uid)
+	{
+		$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_status FROM user WHERE u_id = {$uid} LIMIT 1")->row_array();
+		if (isset($rs)) 
+		{
+			return $rs;
+		}
+		else
+		{
+			return null;
+		}
+	}
 }
