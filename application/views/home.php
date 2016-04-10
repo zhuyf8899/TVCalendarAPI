@@ -6,7 +6,14 @@
           echo $showsNumber['num'];}else{echo "2300余";}?>部。注册会员享受更多功能。</p>
         <p>本平台基于开源协议发布，同时提供基于iOS系统和Android系统的移动客户端，<a href="">点击下载</a></p>
         <p>
+        <?php
+        if (!$this->session->u_id) {
+        
+        ?>
           <a class="btn btn-lg btn-primary" href="/TVCalendarAPI/index.php/UI/webreg" role="button">点击这里注册 &raquo;</a>
+        <?php
+        }
+        ?>
         </p>
       </div>
 

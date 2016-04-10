@@ -50,4 +50,17 @@ class UserModel extends CI_Model{
 			return null;
 		}
 	}
+
+	public function getBudget()
+	{
+		$rs = $this->db->query("SELECT * FROM budget WHERE 1 ORDER BY b_time DESC")->result_array();
+		if (isset($rs)) 
+		{
+			return $rs;
+		}
+		else
+		{
+			return null;
+		}
+	}
 }

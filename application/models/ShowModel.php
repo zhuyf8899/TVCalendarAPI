@@ -255,18 +255,12 @@ class ShowModel extends CI_Model{
 	}
 
 	//根据剧名查找剧名的方法
-	//暂不能使用
-	public function searchByName($id = ''){
-		$rs = $this->db->query("SELECT * FROM  `name` 
-			WHERE  `name`.`n_name` = \"{$id}\"") ->row_array();
-		$nameResult = array(
-			'n_id' => $rs['n_id'],
-			'n_name' => $rs['n_name'],
-			'photo_link' => $rs['n_photoLink'],
-			);
-		unset($rs);
-		if(!is_null($nameResult['n_id']))
-			return $nameResult;
+	public function searchByName($name,$start,$end){
+		$rs = $this->db->query("SELECT s_id,s_name,s_sibox_image,area,status FROM  `shows` 
+			WHERE  `shows`.`s_name` LIKE '%{$name}%'
+			LIMIT {$start},{$end}") ->result_array();
+		if(!is_null($rs))
+			return $rs;
 		else
 			return null;
 	}

@@ -52,19 +52,18 @@
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li><a href="/TVCalendarAPI/index.php/UI/viewMonth/">本月</a></li>
-              <li><a href="#">查找剧集</a></li>
+              <li><a href="/TVCalendarAPI/index.php/UI/search">查找剧集</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">剧集浏览 <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">当前热播<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li class="dropdown-header">按地区</li>
-                  <li><a href="#">美国</a></li>
-                  <li><a href="#">英国</a></li>
-                  <li><a href="#">其他地区</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/commend?area=USA">美国</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/commend?area=United+Kingdom">英国</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">按状态</li>
-                  <li><a href="#">新番</a></li>
-                  <li><a href="#">回归</a></li>
-                  <li><a href="#">完结</a></li>
+                  <li class="dropdown-header">按新旧</li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/commend?status=New+Series">新番</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/commend?status=Returning+Series">回归</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/commend?status=Canceled%2FEnded">完结</a></li>
                 </ul>
               </li>
             </ul>
@@ -74,8 +73,8 @@
             <ul class="nav navbar-nav navbar-right">
               <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <?php echo $this->session->u_name; ?><span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="/TVCalendarAPI/index.php/UI/myCenter/<?php echo $this->session->u_id;?>">个人中心</a></li>
-                  <li><a href="/TVCalendarAPI/index.php/UI/myShows/<?php echo $this->session->u_id;?>">我的剧集</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/myCenter/">个人中心</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/myShows/">我的剧集</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="/TVCalendarAPI/index.php/UI/webLogout">登出</a></li>
                 </ul>

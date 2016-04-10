@@ -193,6 +193,69 @@ class UI extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	//搜索
+	public function search($words='',$fullResult='')
+	{
+		//验证是否登录
+		$this->checkLogin();
+		$this->load->model('ShowModel');
+
+		$data['result'] = array();
+		if (!empty($words)) {
+			$words = str_replace('\'', "\\'", $words);
+			$words = str_replace('%20', ' ', $words);
+			$words = str_replace('%2F', '/', $words);
+			$st = 0;
+			$lg = 30;
+			if ($fullResult == "fullresult") {
+				$st = 0;
+				$lg = 300;
+			}
+			$data['result'] = $this->ShowModel->searchByName($words,$st,$lg);
+		}
+		if(count($data['result']) == 30)
+		{
+			$data['fullRequest'] = True;
+		}
+		else
+		{
+			$data['fullRequest'] = False;
+		}
+		$header['title'] = '查找剧集-'.$words;
+		$data['CUrl'] = $this->CalUrl;
+		
+
+		$this->load->view('header',$header);
+		$this->load->view('viewSearch',$data);
+		$this->load->view('footer');
+	}
+
+	//文档类方法
+	public function docs($value)
+	{
+		if ($value == 'letter') 
+		{
+			$this->load->model('UserModel');
+			$header['title'] = '致用户的一封信';
+			$data['budget'] = $this->UserModel->getBudget();
+			$data['kind'] = 'letter';
+		}
+		else if($value == 'license')
+		{
+			$header['title'] = '法律信息';
+			$data['kind'] = 'license';
+		}
+		else
+		{
+			$header['title'] = '关于我们';
+			$data['kind'] = 'about';
+		}
+
+		$this->load->view('header',$header);
+		$this->load->view('viewDocs',$data);
+		$this->load->view('footer');
+	}
+
 
 	//ajax验证密码并写入cookies的方法
 	public function ajaxCheckPw()
