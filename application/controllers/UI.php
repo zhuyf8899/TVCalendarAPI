@@ -398,12 +398,72 @@ class UI extends CI_Controller {
 		}
 	}
 
+	//ajax更新用户密码以及个人信息的方法
+	public function ajaxUpdateUser()
+	{
+		$this->ajaxCheckLogin();
+		$this->load->model('UserModel');
+
+		$name = $this->input->post('name');
+		$pwd = $this->input->post('pwd');
+		$pwdNew = $this->input->post('pwdNew');
+		if (empty($name)) 
+		{
+			$name = "Undefined";
+		}
+		if (empty($pwd) || empty($pwdNew)) 
+		{
+			echo "Empty";
+			exit();
+		}
+		if ($pwd == $pwdNew) 
+		{
+			$rs = $this->UserModel->updateNameOnly($this->session->u_id,$pwd,$name);
+			if (!empty($rs)) 
+			{
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}		
+		}
+		else
+		{
+			$rs = $this->UserModel->updateUserInfo($this->session->u_id,$pwd,$pwdNew,$name);
+			if ($rs == "OK") 
+			{
+				$this->session->set_userdata('u_name', $name);
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}		
+		}
+	}
+
 	//检查是否已登录，未登录直接强制跳转至登陆界面，已登录返回false
 	public function checkLogin()
 	{
 		if ($this->session->userdata('u_id') == null)
 		{
 			header("Location: /TVCalendarAPI/index.php/UI/webLogin");
+			exit();
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	//ajax方法调用前验证登陆的方法
+	public function ajaxCheckLogin()
+	{
+		if ($this->session->userdata('u_id') == null)
+		{
+			echo "Forbidden";
 			exit();
 			return true;
 		}
