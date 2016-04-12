@@ -230,6 +230,37 @@ class UI extends CI_Controller {
 		$this->load->view('footer');
 	}
 
+	//推荐页面
+	public function recommend($guessILike='0')
+	{
+		//验证是否登录
+		$this->checkLogin();
+		$this->load->model('ShowModel');
+
+		$area = '';
+		$header['title'] = '推荐';
+		if ($this->input->get('area',true)) 
+		{
+			$area = $this->input->get('area',true);
+			$area = str_replace('\'', "\\'", $area);
+			$area = str_replace('%20', ' ', $area);
+			$area = str_replace('%2F', '/', $area);
+			$area = "WHERE area = '".$this->input->get('area',true)."'";
+		}
+		if ($guessILike == '1') 
+		{
+			$data['iLike'] = $this->ShowModel->getLikeRecommend($this->session->u_id,5);
+			$header['title'] = '猜我喜欢';
+		}
+
+		$data['hot'] = $this->ShowModel->getHotRecommend($area,10);
+		$data['tag'] = $this->ShowModel->getAllTagWithStatus($this->session->u_id);
+		$data['CUrl'] = $this->CalUrl;
+		$this->load->view('header',$header);
+		$this->load->view('viewRecommend',$data);
+		$this->load->view('footer');
+	}
+
 	//文档类方法
 	public function docs($value)
 	{
@@ -329,6 +360,7 @@ class UI extends CI_Controller {
 	//ajax执行订阅某部剧的方法
 	public function ajaxSubscribe()
 	{
+		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id'))) 
 		{
@@ -347,6 +379,7 @@ class UI extends CI_Controller {
 	//ajax执行不再订阅某部剧的方法
 	public function ajaxUnsubscribe()
 	{
+		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id')))
 		{
@@ -365,6 +398,7 @@ class UI extends CI_Controller {
 	//Ajax执行观剧同步的方法
 	public function ajaxSynchron()
 	{
+		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id'))) 
 		{
@@ -383,6 +417,7 @@ class UI extends CI_Controller {
 	//ajax执行不再订阅某部剧的方法
 	public function ajaxUnsynchron()
 	{
+		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id')))
 		{
@@ -422,6 +457,7 @@ class UI extends CI_Controller {
 			if (!empty($rs)) 
 			{
 				echo $rs;
+				$this->session->set_userdata('u_name', $name);
 			}
 			else
 			{
@@ -440,6 +476,44 @@ class UI extends CI_Controller {
 			{
 				echo "Error";
 			}		
+		}
+	}
+
+	//ajax执行关注标签的方法
+	public function ajaxLike()
+	{
+		$this->ajaxCheckLogin();
+		$this->load->model('ShowModel');
+		if (!empty($this->input->post('u_id')) && !empty($this->input->post('t_id'))) 
+		{
+			$rs = $this->ShowModel->insertLike($this->input->post('u_id'),$this->input->post('t_id'));
+			if (!empty($rs)) 
+			{
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}
+		}
+	}
+
+	//ajax执行不再关注标签的方法
+	public function ajaxUnlike()
+	{
+		$this->ajaxCheckLogin();
+		$this->load->model('ShowModel');
+		if (!empty($this->input->post('u_id')) && !empty($this->input->post('t_id')))
+		{
+			$rs = $this->ShowModel->deleteLike($this->input->post('u_id'),$this->input->post('t_id'));
+			if (!empty($rs)) 
+			{
+				echo $rs;
+			}
+			else
+			{
+				echo "Error";
+			}
 		}
 	}
 

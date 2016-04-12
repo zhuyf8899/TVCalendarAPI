@@ -264,4 +264,87 @@ class ShowModel extends CI_Model{
 		else
 			return null;
 	}
+
+	public function getLikeRecommend($uid,$limit = 5)
+	{
+		$rs = $this->db->query("SELECT `t_name`,`shows`.`s_id`,`s_name`,`area`,`status`,`s_sibox_image`,`t_name`
+			FROM `user_to_tag`
+			left join `show_to_tag` on `user_to_tag`.`t_id` =  `show_to_tag`.`t_id` 
+			join `tag` on `user_to_tag`.`t_id` = `tag`.`t_id`
+			left join `shows` on `show_to_tag`.`s_id` = `shows`.`s_id`
+			WHERE `user_to_tag`.`u_id` = 5 
+			AND `shows`.`s_id` >= (SELECT floor(RAND() * (SELECT MAX(`s_id`) FROM `shows`))) 
+			LIMIT {$limit}")->result_array();
+		return $rs;
+	}
+
+	public function getHotRecommend($area,$limit = 10)
+	{
+		$rs = $this->db->query("SELECT count(`u_id`) as `numbers`,`s_name`,`shows`.`s_id`,`status`,`area`,`s_sibox_image` 
+			FROM `subscribe` 
+			LEFT JOIN `shows` ON `subscribe`.`s_id` = `shows`.`s_id` 
+			{$area} 
+			group by `shows`.`s_id` 
+			order by `numbers` DESC
+			limit {$limit}")->result_array();
+		return $rs;
+	}
+
+	public function getAllTagWithStatus($uid)
+	{
+		$rs = $this->db->query("SELECT `tag`.`t_id`,`t_name` 
+			FROM `tag` 
+			WHERE 1")->result_array();
+		foreach ($rs as &$oneRes) 
+		{
+			$checker = $this->db->query("SELECT * FROM user_to_tag
+				WHERE u_id = {$uid} AND t_id = {$oneRes['t_id']} LIMIT 1")->row_array();
+			if (empty($checker)) 
+			{
+				$oneRes['lik'] = 1;
+			}
+			else
+			{
+				$oneRes['lik'] = 0;
+			}
+		}
+		if(!is_null($rs))
+			return $rs;
+		else
+			return null;
+	}
+
+	public function insertLike($u_id,$t_id)
+	{
+		$this->db->query("INSERT INTO user_to_tag (u_id, t_id) 
+			VALUES ({$u_id}, {$t_id})");
+		if ($this->db->affected_rows()) 
+		{
+			$rs = $this->db->query("SELECT t_name,t_name_cn FROM tag 
+				WHERE t_id = {$t_id} LIMIT 1")->row_array();
+			return "OK:".$rs['t_name'];
+		}
+		else
+		{
+			return "Repeat";
+		}
+		return null;
+	}
+
+	public function deleteLike($u_id,$t_id)
+	{
+		$this->db->query("DELETE FROM user_to_tag WHERE 
+			u_id = '{$u_id}' AND t_id = '{$t_id}' LIMIT 1");
+		if ($this->db->affected_rows()) 
+		{
+			$rs = $this->db->query("SELECT t_name,t_name_cn FROM tag 
+				WHERE t_id = {$t_id} LIMIT 1")->row_array();
+			return "OK:".$rs['t_name'];
+		}
+		else
+		{
+			return "None";
+		}
+		return null;
+	}
 }

@@ -66,8 +66,8 @@ class UserModel extends CI_Model{
 
 	public function updateNameOnly($u_id,$u_passwd,$u_name)
 	{
-		$rs = $this->db->query("UPDATE `user` SET  `u_name` =  '{$u_name}' 
-			WHERE  `u_id` = {$u_id} AND `u_passwd` = MD5('{$u_passwd}')");
+		$this->db->query("UPDATE `user` SET `u_name` = '{$u_name}' 
+			WHERE `u_id` = {$u_id} AND `u_passwd` = MD5('{$u_passwd}')");
 		if ($this->db->affected_rows())
 		{
 			return "OK";
@@ -81,7 +81,7 @@ class UserModel extends CI_Model{
 	public function updateUserInfo($u_id,$u_passwd,$pwdN,$u_name)
 	{
 		$u_token = md5($u_id.$u_name.$u_passwd);
-		$rs = $this->db->query("UPDATE `user` SET  `u_name` =  '{$u_name}',`u_passwd` = MD5('$u_passwd'), `u_token` = '{$u_token}'  
+		$this->db->query("UPDATE `user` SET  `u_name` =  '{$u_name}',`u_passwd` = MD5('$u_passwd'), `u_token` = '{$u_token}'  
 			WHERE  `u_id` = {$u_id} AND `u_passwd` = MD5('{$u_passwd}')");
 		if ($this->db->affected_rows())
 		{

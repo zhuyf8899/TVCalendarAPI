@@ -56,14 +56,14 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">当前热播<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li class="dropdown-header">按地区</li>
-                  <li><a href="/TVCalendarAPI/index.php/UI/commend?area=USA">美国</a></li>
-                  <li><a href="/TVCalendarAPI/index.php/UI/commend?area=United+Kingdom">英国</a></li>
+                  <li class="dropdown-header">本站排行</li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/recommend?area=USA">美剧热播</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/recommend?area=United+Kingdom">英国热播</a></li>
                   <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">按新旧</li>
-                  <li><a href="/TVCalendarAPI/index.php/UI/commend?status=New+Series">新番</a></li>
-                  <li><a href="/TVCalendarAPI/index.php/UI/commend?status=Returning+Series">回归</a></li>
-                  <li><a href="/TVCalendarAPI/index.php/UI/commend?status=Canceled%2FEnded">完结</a></li>
+                  <!--<li class="dropdown-header">猜我喜欢</li>-->
+                  <li><a href="/TVCalendarAPI/index.php/UI/recommend/1">猜我喜欢</a></li>
+                  <!--<li><a href="/TVCalendarAPI/index.php/UI/commend?status=Returning+Series">回归</a></li>
+                  <li><a href="/TVCalendarAPI/index.php/UI/commend?status=Canceled%2FEnded">完结</a></li>-->
                 </ul>
               </li>
             </ul>

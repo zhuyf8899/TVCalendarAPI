@@ -47,6 +47,7 @@
 <script type="text/javascript">
 	function check_form() 
 	{
+		var flag = false;
 		var exName = "<?php if(isset($userInfo['u_name'])){echo $userInfo['u_name'];} ?>";
 		var name = $("#inputName").val();
 		var pwd = $("#inputPassword").val();
@@ -56,6 +57,13 @@
 		if ((exName == name) && (pwdNew) == "")
 		{
 			toastr.warning("您并未对个人信息作出修改","警告");
+			flag = false;
+			return false;
+		}
+		if (pwd == "") 
+		{
+			toastr.warning("请输入密码","警告");
+			flag = false;
 			return false;
 		}
 		var data = {'name':'','pwd':'','pwdNew':''};
@@ -64,17 +72,20 @@
 			if (pwdNew != pwdNewRe) 
 			{
 				toastr.warning("新密码输入不一致","警告");
+				flag = false;
 				return false;
 			}
 			if (pwd == pwdNew) 
 			{
 				toastr.warning("您未更改密码","警告");
+				flag = false;
 				return false;
 			}
 			var regPwd = new RegExp("^\\w*$");
 			if (!regPwd.test(pwd) || !regPwd.test(pwdNew)) 
 			{
 				toastr.error("密码存在不合法字符", "错误");
+				flag = false;
 				return false;
 			}
 			var data = {'name':name,'pwd':pwd,'pwdNew':pwdNew}
@@ -85,6 +96,7 @@
 			if (regName.test(name)) 
 	        {
 	          toastr.warning("新昵称存在敏感字符", "警告");
+	          flag = false;
 	          $("#inputName").focus();
 	          return false;
 	        }
@@ -106,12 +118,13 @@
 	          if (result == "OK") 
 	          {
 	            toastr.success("更新个人资料成功", "信息");
-	            //window.location.href("/TVCalendarAPI/index.php/UI/index");
-	            return false;
+	            flag = true;
+	            return true;
 	          }
 	          else if(result == 'WrongPw')
 	          {
 	            toastr.warning("原密码不正确", "警告");
+	            flag = false;
 	            flag = false;
 	          }
 	          else
@@ -119,11 +132,12 @@
 	            toastr.info(result, "DEBUG ");
 	            toastr.error("参数错误", "错误");
 	            flag = false;
+	            flag = false;
 	          }
 	        },
 	      });
 		
 
-		return false;
+		return flag;
 	}
 </script>
