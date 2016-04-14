@@ -10,7 +10,7 @@
 </style>
 <div class="container">
   <div class="page-header">
-    <h1 class="header-left"><?php if(isset($showInfo['s_name'])){echo $showInfo['s_name'];} ?></h1>
+    <h1 class="header-left"><?php $transStatus = array('Canceled/Ended' => '已完结/已停播', 'Returning Series' => '回归剧(正在连载)', 'New Series' => '新剧(正在连载)' ); if(isset($showInfo['s_name_cn'])){echo $showInfo['s_name_cn'].':';}if(isset($showInfo['s_name'])){echo $showInfo['s_name'];} ?></h1>
     <div class="header-right">
       <button type="button" class="btn btn-lg btn-success" id="sub" onclick="subscribe();" style="<?php if($subOrNot){echo "display:none";} ?>" >订阅本剧</button>
       <button type="button" class="btn btn-lg btn-warning" id="unsub" onclick="unSubscribe();" style="<?php if(!$subOrNot){echo "display:none";} ?>" >不再订阅</button>
@@ -24,7 +24,7 @@
   <table class="table table-bordered table-hover">
     <tr>
     	<th class="col-md-2">剧状态</th>
-    	<td class="col-md-2"><?php if(isset($showInfo['status'])){echo $showInfo['status'];} ?></td>
+    	<td class="col-md-2"><?php if(isset($showInfo['status'])){echo $transStatus["$showInfo[status]"];} ?></td>
     	<th class="col-md-2">更新时间</th>
     	<td class="col-md-2"><?php if(isset($showInfo['update_time'])){echo $showInfo['update_time'];} ?></td>
     	<th class="col-md-2">每集长度</th>

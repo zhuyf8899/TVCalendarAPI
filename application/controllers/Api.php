@@ -55,8 +55,9 @@ class Api extends CI_Controller
 
 	//参数格式务必保证是yyyy-mm-dd.
 	//查找某一天所有集的方法
-	public function selectOneDateEp($date = '')
+	public function selectOneDateEp()
 	{
+		$date = $this->input->get('date',true);
 		$this->load->model('ShowModel');
 		if(empty($date))
 		{
@@ -88,8 +89,10 @@ class Api extends CI_Controller
 		$this->load->view('apiTemplate',$data);
 	}
 
-	public function selectDates($dateStart = '',$dateEnd = '')
+	public function selectDates()
 	{
+		$dateStart = $this->input->get('dateStart',true);
+		$dateEnd = $this->input->get('dateEnd',true);
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -124,6 +127,7 @@ class Api extends CI_Controller
 	//通过参数id查找集的详细信息
 	public function searchByEpId($id = '')
 	{
+		$id = $this->input->get('id',true);
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -159,6 +163,7 @@ class Api extends CI_Controller
 	//通过id查找剧的详细信息
 	public function searchByShowId($id='')
 	{
+		$id = $this->input->get('id',true);
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';

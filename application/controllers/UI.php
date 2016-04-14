@@ -202,9 +202,11 @@ class UI extends CI_Controller {
 
 		$data['result'] = array();
 		if (!empty($words)) {
+			$words = urldecode($words);
 			$words = str_replace('\'', "\\'", $words);
 			$words = str_replace('%20', ' ', $words);
 			$words = str_replace('%2F', '/', $words);
+
 			$st = 0;
 			$lg = 30;
 			if ($fullResult == "fullresult") {

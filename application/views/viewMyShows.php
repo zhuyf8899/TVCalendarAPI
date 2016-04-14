@@ -29,7 +29,7 @@
       ?>
         <tr>
           <td class="col-md-3"><?php echo $oneEp['e_time']; ?></td>
-	      	<td class="col-md-3"><?php echo $oneEp['s_name']; ?></td>
+	      	<td class="col-md-3"><?php echo $oneEp['s_name_cn'].'<br/>'.$oneEp['s_name']; ?></td>
           <td class="col-md-2"><?php echo '第'.$oneEp['se_id'].'季:第'.$oneEp['e_num'].'集'; ?></td>
 	      	<td class="col-md-1"><?php echo $oneEp['e_status']; ?></td>
 	      	<td class="col-md-1">
@@ -64,7 +64,8 @@
           }
           ?>
             <div class="col-md-4">
-              <h3><?php echo $mySubscribe[$i*3+$j]['s_name']; ?></h3>
+              <h3><?php echo $mySubscribe[$i*3+$j]['s_name_cn']; ?></h3>
+              <h5><?php echo $mySubscribe[$i*3+$j]['s_name']; ?></h5>
               <img src="<?php echo $CUrl.$mySubscribe[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $mySubscribe[$i*3+$j]['s_name']; ?>">
               <p>地区：<?php echo $mySubscribe[$i*3+$j]['area']; ?> 电视台：<?php echo $mySubscribe[$i*3+$j]['channel']; ?></p>
               <p>每周<?php echo $mySubscribe[$i*3+$j]['update_time']; ?>（格林尼治时间）</p>

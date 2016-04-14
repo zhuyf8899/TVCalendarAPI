@@ -21,6 +21,7 @@ class ShowModel extends CI_Model{
 				'e_status' => $rs['e_status'],
 				'e_time' => $rs['e_time'],
 				's_name' => $rs['s_name'],
+				's_name_cn' => $rs['s_name_cn'],
 				's_sibox_image' => $rs['s_sibox_image'],
 				'area' => $rs['area'],
 				'channel' => $rs['channel']
@@ -55,6 +56,7 @@ class ShowModel extends CI_Model{
 				'e_time' => $rs['e_time'],
 				'e_date' => substr($rs['e_time'], 0,10),
 				's_name' => $rs['s_name'],
+				's_name_cn' => $rs['s_name_cn'],
 				's_sibox_image' => $rs['s_sibox_image'],
 				'area' => $rs['area'],
 				'channel' => $rs['channel']
@@ -145,9 +147,9 @@ class ShowModel extends CI_Model{
 			VALUES ('{$u_id}', '{$s_id}','{$date}')");
 		if ($this->db->affected_rows()) 
 		{
-			$rs = $this->db->query("SELECT s_name FROM shows 
+			$rs = $this->db->query("SELECT s_name,s_name_cn FROM shows 
 				WHERE s_id = {$s_id} LIMIT 1")->row_array();
-			return "OK:".$rs['s_name'];
+			return 'OK:'.$rs['s_name'].'-'.$rs['s_name_cn'];
 		}
 		else
 		{
@@ -163,9 +165,9 @@ class ShowModel extends CI_Model{
 			u_id = '{$u_id}' AND s_id = '{$s_id}' LIMIT 1");
 		if ($this->db->affected_rows()) 
 		{
-			$rs = $this->db->query("SELECT s_name FROM shows 
+			$rs = $this->db->query("SELECT s_name,s_name_cn FROM shows 
 				WHERE s_id = {$s_id} LIMIT 1")->row_array();
-			return "OK:".$rs['s_name'];
+			return 'OK:'.$rs['s_name'].'-'.$rs['s_name_cn'];
 		}
 		else
 		{
@@ -229,7 +231,7 @@ class ShowModel extends CI_Model{
 		$date = date('Y-m-d 00:00:00',strtotime("$date - $beforeDay day"));
 		$future = date('Y-m-d 00:00:00',strtotime("$future + $afterDay day"));
 
-		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,e_num,e_time,e_status 
+		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,s_name_cn,e_num,e_time,e_status 
 			FROM episode 
 			LEFT JOIN shows ON `episode`.`s_id` = `shows`.`s_id` 
 			LEFT JOIN subscribe ON `shows`.`s_id` = `subscribe`.`s_id` 
@@ -243,7 +245,7 @@ class ShowModel extends CI_Model{
 
 	public function searchByUidOrderByDate($u_id)
 	{
-		$rs = $this->db->query("SELECT `shows`.`s_id`,s_name,s_sibox_image,status,channel,update_time,area
+		$rs = $this->db->query("SELECT `shows`.`s_id`,s_name,s_name_cn,s_sibox_image,status,channel,update_time,area
 			FROM shows 
 			LEFT JOIN subscribe ON `shows`.`s_id` = `subscribe`.`s_id` 
 			WHERE `subscribe`.`u_id` = {$u_id} 
@@ -256,8 +258,9 @@ class ShowModel extends CI_Model{
 
 	//根据剧名查找剧名的方法
 	public function searchByName($name,$start,$end){
-		$rs = $this->db->query("SELECT s_id,s_name,s_sibox_image,area,status FROM  `shows` 
+		$rs = $this->db->query("SELECT s_id,s_name,s_name_cn,s_sibox_image,area,status FROM  `shows` 
 			WHERE  `shows`.`s_name` LIKE '%{$name}%'
+			OR `shows`.`s_name_cn` LIKE '%{$name}%'
 			LIMIT {$start},{$end}") ->result_array();
 		if(!is_null($rs))
 			return $rs;
@@ -267,7 +270,7 @@ class ShowModel extends CI_Model{
 
 	public function getLikeRecommend($uid,$limit = 5)
 	{
-		$rs = $this->db->query("SELECT `t_name`,`shows`.`s_id`,`s_name`,`area`,`status`,`s_sibox_image`,`t_name`
+		$rs = $this->db->query("SELECT `t_name`,`shows`.`s_id`,`s_name`,`s_name_cn`,`area`,`status`,`s_sibox_image`,`t_name`,`t_name_cn`
 			FROM `user_to_tag`
 			left join `show_to_tag` on `user_to_tag`.`t_id` =  `show_to_tag`.`t_id` 
 			join `tag` on `user_to_tag`.`t_id` = `tag`.`t_id`
@@ -280,7 +283,7 @@ class ShowModel extends CI_Model{
 
 	public function getHotRecommend($area,$limit = 10)
 	{
-		$rs = $this->db->query("SELECT count(`u_id`) as `numbers`,`s_name`,`shows`.`s_id`,`status`,`area`,`s_sibox_image` 
+		$rs = $this->db->query("SELECT count(`u_id`) as `numbers`,`s_name`,`shows`.`s_id`,`status`,`area`,`s_sibox_image`,`s_name_cn`
 			FROM `subscribe` 
 			LEFT JOIN `shows` ON `subscribe`.`s_id` = `shows`.`s_id` 
 			{$area} 
@@ -292,7 +295,7 @@ class ShowModel extends CI_Model{
 
 	public function getAllTagWithStatus($uid)
 	{
-		$rs = $this->db->query("SELECT `tag`.`t_id`,`t_name` 
+		$rs = $this->db->query("SELECT `tag`.`t_id`,`t_name`,`t_name_cn`
 			FROM `tag` 
 			WHERE 1")->result_array();
 		foreach ($rs as &$oneRes) 
@@ -322,7 +325,7 @@ class ShowModel extends CI_Model{
 		{
 			$rs = $this->db->query("SELECT t_name,t_name_cn FROM tag 
 				WHERE t_id = {$t_id} LIMIT 1")->row_array();
-			return "OK:".$rs['t_name'];
+			return 'OK:'.$rs['t_name'].'-'.$rs['t_name_cn'];
 		}
 		else
 		{
@@ -339,7 +342,7 @@ class ShowModel extends CI_Model{
 		{
 			$rs = $this->db->query("SELECT t_name,t_name_cn FROM tag 
 				WHERE t_id = {$t_id} LIMIT 1")->row_array();
-			return "OK:".$rs['t_name'];
+			return 'OK:'.$rs['t_name'].'-'.$rs['t_name_cn'];
 		}
 		else
 		{

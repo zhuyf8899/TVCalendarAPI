@@ -38,10 +38,12 @@
              } 
             ?>
             <div class="col-md-4">
-              <h3><?php echo $today[$i*3+$j]['s_name']; ?></h3>
-              <em><?php echo $today[$i*3+$j]['e_name']."\n"; ?></em><br/>
+              <h3><?php echo $today[$i*3+$j]['s_name_cn']; ?></h3>
+              <h5><?php echo $today[$i*3+$j]['s_name']; ?></h5>
               <img src="<?php echo $CUrl.$today[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $today[$i*3+$j]['s_name']; ?>">
-              <p>第<?php echo $today[$i*3+$j]['se_id']; ?>季，第<?php echo $today[$i*3+$j]['e_num']; ?>集</p>
+              <p>第<?php echo $today[$i*3+$j]['se_id']; ?>季，第<?php echo $today[$i*3+$j]['e_num']; ?>集:
+                <em><?php echo $today[$i*3+$j]['e_name']."\n"; ?></em><br/>
+              </p>
               <p>地区：<?php echo $today[$i*3+$j]['area']; ?> 电视台：<?php echo $today[$i*3+$j]['channel']; ?></p>
               <p>今日<?php echo $today[$i*3+$j]['e_time']; ?>（格林尼治时间）</p>
               <p><a class="btn btn-default" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $today[$i*3+$j]['s_id']; ?>" role="button">点击前往 &raquo;</a></p>

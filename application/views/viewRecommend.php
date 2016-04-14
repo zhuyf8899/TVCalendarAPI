@@ -18,9 +18,10 @@
 	      		<thead>
 	      			<tr>
 	      				<th class="col-md-2">#</th>
-	      				<th class="col-md-3">剧名</th>
+	      				<th class="col-md-2">剧名</th>
 	      				<th class="col-md-1">地区/状态</th>
 	      				<th class="col-md-3">推荐原因</th>
+                <th class="col-md-1">订阅</th>
 	      				<th class="col-md-1">剧集详情</th>
 	      			</tr>
 	      		</thead>
@@ -30,10 +31,11 @@
       			{
       				?>
       				<tr>
-      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="剧照"></td>
-      					<td class="col-md-3" ><?php echo $oneShow['s_name'] ?></td>
-      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$oneShow['status'] ?></td>
-      					<td class="col-md-3">因为您关注了“<?php echo $oneShow['t_name'] ?>”标签</td>
+      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
+      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
+      					<td class="col-md-3">因为您关注了“<?php echo $oneShow['t_name_cn'] ?>”标签</td>
+                <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
@@ -50,10 +52,11 @@
       				$counter++;
       				?>
       				<tr>
-      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="剧照"></td>
-      					<td class="col-md-3" ><?php echo $oneShow['s_name'] ?></td>
+      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
       					<td class="col-md-3">因为它很热门</td>
+                <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
@@ -73,9 +76,10 @@
 	      		<thead>
 	      			<tr>
 	      				<th class="col-md-2">#</th>
-	      				<th class="col-md-3">剧名</th>
+	      				<th class="col-md-2">剧名</th>
 	      				<th class="col-md-1">地区/状态</th>
 	      				<th class="col-md-3">热度</th>
+                <th class="col-md-1">占位</th>
 	      				<th class="col-md-1">剧集详情</th>
 	      			</tr>
 	      		</thead>
@@ -85,10 +89,11 @@
       			{
       				?>
       				<tr>
-      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="剧照"></td>
-      					<td class="col-md-3" ><?php echo $oneShow['s_name'] ?></td>
-      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$oneShow['status'] ?></td>
+      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
+      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
       					<td class="col-md-3"><?php echo $oneShow['numbers'] ?></td>
+                <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
@@ -102,7 +107,7 @@
     	</div>
     	<div class="col-md-2">
     		<div class="page-header">
-				<h4>点击选择喜欢的类型吧！</h5>
+				<h4>选择您喜欢的类型</h5>
 			</div>
       		<?php
       		if (isset($tag)) 
@@ -111,9 +116,9 @@
       			{
       				?>
       				<br/>
-      				&nbsp;&nbsp;&nbsp;<button type="button" id="<?php echo 'l'.$oneTag['t_id'];?>" onclick="like(<?php echo ($oneTag['t_id'].','.$this->session->u_id);?>);" class="btn btn-success" <?php if($oneTag['lik'] == 0){echo "style=\"display:none\"";} ?> ><?php echo $oneTag['t_name']; ?></button>&nbsp;&nbsp;&nbsp;
+      				&nbsp;&nbsp;&nbsp;<button type="button" id="<?php echo 'l'.$oneTag['t_id'];?>" onclick="like(<?php echo ($oneTag['t_id'].','.$this->session->u_id);?>);" class="btn btn-success" <?php if($oneTag['lik'] == 0){echo "style=\"display:none\"";} ?> ><?php echo $oneTag['t_name_cn']; ?></button>&nbsp;&nbsp;&nbsp;
 
-      				&nbsp;&nbsp;&nbsp;<button type="button" id="<?php echo 'u'.$oneTag['t_id'];?>" onclick="unlike(<?php echo ($oneTag['t_id'].','.$this->session->u_id);?>);" class="btn btn-warning" <?php if($oneTag['lik'] == 1){echo "style=\"display:none\"";} ?> >不再订阅“<?php echo $oneTag['t_name']; ?>”</button>&nbsp;&nbsp;&nbsp;<br/>
+      				&nbsp;&nbsp;&nbsp;<button type="button" id="<?php echo 'u'.$oneTag['t_id'];?>" onclick="unlike(<?php echo ($oneTag['t_id'].','.$this->session->u_id);?>);" class="btn btn-warning" <?php if($oneTag['lik'] == 1){echo "style=\"display:none\"";} ?> >不再订阅“<?php echo $oneTag['t_name_cn']; ?>”</button>&nbsp;&nbsp;&nbsp;<br/>
       				<?php
       			}
       		}
