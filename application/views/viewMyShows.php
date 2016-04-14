@@ -37,7 +37,7 @@
 	      	  <button type="button" id="sep<?php echo $oneEp['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$oneEp['e_id']; ?>);" <?php if( $oneEp['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
 	      	</td>
 	      	<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneEp['s_id'];?>">剧集详情&raquo;</a></td>
-	      	<td class="col-md-1"><a class="btn btn-default" href="#">下载链接&raquo;</a></td>
+	      	<td class="col-md-1"><a class="btn btn-default" href="https://btio.pw/search/<?php echo urlencode($oneEp['s_name']); ?>">下载链接&raquo;</a></td>
         </tr>
       <?php
       }

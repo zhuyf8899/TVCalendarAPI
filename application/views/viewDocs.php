@@ -102,6 +102,11 @@ else if($kind == 'license')
 	<p>在您注册并使用本项目的时刻起，我们视为您已阅读并同意上述许可的信息，如您拒绝此协议则请不要使用本项目。</p>
 	<hr>
 	<p>本项目使用了EllisLab的CodeIgniter代码，点此<a href="https://github.com/bcit-ci/CodeIgniter/blob/develop/license.txt">阅读其协议</a></p>
+	<p>本项目的剧集信息使用了<a href="http://www.pogdesign.co.uk/cat/">TVCalendar</a>提供的数据，具体播放信息以各媒体实际播放为准，部分剧集可能包含
+	色情、暴力、意识形态等信息，请用户下载之前明确自己的年龄等条件符合当地法律法规的限制，本项目不对第三方获取的数据承担法律责任</p>
+	<p>本项目的下载链接引用的是<a href="https://btio.pw/">BTSOW</a>的磁力链接搜索页面，搜索的结果可能包含色情、暴力、违法信息，请用户下载之前明确自己的年龄
+	等条件符合当地法律法规的限制，本项目不对第三方获取的数据承担法律责任</p>
+	<p>本项目的剧名翻译使用<a href="http://www.youdao.com/">有道翻译</a>，翻译结果可能与正确翻译存在出入,请用户以官方提供的标准翻译为准，本项目不对第三方获取的数据承担法律责任,我们欢迎用户向我们提交翻译等信息的<a href="mailto:zhuyf8899@gmail.com">改良意见</a></p>
 <?php	
 }
 else if($kind == 'about')
