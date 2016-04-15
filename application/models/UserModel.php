@@ -18,7 +18,7 @@ class UserModel extends CI_Model{
 				values('{$u_name}','{$u_phone}','{$u_passwd}','{$u_token}',1)");
 			if ($this->db->affected_rows())
 			{
-				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token FROM user WHERE u_phone = '{$u_phone}' LIMIT 1")->row_array();
+				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token,u_status FROM user WHERE u_phone = '{$u_phone}' LIMIT 1")->row_array();
 				return $rs;
 			}
 		}
@@ -27,7 +27,7 @@ class UserModel extends CI_Model{
 
 	public function login($u_phone,$u_passwd)
 	{
-		$checker = $this->db->query("SELECT * FROM user WHERE u_phone = '{$u_phone}' AND u_passwd = '{$u_passwd}' LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_id,u_name,u_phone,u_status,u_token FROM user WHERE u_phone = '{$u_phone}' AND u_passwd = '{$u_passwd}' LIMIT 1")->row_array();
 		if (isset($checker['u_id'])) 
 		{
 			return $checker;
@@ -86,6 +86,19 @@ class UserModel extends CI_Model{
 		if ($this->db->affected_rows())
 		{
 			return "OK";
+		}
+		else
+		{
+			return "WrongPw";
+		}
+	}
+
+	public function loginByToken($uid,$token)
+	{
+		$checker = $this->db->query("SELECT u_id,u_name,u_token,u_status,u_phone FROM user WHERE u_id = '{$uid}' AND u_token = '{$token}' LIMIT 1")->row_array();
+		if (isset($checker['u_id'])) 
+		{
+			return $checker;
 		}
 		else
 		{

@@ -7,7 +7,7 @@
 	<div class="row">
     	<div class="col-md-10">
       		<?php
-      		$transStatus = array('Canceled/Ended' => '已完结/已停播', 'Returning Series' => '回归剧(正在连载)', 'New Series' => '新剧(正在连载)' );
+      		$transStatus = array('Canceled/Ended' => '已完结/已停播', 'Returning Series' => '回归剧(正在连载)','Final Season' => '完结季(正在连载)', 'New Series' => '新剧(正在连载)' );
       		if (isset($iLike)) 
       		{
       		?>
@@ -17,10 +17,10 @@
       		<table class="table table-condensed">
 	      		<thead>
 	      			<tr>
-	      				<th class="col-md-2">#</th>
+	      				<th class="col-md-3">#</th>
 	      				<th class="col-md-2">剧名</th>
 	      				<th class="col-md-1">地区/状态</th>
-	      				<th class="col-md-3">推荐原因</th>
+	      				<th class="col-md-2">推荐原因</th>
                 <th class="col-md-1">订阅</th>
 	      				<th class="col-md-1">剧集详情</th>
 	      			</tr>
@@ -31,10 +31,10 @@
       			{
       				?>
       				<tr>
-      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
-      					<td class="col-md-3">因为您关注了“<?php echo $oneShow['t_name_cn'] ?>”标签</td>
+      					<td class="col-md-2">因为您关注了“<?php echo $oneShow['t_name_cn'] ?>”标签</td>
                 <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
@@ -52,10 +52,10 @@
       				$counter++;
       				?>
       				<tr>
-      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
-      					<td class="col-md-3">因为它很热门</td>
+      					<td class="col-md-2">因为它很热门</td>
                 <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
@@ -75,10 +75,10 @@
       		<table class="table table-condensed">
 	      		<thead>
 	      			<tr>
-	      				<th class="col-md-2">#</th>
+	      				<th class="col-md-3">#</th>
 	      				<th class="col-md-2">剧名</th>
 	      				<th class="col-md-1">地区/状态</th>
-	      				<th class="col-md-3">热度</th>
+	      				<th class="col-md-2">热度</th>
                 <th class="col-md-1">占位</th>
 	      				<th class="col-md-1">剧集详情</th>
 	      			</tr>
@@ -89,10 +89,10 @@
       			{
       				?>
       				<tr>
-      					<td class="col-md-2"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
-      					<td class="col-md-3"><?php echo $oneShow['numbers'] ?></td>
+      					<td class="col-md-2"><?php echo $oneShow['numbers'] ?></td>
                 <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>

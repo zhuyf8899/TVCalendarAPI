@@ -25,7 +25,7 @@
   <br/>
   <table class="table table-condensed">
   <?php
-  $transStatus = array('Canceled/Ended' => '已完结/已停播', 'Returning Series' => '回归剧(正在连载)', 'New Series' => '新剧(正在连载)' );
+  $transStatus = array('Canceled/Ended' => '已完结/已停播', 'Returning Series' => '回归剧(正在连载)', 'New Series' => '新剧(正在连载)','Final Season' => '完结季(正在连载)' );
 
   if (isset($result)) 
   {
