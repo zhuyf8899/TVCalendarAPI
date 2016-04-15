@@ -241,10 +241,11 @@ class UI extends CI_Controller {
 		if ($this->input->get('area',true)) 
 		{
 			$area = $this->input->get('area',true);
+			$area = urldecode($area);
 			$area = str_replace('\'', "\\'", $area);
-			$area = str_replace('%20', ' ', $area);
-			$area = str_replace('%2F', '/', $area);
-			$area = "WHERE area = '".$this->input->get('area',true)."'";
+			#$area = str_replace('%20', ' ', $area);
+			#$area = str_replace('%2F', '/', $area);
+			#$area = "WHERE area = '".$this->input->get('area',true)."'";
 		}
 		if ($guessILike == '1') 
 		{
