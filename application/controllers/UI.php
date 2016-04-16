@@ -295,8 +295,8 @@ class UI extends CI_Controller {
 		if (!empty($this->input->post('u_phone')) && !empty($this->input->post('u_passwd')))
 		#if($_GET['u_phone'] && $_GET['u_passwd'])
 		{
-			$u_phone = $this->input->post('u_phone');
-			$u_passwd = md5($this->input->post('u_passwd'));
+			$u_phone = $this->input->post('u_phone',true);
+			$u_passwd = md5($this->input->post('u_passwd',true));
 			#$u_phone = $_GET['u_phone'];
 			#$u_passwd = md5($_GET['u_passwd']);
 			$rs = $this->UserModel->login($u_phone,$u_passwd);
@@ -328,9 +328,9 @@ class UI extends CI_Controller {
 		$this->load->model('UserModel');
 		if (!empty($this->input->post('u_phone')) && !empty($this->input->post('u_passwd')))
 		{
-			$u_phone = $this->input->post('u_phone');
-			$u_passwd = md5($this->input->post('u_passwd'));
-			$u_name = $this->input->post('u_name');
+			$u_phone = $this->input->post('u_phone',true);
+			$u_passwd = md5($this->input->post('u_passwd',true));
+			$u_name = $this->input->post('u_name',true);
 			$rs = $this->UserModel->register($u_name,$u_phone,$u_passwd);
 			if (!empty($rs)) 
 			{
@@ -364,7 +364,7 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id'))) 
 		{
-			$rs = $this->ShowModel->insertSubscribe($this->input->post('u_id'),$this->input->post('s_id'),date('Y-m-d H:i:s'));
+			$rs = $this->ShowModel->insertSubscribe($this->input->post('u_id',true),$this->input->post('s_id',true),date('Y-m-d H:i:s'));
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -383,7 +383,7 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id')))
 		{
-			$rs = $this->ShowModel->deleteSubscribe($this->input->post('u_id'),$this->input->post('s_id'));
+			$rs = $this->ShowModel->deleteSubscribe($this->input->post('u_id',true),$this->input->post('s_id',true));
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -402,7 +402,7 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id'))) 
 		{
-			$rs = $this->ShowModel->insertSynchron($this->input->post('u_id'),$this->input->post('e_id'),date('Y-m-d H:i:s'));
+			$rs = $this->ShowModel->insertSynchron($this->input->post('u_id',true),$this->input->post('e_id',true),date('Y-m-d H:i:s'));
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -421,7 +421,7 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id')))
 		{
-			$rs = $this->ShowModel->deleteSynchron($this->input->post('u_id'),$this->input->post('e_id'));
+			$rs = $this->ShowModel->deleteSynchron($this->input->post('u_id',true),$this->input->post('e_id',true));
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -439,9 +439,9 @@ class UI extends CI_Controller {
 		$this->ajaxCheckLogin();
 		$this->load->model('UserModel');
 
-		$name = $this->input->post('name');
-		$pwd = $this->input->post('pwd');
-		$pwdNew = $this->input->post('pwdNew');
+		$name = $this->input->post('name',true);
+		$pwd = $this->input->post('pwd',true);
+		$pwdNew = $this->input->post('pwdNew',true);
 		if (empty($name)) 
 		{
 			$name = "Undefined";
@@ -486,7 +486,7 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('t_id'))) 
 		{
-			$rs = $this->ShowModel->insertLike($this->input->post('u_id'),$this->input->post('t_id'));
+			$rs = $this->ShowModel->insertLike($this->input->post('u_id',true),$this->input->post('t_id',true));
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -505,7 +505,7 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		if (!empty($this->input->post('u_id')) && !empty($this->input->post('t_id')))
 		{
-			$rs = $this->ShowModel->deleteLike($this->input->post('u_id'),$this->input->post('t_id'));
+			$rs = $this->ShowModel->deleteLike($this->input->post('u_id',true),$this->input->post('t_id',true));
 			if (!empty($rs)) 
 			{
 				echo $rs;

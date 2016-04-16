@@ -61,7 +61,7 @@
       				<tr>
       					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
-      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
+      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2">因为它很热门</td>
                 <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
@@ -98,7 +98,7 @@
       				<tr>
       					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
-      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["$oneShow[status]"]; ?></td>
+      					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2"><?php echo $oneShow['numbers'] ?></td>
                 <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>

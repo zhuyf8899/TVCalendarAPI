@@ -79,7 +79,7 @@ else if($kind == 'license')
 	<pre>
 		The MIT License (MIT)
 
-		Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+		Copyright (c) 2012 - 2016, yifanslab.cn
 
 		Permission is hereby granted, free of charge, to any person obtaining a copy
 		of this software and associated documentation files (the "Software"), to deal
@@ -101,7 +101,10 @@ else if($kind == 'license')
 	</pre>
 	<p>在您注册并使用本项目的时刻起，我们视为您已阅读并同意上述许可的信息，如您拒绝此协议则请不要使用本项目。</p>
 	<hr>
-	<p>本项目使用了EllisLab的CodeIgniter代码，点此<a href="https://github.com/bcit-ci/CodeIgniter/blob/develop/license.txt">阅读其协议</a></p>
+	<p>本项目使用了EllisLab的<a href="http://codeigniter.org/">CodeIgniter</a>代码，该代码使用MIT协议发布，<a href="https://github.com/bcit-ci/CodeIgniter/blob/develop/license.txt">阅读其协议</a>.</p>
+	<p>本项目使用了mdo和fat开发的<a href="http://getbootstrap.com/">Bootstrap</a>框架作为前端样式基础,该代码使用MIT协议发布,<a href="https://github.com/bcit-ci/CodeIgniter/blob/develop/license.txt">阅读其协议</a>.</p>
+	<p>本项目使用了由John Papa,Tim Ferrell和Hans Fjällemark开发的<a href="http://getbootstrap.com/">toastr</a>的代码作为前端弹框通知插件,该代码使用MIT协议发布,<a href="https://opensource.org/licenses/mit-license.php">阅读其协议</a>.</p>
+	<br/>
 	<p>本项目的剧集信息使用了<a href="http://www.pogdesign.co.uk/cat/">TVCalendar</a>提供的数据，具体播放信息以各媒体实际播放为准，部分剧集可能包含
 	色情、暴力、意识形态等信息，请用户下载之前明确自己的年龄等条件符合当地法律法规的限制，本项目不对第三方获取的数据承担法律责任</p>
 	<p>本项目的下载链接引用的是<a href="https://btio.pw/">BTSOW</a>的磁力链接搜索页面，搜索的结果可能包含色情、暴力、违法信息，请用户下载之前明确自己的年龄

@@ -24,7 +24,7 @@
   <table class="table table-bordered table-hover">
     <tr>
     	<th class="col-md-2">剧状态</th>
-    	<td class="col-md-2"><?php if(isset($showInfo['status'])){echo $transStatus["$showInfo[status]"];} ?></td>
+    	<td class="col-md-2"><?php if(isset($showInfo['status'])){echo $transStatus["{$oneShow['status']}"];} ?></td>
     	<th class="col-md-2">更新时间</th>
     	<td class="col-md-2"><?php if(isset($showInfo['update_time'])){echo $showInfo['update_time'];} ?></td>
     	<th class="col-md-2">每集长度</th>

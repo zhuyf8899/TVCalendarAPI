@@ -195,6 +195,385 @@ class Api extends CI_Controller
 		$this->load->view('apiTemplate',$data);
 	}
 
+	//输入中英文名查找剧的方法
+	public function searchByName()
+	{
+		$words = $this->input->get('words',true);
+		$fullResult = $this->input->get('fullResult',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		
+		if (!empty($words)) 
+		{
+			$words = urldecode($words);
+			$words = str_replace('\'', "\\'", $words);
+			#$words = str_replace('%20', ' ', $words);
+			#$words = str_replace('%2F', '/', $words);
+
+			$st = 0;
+			$lg = 30;
+			if ($fullResult == "fullresult") {
+				$st = 0;
+				$lg = 300;
+			}
+			$rsm = $this->ShowModel->searchByName($words,$st,$lg);
+			if (empty($rsm)) 
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'No search result.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
+	//订阅剧
+	public function subscribe()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$s_id = $this->input->get('s_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if (!empty($u_id) && !empty($s_id)) 
+		{
+			$rs = $this->ShowModel->insertSubscribe($u_id,$s_id,date('Y-m-d H:i:s'));
+			if (!empty($rs)) 
+			{
+				if (substr($rs,0,3) == 'OK:') 
+				{
+					$rsm = array('OK' => substr($rs, 3));
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+				}
+			}
+			else
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'The server response with an empty set.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
+	//取消订阅剧
+	public function unsubscribe()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$s_id = $this->input->get('s_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if (!empty($u_id) && !empty($s_id)) 
+		{
+			$rs = $this->ShowModel->deleteSubscribe($u_id,$s_id);
+			if (!empty($rs)) 
+			{
+				if (substr($rs,0,3) == 'OK:') 
+				{
+					$rsm = array('OK' => substr($rs, 3));
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+				}
+			}
+			else
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'The server response with an empty set.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
+	//同步集
+	public function Synchron()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$e_id = $this->input->get('e_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if (!empty($u_id) && !empty($e_id)) 
+		{
+			$rs = $this->ShowModel->insertSynchron($u_id,$e_id,date('Y-m-d H:i:s'));
+			if (!empty($rs)) 
+			{
+				if (substr($rs,0,3) == 'OK:') 
+				{
+					$rsm = array('OK' => substr($rs, 3));
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+				}
+			}
+			else
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'The server response with an empty set.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
+	//取消同步集
+	public function unsynchron()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$e_id = $this->input->get('e_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if (!empty($u_id) && !empty($e_id)) 
+		{
+			$rs = $this->ShowModel->deleteSynchron($u_id,$e_id);
+			if (!empty($rs)) 
+			{
+				if (substr($rs,0,3) == 'OK:') 
+				{
+					$rsm = array('OK' => substr($rs, 3));
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+				}
+			}
+			else
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'The server response with an empty set.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
+	//喜欢某标签的方法
+	public function like()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$t_id = $this->input->get('t_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if (!empty($u_id) && !empty($t_id)) 
+		{
+			$rs = $this->ShowModel->insertLike($u_id,$t_id);
+			if (!empty($rs)) 
+			{
+				if (substr($rs,0,3) == 'OK:') 
+				{
+					$rsm = array('OK' => substr($rs, 3));
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+				}
+			}
+			else
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'The server response with an empty set.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
+	//取消喜欢某标签的方法
+	public function unlike()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$t_id = $this->input->get('t_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if (!empty($u_id) && !empty($t_id)) 
+		{
+			$rs = $this->ShowModel->deleteLike($u_id,$t_id);
+			if (!empty($rs)) 
+			{
+				if (substr($rs,0,3) == 'OK:') 
+				{
+					$rsm = array('OK' => substr($rs, 3));
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+				}
+			}
+			else
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'The server response with an empty set.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
+	//获得我的关注的剧集,默认是前后七天
+	public function myshows()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = array();
+		$rsm['rescentEps'] = $this->ShowModel->searchRecentByUid($u_id,7,7);
+		$rsm['mySubscribe'] = $this->ShowModel->searchByUidOrderByDate($u_id);
+
+		foreach ($rsm['rescentEps'] as &$anEpisode) 
+		{
+			$synFlag = $this->ShowModel->checkSyn($u_id,$anEpisode['e_id']);
+			if ($synFlag) 
+			{
+				$anEpisode['syn'] = 1;
+			}
+			else
+			{
+				$anEpisode['syn'] = 0;
+			}
+		}
+
+		if (empty($rsm['rescentEps']) && empty($rsm['mySubscribe'])) 
+		{
+			$errno = 3;
+			$err = $this->errorList[$errno].'The server response with an empty set.';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+
+	}
+
+
+	//获得标签的方法
+	public function getTag()
+	{
+		$u_id = $this->input->get('u_id',true);
+		$this->load->model('ShowModel');
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if (!empty($u_id)) 
+		{
+			$rsm = $this->ShowModel->getAllTagWithStatus($u_id);
+			if (empty($rsm)) 
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'The server response with an empty set.';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'missing parameters';
+		}
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
 	//注册的方法，密码传密文进来
 	public function mobileRegister()
 	{
@@ -318,49 +697,75 @@ class Api extends CI_Controller
 		$this->load->view('apiTemplate',$data);
 	}
 
-	//输入中英文名查找剧的方法
-	public function searchByName()
+	//ajax更新用户密码以及个人信息的方法
+	public function updateUser()
 	{
-		$words = $this->input->get('words',true);
-		$fullResult = $this->input->get('fullResult',true);
-		$this->load->model('ShowModel');
-		$errno = 1;
-		$err = '';
-		$rsm = null;
-		
-		if (!empty($words)) 
-		{
-			$words = urldecode($words);
-			$words = str_replace('\'', "\\'", $words);
-			#$words = str_replace('%20', ' ', $words);
-			#$words = str_replace('%2F', '/', $words);
+		$this->load->model('UserModel');
 
-			$st = 0;
-			$lg = 30;
-			if ($fullResult == "fullresult") {
-				$st = 0;
-				$lg = 300;
-			}
-			$rsm = $this->ShowModel->searchByName($words,$st,$lg);
-			if (empty($rsm)) 
-			{
-				$errno = 3;
-				$err = $this->errorList[$errno].'No search result.';
-			}
+		$u_id = $this->input->post('u_id',true);
+		$name = $this->input->post('u_name',true);
+		$pwd = $this->input->post('pwd',true);
+		$pwdNew = $this->input->post('pwdNew',true);
+		if (empty($name)) 
+		{
+			$name = "Undefined";
 		}
-		else
+		if (empty($pwd) || empty($pwdNew)) 
 		{
 			$errno = 4;
 			$err = $this->errorList[$errno].'missing parameters';
 		}
-
+		else
+		{
+			//旧密码与新密码相同时，只更新其他内容
+			if ($pwd == $pwdNew) 
+			{
+				$rs = $this->UserModel->updateNameOnly($u_id,$pwd,$name);
+				if (!empty($rs)) 
+				{
+					if ($rs == 'OK') 
+					{
+						$rsm = array('u_name'=>$name);
+					}
+					else
+					{
+						$errno = 3;
+						$err = $this->errorList[$errno].'Incorrect user phone or user password';
+					}
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'Unknown error';
+				}		
+			}
+			else
+			{
+				$rs = $this->UserModel->updateUserInfo($u_id,$pwd,$pwdNew,$name);
+				if (!empty($rs)) 
+				{
+					if ($rs == 'OK') 
+					{
+						$rsm = array('u_name'=>$name);
+					}
+					else
+					{
+						$errno = 3;
+						$err = $this->errorList[$errno].'Incorrect user phone or user password';
+					}
+				}
+				else
+				{
+					$errno = 5;
+					$err = $this->errorList[$errno].'Unknown error';
+				}		
+			}
+		}
 		$data['output'] = array(
 			'errno' => $errno,
 			'err' => $err,
 			'rsm' => $rsm
 			);
-		$this->load->view('apiTemplate',$data);
+		$this->load->view('apiTemplate',$data);	
 	}
-
-
 }
