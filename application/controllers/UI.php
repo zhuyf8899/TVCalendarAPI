@@ -30,7 +30,7 @@ class UI extends CI_Controller {
 		$header['title'] = '用户登录';
 		$this->load->view('headerLogin',$header);
 		$this->load->view('login');
-		$this->load->view('footer');
+		$this->load->view('footer_simple');
 
 	}
 
@@ -48,7 +48,7 @@ class UI extends CI_Controller {
 		$header['title'] = '注册';
 		$this->load->view('headerLogin',$header);
 		$this->load->view('webreg');
-		$this->load->view('footer');
+		$this->load->view('footer_simple');
 	}
 
 	//查看某年某月全部剧集的方法页面，参数形如2016-01
@@ -245,7 +245,7 @@ class UI extends CI_Controller {
 			$area = str_replace('\'', "\\'", $area);
 			#$area = str_replace('%20', ' ', $area);
 			#$area = str_replace('%2F', '/', $area);
-			#$area = "WHERE area = '".$this->input->get('area',true)."'";
+			$area = "WHERE area = '".$this->input->get('area',true)."'";
 		}
 		if ($guessILike == '1') 
 		{
@@ -284,7 +284,7 @@ class UI extends CI_Controller {
 
 		$this->load->view('header',$header);
 		$this->load->view('viewDocs',$data);
-		$this->load->view('footer');
+		$this->load->view('footer_simple');
 	}
 
 
