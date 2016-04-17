@@ -223,13 +223,24 @@ class ShowModel extends CI_Model{
 		return null;
 	}
 
-	//查找今天之前beforeDay开始所有关注的集的更新信息
-	public function searchRecentByUid($u_id,$beforeDay=0,$afterDay=0)
+	//查找某天之前beforeDay开始after天之前所有关注的集的更新信息，其中一个是时区
+	//时区格式必须为3位，形式如+08,-11这样
+	public function searchRecentByUid($u_id,$beforeDay,$afterDay,$date_input,$timezone='+00')
 	{
-		$date = date('Y-m-d 00:00:00');
+		$date = $date_input;
+		if (substr($timezone, 0,1) == '+') 
+		{
+			$hour = intval(substr($timezone,1));
+			$date = date('Y-m-d 08:00:00',strtotime("$date + $hour hours"));
+		}
+		else
+		{
+			$hour = intval(substr($timezone,1));
+			$date = date('Y-m-d 08:00:00',strtotime("$date - $hour hours"));
+		}
 		$future = $date;
-		$date = date('Y-m-d 00:00:00',strtotime("$date - $beforeDay day"));
-		$future = date('Y-m-d 00:00:00',strtotime("$future + $afterDay day"));
+		$date = date('Y-m-d 08:00:00',strtotime("$date - $beforeDay day"));
+		$future = date('Y-m-d 08:00:00',strtotime("$future + $afterDay day"));
 
 		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,s_name_cn,e_num,e_time,e_status 
 			FROM episode 

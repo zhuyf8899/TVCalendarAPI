@@ -87,6 +87,44 @@ class Api extends CI_Controller
 		$this->load->view('apiTemplate',$data);
 	}
 
+	//参数格式务必保证是yyyy-mm-dd.
+	//登陆后使用账号只看我关注的剧更新的方法,需要日期和id
+	public function selectOneDateEpWithUid()
+	{
+		$date = $this->input->get('date',true);
+		$u_id = $this->input->get('u_id',true);
+		$timezone = $this->input->get('timezone',true);
+		$this->load->model('ShowModel');
+		if(empty($date))
+		{
+			$date = date('Y-m-d');
+		}
+		$errno = 1;
+		$err = '';
+		$rsm = null;
+		if(preg_match($this->dateFormat,$date) || empty(intval($u_id)) || empty($timezone))
+		{	//判断是否符合日期格式
+			$rsm = $this->ShowModel->searchRecentByUid($u_id,0,1,$date,$timezone);
+			#$data['errorFlag'] = 0;
+			if (empty($rsm)) 
+			{
+				$errno = 3;
+				$err = $this->errorList[$errno].'Server response with an empty set';
+			}
+		}
+		else
+		{
+			$errno = 4;
+			$err = $this->errorList[$errno].'Date format is incorrect or missing parameters';
+		}
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);
+	}
+
 	public function selectDates()
 	{
 		$dateStart = $this->input->get('dateStart',true);
@@ -511,7 +549,7 @@ class Api extends CI_Controller
 		$errno = 1;
 		$err = '';
 		$rsm = array();
-		$rsm['rescentEps'] = $this->ShowModel->searchRecentByUid($u_id,7,7);
+		$rsm['rescentEps'] = $this->ShowModel->searchRecentByUid($u_id,7,7,date('Y-m-d'),'+00');
 		$rsm['mySubscribe'] = $this->ShowModel->searchByUidOrderByDate($u_id);
 
 		foreach ($rsm['rescentEps'] as &$anEpisode) 

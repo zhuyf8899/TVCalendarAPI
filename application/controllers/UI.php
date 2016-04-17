@@ -150,7 +150,7 @@ class UI extends CI_Controller {
 		$this->checkLogin();
 		$this->load->model('ShowModel');
 
-		$data['rescentEps'] = $this->ShowModel->searchRecentByUid($this->session->u_id,7,7);
+		$data['rescentEps'] = $this->ShowModel->searchRecentByUid($this->session->u_id,7,7,date('Y-m-d'),'+00');
 		$data['mySubscribe'] = $this->ShowModel->searchByUidOrderByDate($this->session->u_id);
 
 		foreach ($data['rescentEps'] as &$anEpisode) 
