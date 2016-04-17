@@ -27,7 +27,7 @@
       {
 
       ?>
-        <tr>
+        <tr class="<?php if(substr($oneEp['e_time'], 0,10) == date('Y-m-d')){echo 'info';}?>">
           <td class="col-md-3"><?php echo $oneEp['e_time']; ?></td>
 	      	<td class="col-md-3"><?php echo $oneEp['s_name_cn'].'<br/>'.$oneEp['s_name']; ?></td>
           <td class="col-md-2"><?php echo '第'.$oneEp['se_id'].'季:第'.$oneEp['e_num'].'集'; ?></td>

@@ -17,7 +17,7 @@
     </div>
   </div>
   <div style="text-align:center;">
-  	<img class="img-thumbnail"  alt="sibig_box_pic" src="<?php if(isset($showInfo['s_sibox_image'])){echo $CUrl.'/cat/imgs/sibig/'.substr($showInfo['s_sibox_image'], 16);} ?>" data-holder-rendered="true">
+  	<img class="img-thumbnail"  alt="sibig_box_pic" src="<?php if(isset($showInfo['s_sibig_image'])){echo $CUrl.'/cat/imgs/sibig/'.substr($showInfo['s_sibig_image'], 16);} ?>" data-holder-rendered="true">
   	<br/>
   </div>
   <br/>

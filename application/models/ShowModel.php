@@ -23,6 +23,7 @@ class ShowModel extends CI_Model{
 				's_name' => $rs['s_name'],
 				's_name_cn' => $rs['s_name_cn'],
 				's_sibox_image' => $rs['s_sibox_image'],
+				's_vertical_image' => '/cat/imgs/vertical/'.substr($rs['s_sibox_image'], 16),
 				'area' => $rs['area'],
 				'channel' => $rs['channel']
 				);
@@ -95,13 +96,17 @@ class ShowModel extends CI_Model{
 			return null;
 	}
 
-	//根据e_id查找剧信息的方法
+	//根据s_id查找剧信息的方法
 	public function searchByShowId($id='')
 	{
 		$rs = $this->db->query("SELECT * FROM `shows` 
 			WHERE `s_id` = {$id} LIMIT 1")->row_array();
-		if(!is_null($rs['s_id']))
+		if(!is_null($rs))
+		{
+
+			$rs['s_sibig_image'] = '/cat/imgs/sibig/'.substr($rs['s_sibox_image'], 16);
 			return $rs;
+		}
 		else
 			return null;
 	}
@@ -242,14 +247,20 @@ class ShowModel extends CI_Model{
 		$date = date('Y-m-d 08:00:00',strtotime("$date - $beforeDay day"));
 		$future = date('Y-m-d 08:00:00',strtotime("$future + $afterDay day"));
 
-		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,s_name_cn,e_num,e_time,e_status 
+		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,s_name_cn,s_sibox_image,e_num,e_time,e_status
 			FROM episode 
 			LEFT JOIN shows ON `episode`.`s_id` = `shows`.`s_id` 
 			LEFT JOIN subscribe ON `shows`.`s_id` = `subscribe`.`s_id` 
 			WHERE `subscribe`.`u_id` = {$u_id} AND `episode`.`e_time` >= '{$date}' AND `episode`.`e_time` <='{$future}'
 			ORDER BY `episode`.`e_time` DESC;")->result_array();
 		if(!is_null($rs))
+		{
+			foreach ($rs as &$one) 
+			{
+				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+			}
 			return $rs;
+		}
 		else
 			return null;
 	}
@@ -274,7 +285,13 @@ class ShowModel extends CI_Model{
 			OR `shows`.`s_name_cn` LIKE '%{$name}%'
 			LIMIT {$start},{$end}") ->result_array();
 		if(!is_null($rs))
+		{
+			foreach ($rs as &$one) 
+			{
+				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+			}
 			return $rs;
+		}
 		else
 			return null;
 	}
@@ -310,6 +327,12 @@ class ShowModel extends CI_Model{
 				WHERE `shows`.`s_id` = {$s_ids[$j-$counterJ]['s_id']}
 				LIMIT 1")->row_array();
 		}
+
+		foreach ($rs as &$one) 
+		{
+			$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+		}
+		return $rs;
 		// $rs = $this->db->query("SELECT `t_name`,`shows`.`s_id`,`s_name`,`s_name_cn`,`area`,`status`,`s_sibox_image`,`t_name`,`t_name_cn`
 		// 	FROM `user_to_tag`
 		// 	left join `show_to_tag` on `user_to_tag`.`t_id` =  `show_to_tag`.`t_id` 
@@ -330,6 +353,11 @@ class ShowModel extends CI_Model{
 			group by `shows`.`s_id` 
 			order by `numbers` DESC
 			limit {$limit}")->result_array();
+		foreach ($rs as &$one) 
+		{
+			$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+		}
+		return $rs;
 		return $rs;
 	}
 

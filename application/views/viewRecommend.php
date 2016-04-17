@@ -21,7 +21,6 @@
 	      				<th class="col-md-2">剧名</th>
 	      				<th class="col-md-1">地区/状态</th>
 	      				<th class="col-md-2">推荐原因</th>
-                <th class="col-md-1">订阅</th>
 	      				<th class="col-md-1">剧集详情</th>
 	      			</tr>
 	      		</thead>
@@ -35,12 +34,11 @@
               {
       				?>
       				<tr>
-      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<!--<td class="col-md-2"><?php //if($counter >= $amount/2){echo "和您关注同一部剧的人还关注了这部剧";}else{ echo "因为您关注了“{$oneShow['t_name_cn']}”标签";}; ?></td>-->
                 <td class="col-md-2"><?php if($counter >= $amount/2){echo "和您关注同一部剧的人还关注了这部剧";}else{ echo "因为您关注了“{$oneShow['t_name_cn']}”标签";}; ?></td>
-                <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
@@ -59,11 +57,10 @@
       				$counter++;
       				?>
       				<tr>
-      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2">因为它很热门</td>
-                <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
@@ -86,7 +83,6 @@
 	      				<th class="col-md-2">剧名</th>
 	      				<th class="col-md-1">地区/状态</th>
 	      				<th class="col-md-2">热度</th>
-                <th class="col-md-1">占位</th>
 	      				<th class="col-md-1">剧集详情</th>
 	      			</tr>
 	      		</thead>
@@ -96,11 +92,10 @@
       			{
       				?>
       				<tr>
-      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_sibox_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2"><?php echo $oneShow['numbers'] ?></td>
-                <td class="col-md-1">占位</td>
       					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
