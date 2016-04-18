@@ -5,11 +5,14 @@
 .navbar-left{
 	margin-left: -15px;
 }
+.panel-heading a:focus,.panel-heading a:hover{
+	text-decoration: none;
+}
 </style>
 <div class="container">
 <div class="navbar navbar-default" >
 	<div class="navbar-collapse collapse" style="text-align: center;">
-		<ul class="nav navbar-nav  navbar-left">
+		<ul class="nav navbar-nav navbar-left">
 		  <li>
 		    <a class="btn btn-default" href="/TVCalendarAPI/index.php/UI/viewMonth/<?php if(isset($dateStart)){ echo date('Y-m',strtotime("$dateStart -1 month"));} ?>" role="button">
 		    上月</a>
@@ -34,18 +37,27 @@ if (isset($shows)) {
 	foreach ($shows as $dayDate => $oneday)
 	{
 		?>
-		<table class="table table-hover table-striped">
-		  <thead>
-		  	<tr>
-		  		<th><?php echo substr($dayDate,5,5); ?></th>
-		  		<th><?php echo $week[date("w",strtotime($dayDate))];?></th>
-		  		<th></th>
-		  		<th></th>
-		  	</tr>
-		  </thead>
+		<!--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+  Link with href
+</a>--> 
+		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+		  <div class="panel panel-default">
+		    <div class="panel-heading" role="tab" id="heading<?php echo substr($dayDate,5,5);?>">
+		     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo substr($dayDate,5,5);?>" aria-expanded="false" aria-controls="collapse<?php echo substr($dayDate,5,5);?>" class="collapsed">
+			      <h4 class="panel-title">
+			      	<?php echo substr($dayDate,5,5).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$week[date("w",strtotime($dayDate))]; ?>
+			         
+			        <span class="glyphicon glyphicon-menu-down" aria-hidden="true" style="float: right;"></span>
+			      </h4>
+		      </a>
+		    </div>
+		    <div id="collapse<?php echo substr($dayDate,5,5);?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo substr($dayDate,5,5);?>">
+		  <div class="panel-body">
+		  <table class="table table-hover table-striped">
 		  <tbody>
 		  	<?php
-		  	foreach ($oneday as $aShow) {
+		  	foreach ($oneday as $aShow) 
+		  	{
 		  		?>
 		  		<tr>
 		  			<th class="col-md-1"><?php echo substr($aShow['e_time'],-8); ?></th>
@@ -61,6 +73,10 @@ if (isset($shows)) {
 		  	?>
 		  </tbody>
 		</table>
+		</div>
+		    </div>
+		  </div>
+
 		<?php
 	}
 
