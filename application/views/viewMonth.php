@@ -30,58 +30,55 @@
 	</div>
 	
 </div>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
 <?php
 $week = array('星期日','星期一','星期二','星期三','星期四','星期五','星期六');
-if (isset($shows)) {
+if (isset($shows)) 
+{
 	$days = count($shows);
 	foreach ($shows as $dayDate => $oneday)
 	{
 		?>
-		<!--<a class="btn btn-primary" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-  Link with href
-</a>--> 
-		<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-		  <div class="panel panel-default">
-		    <div class="panel-heading" role="tab" id="heading<?php echo substr($dayDate,5,5);?>">
-		     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo substr($dayDate,5,5);?>" aria-expanded="false" aria-controls="collapse<?php echo substr($dayDate,5,5);?>" class="collapsed">
-			      <h4 class="panel-title">
+	<div class="panel panel-default">
+		<div class="panel-heading" role="tab" id="heading<?php echo substr($dayDate,5,5);?>">
+		    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php echo substr($dayDate,5,5);?>" aria-expanded="false" aria-controls="collapse<?php echo substr($dayDate,5,5);?>" onclick="changeArrow('<?php echo substr($dayDate,5,5);?>');">
+			    <h4 class="panel-title">
 			      	<?php echo substr($dayDate,5,5).'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$week[date("w",strtotime($dayDate))]; ?>
-			         
-			        <span class="glyphicon glyphicon-menu-down" aria-hidden="true" style="float: right;"></span>
-			      </h4>
-		      </a>
-		    </div>
-		    <div id="collapse<?php echo substr($dayDate,5,5);?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php echo substr($dayDate,5,5);?>">
-		  <div class="panel-body">
-		  <table class="table table-hover table-striped">
-		  <tbody>
-		  	<?php
-		  	foreach ($oneday as $aShow) 
-		  	{
-		  		?>
-		  		<tr>
-		  			<th class="col-md-1"><?php echo substr($aShow['e_time'],-8); ?></th>
-		  			<th class="col-md-9"><mark><?php echo $aShow['s_name_cn'].'('.$aShow['s_name'].')'; ?></mark>:第<?php echo $aShow['se_id']; ?>季，第<?php echo $aShow['e_num']; ?>集&nbsp;&nbsp;&nbsp;“<?php echo $aShow['e_name']; ?>”</th>
-		  			<th class="col-md-1">
-		  			<button type="button" name="<?php echo 'u'.$this->session->u_id.$aShow['s_id'];?>" onclick="unsubscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-warning" <?php if($aShow['sub'] != "1"){echo "style=\"display:none\"";} ?> >不再订阅</button>
-		  			<button type="button" name="<?php echo 's'.$this->session->u_id.$aShow['s_id'];?>" onclick="subscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-success" <?php if($aShow['sub'] == "1"){echo "style=\"display:none\"";} ?> >订阅</button>
-		  			</th>
-		  			<th class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $aShow['s_id']; ?>">剧集详情&raquo;</a></th>
-		  		</tr>
-		  		<?php
-		  	}
-		  	?>
-		  </tbody>
-		</table>
+			        <span class="glyphicon glyphicon-menu-down" aria-hidden="true" id="down<?php echo substr($dayDate,5,5);?>" style="float: right;"></span>
+			        <span class="glyphicon glyphicon-menu-up" aria-hidden="true" id="up<?php echo substr($dayDate,5,5);?>" style="float: right;display: none" ></span>
+			    </h4>
+		    </a>
 		</div>
-		    </div>
-		  </div>
-
-		<?php
+		<div id="collapse<?php echo substr($dayDate,5,5);?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?php echo substr($dayDate,5,5);?>">
+			<div class="panel-body">
+			  	<table class="table table-hover table-striped">
+			  		<tbody>
+			  		<?php
+				  	foreach ($oneday as $aShow) 
+				  	{
+				  		?>
+				  		<tr>
+				  			<th class="col-md-1"><?php echo substr($aShow['e_time'],-8); ?></th>
+				  			<th class="col-md-9"><mark><?php echo $aShow['s_name_cn'].'('.$aShow['s_name'].')'; ?></mark>:第<?php echo $aShow['se_id']; ?>季，第<?php echo $aShow['e_num']; ?>集&nbsp;&nbsp;&nbsp;“<?php echo $aShow['e_name']; ?>”</th>
+				  			<th class="col-md-1">
+				  			<button type="button" name="<?php echo 'u'.$this->session->u_id.$aShow['s_id'];?>" onclick="unsubscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-warning" <?php if($aShow['sub'] != "1"){echo "style=\"display:none\"";} ?> >不再订阅</button>
+				  			<button type="button" name="<?php echo 's'.$this->session->u_id.$aShow['s_id'];?>" onclick="subscribe(<?php echo ($aShow['s_id'].','.$this->session->u_id.','.$this->session->u_id.$aShow['s_id']);?>);" class="btn btn-success" <?php if($aShow['sub'] == "1"){echo "style=\"display:none\"";} ?> >订阅</button>
+				  			</th>
+				  			<th class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $aShow['s_id']; ?>">剧集详情&raquo;</a></th>
+			  			</tr>
+			  		<?php
+			  		}
+			  		?>
+			        </tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<?php
 	}
-
 }
 ?>
+
 <!--表格模板
 <table class="table table-hover table-striped">
 <thead>
@@ -201,5 +198,11 @@ if (isset($shows)) {
         });
         //toastr.warning(flag.toString(), "DEBUG");
         return flag;
+	}
+
+	function changeArrow(id) 
+	{
+		$("#up"+id).toggle();
+		$("#down"+id).toggle();
 	}
 </script>
