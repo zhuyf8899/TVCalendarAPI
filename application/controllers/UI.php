@@ -517,6 +517,28 @@ class UI extends CI_Controller {
 		}
 	}
 
+	public function ajaxDownload($s_name_url,$se_id,$e_num)
+	{
+		$s_name = urldecode($s_name_url);
+		$db_download = $this->load->database('download',True);
+		$link = $db_download->query("SELECT `item_ed2k_link`,`item_file_name` 
+			FROM `zmz_resource_item` 
+			LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
+			WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
+			AND `zmz_resource_item`.`item_season` = {$se_id} 
+			AND item_episode = {$e_num}
+			LIMIT 1")->row_array();
+		if (isset($link)) 
+		{
+			print_r($link);
+		}
+		else
+		{
+			echo "fuck!";
+		}
+
+	}
+
 	//检查是否已登录，未登录直接强制跳转至登陆界面，已登录返回false
 	public function checkLogin()
 	{
