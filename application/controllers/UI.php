@@ -521,7 +521,7 @@ class UI extends CI_Controller {
 	{
 		$s_name = urldecode($s_name_url);
 		$db_download = $this->load->database('download',True);
-		$link = $db_download->query("SELECT `item_ed2k_link`,`item_file_name` 
+		$link = $db_download->query("SELECT `item_ed2k_link`
 			FROM `zmz_resource_item` 
 			LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
 			WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
@@ -530,11 +530,11 @@ class UI extends CI_Controller {
 			LIMIT 1")->row_array();
 		if (isset($link)) 
 		{
-			print_r($link);
+			echo $link['item_ed2k_link'];
 		}
 		else
 		{
-			echo "fuck!";
+			echo "None";
 		}
 
 	}

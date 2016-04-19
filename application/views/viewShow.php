@@ -90,7 +90,8 @@
 		      	<th class="col-md-3">
 		      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
 		      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
-            <a href="https://btio.pw/search/<?php echo urlencode($showInfo['s_name']); ?>" class="btn btn-info" >前往下载链接&raquo;</a>
+            <button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-info" onclick="getDownloadLink('<?php echo $showInfo['s_name'].'\','.$episodeInfo[$i]['se_id'].','.$episodeInfo[$i]['e_num']; ?>);">前往下载链接&raquo;</button>
+            <!--<a href="https://btio.pw/search/<?php echo urlencode($showInfo['s_name']); ?>" class="btn btn-info" >前往下载链接&raquo;</a>-->
 		      	</th>
 	    	</tr>
 	    	<?php
@@ -266,4 +267,39 @@
         //toastr.warning(flag.toString(), "DEBUG");
         return flag;
 	}
+
+  function getDownloadLink(s_name,se_id,e_num) 
+  {
+    toastr.info("正在为您查找资源，资源来自于第三方数据，请您注意辨别.","提示");
+    urlX = '/TVCalendarAPI/index.php/UI/ajaxDownload/'+s_name+'/'+se_id+'/'+e_num;
+    $.ajax({
+          type: 'GET',
+          url: urlX,
+          data: {},
+          async:true,
+          error: function(XMLHttpRequest, textStatus, errorThrown)
+          {
+            toastr.error("Ajax故障", "错误");
+            toastr.info("Status:"+XMLHttpRequest.status+"\nreadyState:"+XMLHttpRequest.readyState+"\ntext:"+textStatus, "DEBUG");
+          },
+          success: function(result)
+          {
+            toastr.info(urlX,"DEBUG");
+            if (result.substr(0,4) == "ed2k") 
+            {
+              toastr.success("以查找到资源，正在为您跳转...","查找成功");
+              window.open("http://www.gov.cn","_blank"); 
+            }
+            else if(result == "None")
+            {
+              toastr.warning("该集尚未有下载链接，请耐心等待...","查找完成");
+            }
+            else
+            {
+              toastr.error("未知错误", "错误");
+            }
+          },
+        });
+        //toastr.warning(flag.toString(), "DEBUG");
+  }
 </script>
