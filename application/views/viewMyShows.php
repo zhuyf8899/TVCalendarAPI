@@ -36,8 +36,8 @@
             <button type="button" id="syned<?php echo $oneEp['e_id']; ?>" class="btn btn-default" <?php if( $oneEp['syn'] == 0){echo "style=\"display:none\"";} ?> disabled >已观看</button>
 	      	  <button type="button" id="sep<?php echo $oneEp['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$oneEp['e_id']; ?>);" <?php if( $oneEp['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
 	      	</td>
-	      	<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneEp['s_id'];?>">剧集详情&raquo;</a></td>
-	      	<td class="col-md-1"><a class="btn btn-default" href="https://btio.pw/search/<?php echo urlencode($oneEp['s_name']); ?>">下载链接&raquo;</a></td>
+	      	<td class="col-md-1"><a class="btn btn-info" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneEp['s_id'];?>">剧集详情&raquo;</a></td>
+	      	<td class="col-md-1"><a target="_blank" href="/TVCalendarAPI/index.php/UI/download?s_name=<?php echo urlencode($oneEp['s_name']);?>&se_id=<?php echo $oneEp['se_id']; ?>&e_num=<?php echo  $oneEp['e_num'];?>" class="btn btn-info" >前往下载链接&raquo;</a></td>
         </tr>
       <?php
       }
@@ -80,49 +80,3 @@
   }
   ?>
 </div><!--container-->
-<script type="text/javascript">
-  function syn(u_id,e_id) {
-        var ids = new RegExp("^\\d*$");
-      if (!ids.test(e_id)||!ids.test(u_id))
-      {
-        toastr.error("参数传递错误", "错误");
-        //toastr.info(phoneNumber, "DEBUG");
-        $("#sep"+e_id).focus();
-      }
-      data = {'u_id':u_id,'e_id':e_id};
-        $.ajax({
-          type: 'POST',
-          url: '/TVCalendarAPI/index.php/UI/ajaxSynchron',
-          data: data,
-          async:true,
-          error: function(XMLHttpRequest, textStatus, errorThrown)
-          {
-            toastr.error("Ajax故障", "错误");
-            toastr.info("Status:"+XMLHttpRequest.status+"\nreadyState:"+XMLHttpRequest.readyState+"\ntext:"+textStatus, "DEBUG");
-          },
-          success: function(result)
-          {
-            //toastr.info(result, "DEBUG");
-            if (result.substr(0,3) == "OK:") 
-            {
-              toastr.success("您已观看:"+result.substr(3), "同步完成");
-              //$("button[id=s"+e_id+"]").hide();
-              //$("button[id=u"+e_id+"]").show();
-              $("#sep"+e_id).hide();
-              $("#syned"+e_id).show();
-            }
-            else if(result == "Repeat")
-            {
-              toastr.warning("您曾观看过:"+result.substr(3), "警告");
-              $("#sep"+e_id).hide();
-              $("#syned"+e_id).show();
-            }
-            else
-            {
-              toastr.error("未知错误", "错误");
-            }
-          },
-        });
-        //toastr.warning(flag.toString(), "DEBUG");
-  }
-</script>

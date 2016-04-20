@@ -1,11 +1,24 @@
 <!--每个用户个人信息修改-->
 </div><!-- /container -->
+<script type="text/javascript">
+	var str = location.href;
+	var strArray = str.spilt('?');
+	if (strArray[1] != null) 
+	{
+		var result = strArray[1].split('=');
+		if (result[0] == 'success' && result[1] == 'true') 
+		{
+			toastr.success("修改个人信息成功","操作成功");
+		}
+	}
+</script>
 <div class="container">
  	<div class="page-header">
 		<h3>我的个人信息</h3>
 	</div>
 	<div>
-		<form onsubmit="return check_form();" class="form-horizontal">
+		<form onsubmit="return check_form_usercenter();" class="form-horizontal" action="/TVCalendarAPI/index.php/UI/myCenter/?success=true">
+		  <input type="input" class="form-control" id="exName" placeholder="原昵称" style="display:none;" disabled value="<?php if(isset($userInfo['u_name'])){echo $userInfo['u_name'];} ?>">
 		  <div class="form-group">
 		    <label for="inputPhone" class="col-sm-2 control-label">注册手机号</label>
 		    <div class="col-sm-4">
@@ -44,100 +57,3 @@
 		</form>	
 	</div>
 </div>
-<script type="text/javascript">
-	function check_form() 
-	{
-		var flag = false;
-		var exName = "<?php if(isset($userInfo['u_name'])){echo $userInfo['u_name'];} ?>";
-		var name = $("#inputName").val();
-		var pwd = $("#inputPassword").val();
-		var pwdNew = $("#inputPasswordNew").val();
-		var pwdNewRe = $("#inputPasswordNewRe").val();
-
-		if ((exName == name) && (pwdNew) == "")
-		{
-			toastr.warning("您并未对个人信息作出修改","警告");
-			flag = false;
-			return false;
-		}
-		if (pwd == "") 
-		{
-			toastr.warning("请输入密码","警告");
-			flag = false;
-			return false;
-		}
-		var data = {'name':'','pwd':'','pwdNew':''};
-		if (pwdNew != "") 
-		{
-			if (pwdNew != pwdNewRe) 
-			{
-				toastr.warning("新密码输入不一致","警告");
-				flag = false;
-				return false;
-			}
-			if (pwd == pwdNew) 
-			{
-				toastr.warning("您未更改密码","警告");
-				flag = false;
-				return false;
-			}
-			var regPwd = new RegExp("^\\w*$");
-			if (!regPwd.test(pwd) || !regPwd.test(pwdNew)) 
-			{
-				toastr.error("密码存在不合法字符", "错误");
-				flag = false;
-				return false;
-			}
-			var data = {'name':name,'pwd':pwd,'pwdNew':pwdNew}
-		}
-		else
-		{
-			var regName = new RegExp("'");
-			if (regName.test(name)) 
-	        {
-	          toastr.warning("新昵称存在敏感字符", "警告");
-	          flag = false;
-	          $("#inputName").focus();
-	          return false;
-	        }
-			var data = {'name':name,'pwd':pwd,'pwdNew':pwd}
-		}
-			
-		$.ajax({
-	        type: 'POST',
-	        url: '/TVCalendarAPI/index.php/UI/ajaxUpdateUser',
-	        data: data,
-	        async:false,
-	        error: function(XMLHttpRequest, textStatus, errorThrown)
-	        {
-	          toastr.info("Status:"+XMLHttpRequest.status+"\nreadyState:"+XMLHttpRequest.readyState+"\ntext:"+textStatus, "DEBUG");
-	          toastr.error("Ajax错误", "错误");
-	        },
-	        success: function(result)
-	        {
-	          if (result == "OK") 
-	          {
-	            toastr.success("更新个人资料成功", "信息");
-	            flag = true;
-	            return true;
-	          }
-	          else if(result == 'WrongPw')
-	          {
-	            toastr.warning("原密码不正确", "警告");
-	            flag = false;
-	            flag = false;
-	          }
-	          else
-	          {
-	            toastr.info(result, "DEBUG ");
-	            toastr.error("参数错误", "错误");
-	            flag = false;
-	            flag = false;
-	          }
-	        },
-	      });
-		
-
-		return flag;
-	}
-</script>

@@ -287,6 +287,28 @@ class UI extends CI_Controller {
 		$this->load->view('footer_simple');
 	}
 
+	public function download()
+	{
+		$s_name = urldecode($this->input->get('s_name',TRUE));
+		$s_name = str_replace('\'', "\\'", $s_name);
+		$se_id = $this->input->get('se_id',TRUE);
+		$e_num = $this->input->get('e_num',TRUE);
+		if (!empty($s_name) && !empty($se_id) && !empty($e_num)) {
+			$db_download = $this->load->database('download',TRUE);
+			$data['link'] = $db_download->query("SELECT `item_file_name`,`item_size`,`item_format`,`item_ed2k_link`,`item_magnet_link`
+				FROM `zmz_resource_item` 
+				LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
+				WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
+				AND `zmz_resource_item`.`item_season` = {$se_id} 
+				AND item_episode = {$e_num}")->result_array();
+		}
+		$header['title'] = $s_name.'第'.$se_id.'季第'.$e_num.'集-下载链接';
+		$this->load->view('header',$header);
+		$this->load->view('viewDownload',$data);
+		$this->load->view('footer');
+
+	}
+
 
 	//ajax验证密码并写入cookies的方法
 	public function ajaxCheckPw()
@@ -456,8 +478,12 @@ class UI extends CI_Controller {
 			$rs = $this->UserModel->updateNameOnly($this->session->u_id,$pwd,$name);
 			if (!empty($rs)) 
 			{
+				if ($rs == "OK") 
+				{
+					$this->session->set_userdata('u_name', $name);
+				}
 				echo $rs;
-				$this->session->set_userdata('u_name', $name);
+				
 			}
 			else
 			{
@@ -467,9 +493,12 @@ class UI extends CI_Controller {
 		else
 		{
 			$rs = $this->UserModel->updateUserInfo($this->session->u_id,$pwd,$pwdNew,$name);
-			if ($rs == "OK") 
+			if (!empty($rs)) 
 			{
-				$this->session->set_userdata('u_name', $name);
+				if ($rs == "OK") 
+				{
+					$this->session->set_userdata('u_name', $name);
+				}
 				echo $rs;
 			}
 			else
@@ -515,28 +544,6 @@ class UI extends CI_Controller {
 				echo "Error";
 			}
 		}
-	}
-
-	public function ajaxDownload($s_name_url,$se_id,$e_num)
-	{
-		$s_name = urldecode($s_name_url);
-		$db_download = $this->load->database('download',True);
-		$link = $db_download->query("SELECT `item_ed2k_link`
-			FROM `zmz_resource_item` 
-			LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
-			WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
-			AND `zmz_resource_item`.`item_season` = {$se_id} 
-			AND item_episode = {$e_num}
-			LIMIT 1")->row_array();
-		if (isset($link)) 
-		{
-			echo $link['item_ed2k_link'];
-		}
-		else
-		{
-			echo "None";
-		}
-
 	}
 
 	//检查是否已登录，未登录直接强制跳转至登陆界面，已登录返回false

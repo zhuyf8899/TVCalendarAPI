@@ -39,7 +39,7 @@
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<!--<td class="col-md-2"><?php //if($counter >= $amount/2){echo "和您关注同一部剧的人还关注了这部剧";}else{ echo "因为您关注了“{$oneShow['t_name_cn']}”标签";}; ?></td>-->
                 <td class="col-md-2"><?php if($counter >= $amount/2){echo "和您关注同一部剧的人还关注了这部剧";}else{ echo "因为您关注了“{$oneShow['t_name_cn']}”标签";}; ?></td>
-      					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
+      					<td class="col-md-1"><a class="btn btn-info" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
               }
@@ -61,7 +61,7 @@
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2">因为它很热门</td>
-      					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
+      					<td class="col-md-1"><a class="btn btn-info" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
       			}
@@ -96,7 +96,7 @@
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2"><?php echo $oneShow['numbers'] ?></td>
-      					<td class="col-md-1"><a class="btn btn-info" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
+      					<td class="col-md-1"><a class="btn btn-info" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
       				</tr>
       				<?php
       			}
