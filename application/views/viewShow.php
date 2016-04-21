@@ -51,54 +51,93 @@
   <div class="page-header">
     <h3>分季列表</h3>
   </div>
-  <div class="row">
-	  <table class="table table-hover table-striped">
-	    <thead>
-	      <tr>
-	      	<th class="col-md-4">第<?php if(isset($episodeInfo[0]['se_id'])){echo $episodeInfo[0]['se_id'];} ?>季</th>
-	      	<th class="col-md-2"></th>
-	      	<th class="col-md-3"></th>
-	      	<th class="col-md-3"></th>
-	      </tr>
-	    </thead>
-	    <tbody>
-	    <?php
-	    for ($i=0; $i < count($episodeInfo); $i++) { 
-	    	if ($i>0 && $episodeInfo[$i]['se_id'] != $episodeInfo[$i-1]['se_id']) {
-	    		?>
-	    			</tbody>
-				</table>
+  <?php 
+  if (count($episodeInfo) == 0) 
+  {
+  	echo "<h5>当前没有集记录</h5>";
+  }
+  else
+  {
+  ?>
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  	<div class="panel panel-default">
+		<div class="panel-heading" role="tab" id="heading<?php if(isset($episodeInfo[0]['se_id'])){echo $episodeInfo[0]['se_id'];}?>">
+		    <a class="" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php if(isset($episodeInfo[0]['se_id'])){echo $episodeInfo[0]['se_id'];}?>" aria-expanded="true" aria-controls="collapse<?php if(isset($episodeInfo[0]['se_id'])){echo $episodeInfo[0]['se_id'];}?>" onclick="changeArrow('<?php if(isset($episodeInfo[0]['se_id'])){echo $episodeInfo[0]['se_id'];}?>');">
+			    <h4 class="panel-title">
+			      	<?php if(isset($episodeInfo[0]['se_id'])){echo '第'.$episodeInfo[0]['se_id'].'季';} ?>
+			        <span class="glyphicon glyphicon-menu-down" aria-hidden="true" id="down<?php echo $episodeInfo[0]['se_id'];?>" style="float: right;display: none"></span>
+			        <span class="glyphicon glyphicon-menu-up" aria-hidden="true" id="up<?php echo $episodeInfo[0]['se_id'];?>" style="float: right;" ></span>
+			    </h4>
+		    </a>
+		</div>
+		<div id="collapse<?php if(isset($episodeInfo[0]['se_id'])){echo $episodeInfo[0]['se_id'];}?>" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading<?php if(isset($episodeInfo[0]['se_id'])){echo $episodeInfo[0]['se_id'];}?>">
+			<div class="panel-body">
 				<table class="table table-hover table-striped">
-	    			<thead>
-	      				<tr>
-					      	<th class="col-md-4">第<?php if(isset($episodeInfo[$i]['se_id'])){echo $episodeInfo[$i]['se_id'];} ?>季</th>
-					      	<th class="col-md-2"></th>
-					      	<th class="col-md-3"></th>
-					      	<th class="col-md-3"></th>
-					    </tr>
-					</thead>
-					<tbody>
-	    		<?php
-	    	}
-	    	if(isset($episodeInfo[$i]))
-	    	{
-	    	?>
-	    	<tr>
-	    		<th class="col-md-4"><?php echo $episodeInfo[$i]['e_name']; ?></th>
-		      	<th class="col-md-2">第<?php echo $episodeInfo[$i]['se_id']; ?>季，第<?php echo $episodeInfo[$i]['e_num']; ?>集</th>
-		      	<th class="col-md-3"><?php echo $episodeInfo[$i]['e_time']; ?></th>
-		      	<th class="col-md-3">
-		      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
-		      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
-            <!--<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-info" onclick="getDownloadLink(<?php echo '\''.urlencode($showInfo['s_name']).'\','.$episodeInfo[$i]['se_id'].','.$episodeInfo[$i]['e_num']; ?>);">前往下载链接&raquo;</button>-->
-            <a target="_blank" href="/TVCalendarAPI/index.php/UI/download?s_name=<?php echo urlencode($showInfo['s_name']);?>&se_id=<?php echo $episodeInfo[$i]['se_id']; ?>&e_num=<?php echo  $episodeInfo[$i]['e_num'];?>" class="btn btn-info" >前往下载链接&raquo;</a>
-		      	</th>
-	    	</tr>
-	    	<?php
-	    	}
-	    }
-	    ?>
-	    </tbody>
-	  </table>
-  </div>
+				    <thead>
+				      <tr>
+				      	<th class="col-md-4">集名</th>
+				      	<th class="col-md-2">集数</th>
+				      	<th class="col-md-3">播放日期</th>
+				      	<th class="col-md-3">选项</th>
+				      </tr>
+				    </thead>
+				    <tbody>
+				    <?php
+				    for ($i=0; $i < count($episodeInfo); $i++) { 
+				    	if ($i>0 && $episodeInfo[$i]['se_id'] != $episodeInfo[$i-1]['se_id']) {
+				    		?>
+				    			</tbody>
+							</table>
+						</div><!--panel-body-->
+					</div><!--collapse-->
+				</div><!--panel panel-default-->
+				<div class="panel panel-default">
+					<div class="panel-heading" role="tab" id="heading<?php if(isset($episodeInfo[$i]['se_id'])){echo $episodeInfo[$i]['se_id'];}?>">
+					    <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse<?php if(isset($episodeInfo[$i]['se_id'])){echo $episodeInfo[$i]['se_id'];}?>" aria-expanded="false" aria-controls="collapse<?php if(isset($episodeInfo[$i]['se_id'])){echo $episodeInfo[$i]['se_id'];}?>" onclick="changeArrow('<?php if(isset($episodeInfo[$i]['se_id'])){echo $episodeInfo[$i]['se_id'];}?>');">
+						    <h4 class="panel-title">
+						      	<?php if(isset($episodeInfo[$i]['se_id'])){echo '第'.$episodeInfo[$i]['se_id'].'季';} ?>
+						        <span class="glyphicon glyphicon-menu-down" aria-hidden="true" id="down<?php echo $episodeInfo[$i]['se_id'];?>" style="float: right;"></span>
+						        <span class="glyphicon glyphicon-menu-up" aria-hidden="true" id="up<?php echo $episodeInfo[$i]['se_id'];?>" style="float: right;display: none" ></span>
+						    </h4>
+					    </a>
+					</div>
+					<div id="collapse<?php if(isset($episodeInfo[$i]['se_id'])){echo $episodeInfo[$i]['se_id'];}?>" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading<?php if(isset($episodeInfo[$i]['se_id'])){echo $episodeInfo[$i]['se_id'];}?>">
+						<div class="panel-body">
+							<table class="table table-hover table-striped">
+				    			<thead>
+				      				<tr>
+								      	<th class="col-md-4">集名</th>
+								      	<th class="col-md-2">集数</th>
+								      	<th class="col-md-3">播放日期</th>
+								      	<th class="col-md-3">选项</th>
+								    </tr>
+								</thead>
+								<tbody>
+				    		<?php
+				    	}
+				    	if(isset($episodeInfo[$i]))
+				    	{
+				    	?>
+				    	<tr>
+				    		<th class="col-md-4"><?php echo $episodeInfo[$i]['e_name']; ?></th>
+					      	<th class="col-md-2">第<?php echo $episodeInfo[$i]['se_id']; ?>季，第<?php echo $episodeInfo[$i]['e_num']; ?>集</th>
+					      	<th class="col-md-3"><?php echo $episodeInfo[$i]['e_time']; ?></th>
+					      	<th class="col-md-3">
+					      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
+					      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
+			            <a target="_blank" href="/TVCalendarAPI/index.php/UI/download?s_name=<?php echo urlencode($showInfo['s_name']);?>&se_id=<?php echo $episodeInfo[$i]['se_id']; ?>&e_num=<?php echo  $episodeInfo[$i]['e_num'];?>" class="btn btn-info" >前往下载链接&raquo;</a>
+					      	</th>
+				    	</tr>
+				    	<?php
+				    	}
+				    }
+				}//end of else
+				    ?>
+				    </tbody>
+				</table>
+			</div><!--panel-body-->
+		</div><!--collapse-->
+	</div><!--panel panel-default-->
+	  
+  </div><!--panel-group-->
 </div>
