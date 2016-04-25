@@ -357,15 +357,6 @@ class ShowModel extends CI_Model{
 			$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
 		}
 		return $rs;
-		// $rs = $this->db->query("SELECT `t_name`,`shows`.`s_id`,`s_name`,`s_name_cn`,`area`,`status`,`s_sibox_image`,`t_name`,`t_name_cn`
-		// 	FROM `user_to_tag`
-		// 	left join `show_to_tag` on `user_to_tag`.`t_id` =  `show_to_tag`.`t_id` 
-		// 	left join `tag` on `user_to_tag`.`t_id` = `tag`.`t_id`
-		// 	left join `shows` on `show_to_tag`.`s_id` = `shows`.`s_id`
-		// 	WHERE `user_to_tag`.`u_id` = {$uid}
-		// 	AND `shows`.`s_id` >= (SELECT floor(RAND() * (SELECT MAX(`s_id`) FROM `shows`))) 
-		// 	LIMIT {$limit}")->result_array();
-		return $rs;
 	}
 
 	public function getHotRecommend($area,$limit = 10)
@@ -381,7 +372,6 @@ class ShowModel extends CI_Model{
 		{
 			$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
 		}
-		return $rs;
 		return $rs;
 	}
 

@@ -17,7 +17,7 @@ class UI extends CI_Controller {
 
 		$date = date('Y-m-d');
 		$data['today'] = $this->ShowModel->searchOneDateBrief($date);
-		$data['showsNumber'] = $this->ShowModel->getNumberOfShows();
+		#$data['showsNumber'] = $this->ShowModel->getNumberOfShows();
 		$data['CUrl'] = $this->CalUrl;
 		$this->load->view('header');
 		$this->load->view('home',$data);
@@ -110,7 +110,7 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		//验证sid是否符合规范
 		$idFormat = '/^\d*$/';
-		if(!preg_match($idFormat,$sid))
+		if(!preg_match($idFormat,intval($sid)))
 		{
 			//出现问题直接崩回首页，问题一般出现于利用URL注入
 			header("Location: /TVCalendarAPI/index.php/UI/index.php");
@@ -238,14 +238,14 @@ class UI extends CI_Controller {
 
 		$area = '';
 		$header['title'] = '推荐';
-		if ($this->input->get('area',true)) 
+		if ($this->filter($this->input->get('area',true))) 
 		{
-			$area = $this->input->get('area',true);
 			$area = urldecode($area);
-			$area = str_replace('\'', "\\'", $area);
+			$area = $this->filter($this->input->get('area',true));
+			#$area = str_replace('\'', "\\'", $area);
 			#$area = str_replace('%20', ' ', $area);
 			#$area = str_replace('%2F', '/', $area);
-			$area = "WHERE area = '".$this->input->get('area',true)."'";
+			$area = "WHERE area = '".$area."'";
 		}
 		if ($guessILike == '1') 
 		{
@@ -293,9 +293,9 @@ class UI extends CI_Controller {
 		$this->load->model('ShowModel');
 		
 		$s_name = urldecode($this->input->get('s_name',TRUE));
-		$s_name = str_replace('\'', "\\'", $s_name);
-		$se_id = $this->input->get('se_id',TRUE);
-		$e_num = $this->input->get('e_num',TRUE);
+		$s_name =  $this->filter($s_name);
+		$se_id = $this->filter($this->input->get('se_id',TRUE));
+		$e_num =  $this->filter($this->input->get('e_num',TRUE));
 		$data = array();
 		if (!empty($s_name) && !empty($se_id) && !empty($e_num)) {
 			$data['link'] = $this->ShowModel->getDownloadLink($s_name,$se_id,$e_num);
@@ -312,11 +312,13 @@ class UI extends CI_Controller {
 	public function ajaxCheckPw()
 	{
 		$this->load->model('UserModel');
-		if (!empty($this->input->post('u_phone')) && !empty($this->input->post('u_passwd')))
+		$u_phone = $this->filter($this->input->post('u_phone',true));
+		$u_passwd = $this->filter($this->input->post('u_passwd',true));
+		if (!empty($u_phone) && !empty($u_passwd))
 		#if($_GET['u_phone'] && $_GET['u_passwd'])
 		{
-			$u_phone = $this->input->post('u_phone',true);
-			$u_passwd = md5($this->input->post('u_passwd',true));
+			$u_phone = $u_phone;
+			$u_passwd = md5($u_passwd);
 			#$u_phone = $_GET['u_phone'];
 			#$u_passwd = md5($_GET['u_passwd']);
 			$rs = $this->UserModel->login($u_phone,$u_passwd);
@@ -346,11 +348,13 @@ class UI extends CI_Controller {
 	public function ajaxReg()
 	{
 		$this->load->model('UserModel');
-		if (!empty($this->input->post('u_phone')) && !empty($this->input->post('u_passwd')))
+		$u_phone = $this->filter($this->input->post('u_phone',true));
+		$u_passwd = $this->filter($this->input->post('u_passwd',true));
+		$u_name = $this->filter($this->input->post('u_name',true));
+		if (!empty($u_phone) && !empty($u_passwd))
 		{
-			$u_phone = $this->input->post('u_phone',true);
-			$u_passwd = md5($this->input->post('u_passwd',true));
-			$u_name = $this->input->post('u_name',true);
+			$u_phone = $u_phone;
+			$u_passwd = md5($u_passwd);
 			$rs = $this->UserModel->register($u_name,$u_phone,$u_passwd);
 			if (!empty($rs)) 
 			{
@@ -382,9 +386,11 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id'))) 
+		$u_id = $this->filter($this->input->post('u_id',true));
+		$s_id = $this->filter($this->input->post('s_id',true));
+		if (!empty($u_id) && !empty($s_id)) 
 		{
-			$rs = $this->ShowModel->insertSubscribe($this->input->post('u_id',true),$this->input->post('s_id',true),date('Y-m-d H:i:s'));
+			$rs = $this->ShowModel->insertSubscribe($u_id,$s_id,date('Y-m-d H:i:s'));
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -401,9 +407,11 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		if (!empty($this->input->post('u_id')) && !empty($this->input->post('s_id')))
+		$u_id = $this->filter($this->input->post('u_id',true));
+		$s_id = $this->filter($this->input->post('s_id',true));
+		if (!empty($u_id) && !empty($s_id))
 		{
-			$rs = $this->ShowModel->deleteSubscribe($this->input->post('u_id',true),$this->input->post('s_id',true));
+			$rs = $this->ShowModel->deleteSubscribe($u_id,$s_id);
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -420,9 +428,11 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id'))) 
+		$u_id = $this->filter($this->input->post('u_id',true));
+		$e_id = $this->filter($this->input->post('e_id',true));
+		if (!empty($u_id) && !empty($this->input->post('e_id'))) 
 		{
-			$rs = $this->ShowModel->insertSynchron($this->input->post('u_id',true),$this->input->post('e_id',true),date('Y-m-d H:i:s'));
+			$rs = $this->ShowModel->insertSynchron($u_id,$e_id,date('Y-m-d H:i:s'));
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -439,9 +449,11 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		if (!empty($this->input->post('u_id')) && !empty($this->input->post('e_id')))
+		$u_id = $this->filter($this->input->post('u_id',true));
+		$e_id = $this->filter($this->input->post('e_id',true));
+		if (!empty($u_id) && !empty($e_id))
 		{
-			$rs = $this->ShowModel->deleteSynchron($this->input->post('u_id',true),$this->input->post('e_id',true));
+			$rs = $this->ShowModel->deleteSynchron($u_id,$e_id);
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -459,9 +471,9 @@ class UI extends CI_Controller {
 		$this->ajaxCheckLogin();
 		$this->load->model('UserModel');
 
-		$name = $this->input->post('name',true);
-		$pwd = $this->input->post('pwd',true);
-		$pwdNew = $this->input->post('pwdNew',true);
+		$name = $this->filter($this->input->post('name',true));
+		$pwd = $this->filter($this->input->post('pwd',true));
+		$pwdNew = $this->filter($this->input->post('pwdNew',true));
 		if (empty($name)) 
 		{
 			$name = "Undefined";
@@ -511,9 +523,12 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		if (!empty($this->input->post('u_id')) && !empty($this->input->post('t_id'))) 
+		$u_id = $this->filter($this->input->post('u_id',true));
+		$t_id = $this->filter($this->input->post('t_id',true));
+
+		if (!empty($u_id) && !empty($t_id)) 
 		{
-			$rs = $this->ShowModel->insertLike($this->input->post('u_id',true),$this->input->post('t_id',true));
+			$rs = $this->ShowModel->insertLike($u_id,$t_id);
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -530,9 +545,11 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		if (!empty($this->input->post('u_id')) && !empty($this->input->post('t_id')))
+		$u_id = $this->filter($this->input->post('u_id',true));
+		$t_id = $this->filter($this->input->post('t_id',true));
+		if (!empty($u_id) && !empty($t_id))
 		{
-			$rs = $this->ShowModel->deleteLike($this->input->post('u_id',true),$this->input->post('t_id',true));
+			$rs = $this->ShowModel->deleteLike($u_id,$t_id);
 			if (!empty($rs)) 
 			{
 				echo $rs;
@@ -574,4 +591,13 @@ class UI extends CI_Controller {
 		}
 	}
 	
+	public function filter($input)
+	{
+		$mid = str_replace("'", ' ', $input);
+		$mid = str_replace('"', ' ', $mid);
+		$mid = str_replace(';', ' ', $mid);
+		$mid = str_replace('?', ' ', $mid);
+		$mid = str_replace('*', ' ', $mid);
+		return $mid;
+	}
 }
