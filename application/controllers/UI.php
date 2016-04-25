@@ -289,18 +289,16 @@ class UI extends CI_Controller {
 
 	public function download()
 	{
+		$this->checkLogin();
+		$this->load->model('ShowModel');
+		
 		$s_name = urldecode($this->input->get('s_name',TRUE));
 		$s_name = str_replace('\'', "\\'", $s_name);
 		$se_id = $this->input->get('se_id',TRUE);
 		$e_num = $this->input->get('e_num',TRUE);
+		$data = array();
 		if (!empty($s_name) && !empty($se_id) && !empty($e_num)) {
-			$db_download = $this->load->database('download',TRUE);
-			$data['link'] = $db_download->query("SELECT `item_file_name`,`item_size`,`item_format`,`item_ed2k_link`,`item_magnet_link`
-				FROM `zmz_resource_item` 
-				LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
-				WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
-				AND `zmz_resource_item`.`item_season` = {$se_id} 
-				AND item_episode = {$e_num}")->result_array();
+			$data['link'] = $this->ShowModel->getDownloadLink($s_name,$se_id,$e_num);
 		}
 		$header['title'] = $s_name.'第'.$se_id.'季第'.$e_num.'集-下载链接';
 		$this->load->view('header',$header);

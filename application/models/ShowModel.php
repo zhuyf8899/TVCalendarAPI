@@ -103,10 +103,34 @@ class ShowModel extends CI_Model{
 			WHERE `s_id` = {$id} LIMIT 1")->row_array();
 		if(!is_null($rs))
 		{
-
+			if(!empty($rs['r_id']) && $rs['r_id'] != 0)
+			{
+				$db_resource = $this->load->database('download',TRUE);
+				$description = $db_resource->query("SELECT `resource_content`
+					FROM `zmz_resource` 
+					WHERE `zmz_resource`.`zmz_resourceid` = '{$rs['r_id']}' 
+					LIMIT 1")->row_array();
+				$rs['s_description'] = $description['resource_content'];
+ 			}
 			$rs['s_sibig_image'] = '/cat/imgs/sibig/'.substr($rs['s_sibox_image'], 16);
 			return $rs;
 		}
+		else
+			return null;
+	}
+
+	//获取下载链接的方法
+	public function getDownloadLink($s_name,$se_id,$e_num)
+	{
+		$db_download = $this->load->database('download',TRUE);
+		$rs = $db_download->query("SELECT `item_file_name`,`item_size`,`item_format`,`item_ed2k_link`,`item_magnet_link`
+			FROM `zmz_resource_item` 
+			LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
+			WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
+			AND `zmz_resource_item`.`item_season` = {$se_id} 
+			AND item_episode = {$e_num}")->result_array();
+		if(!is_null($rs[0]))
+			return $rs;
 		else
 			return null;
 	}
