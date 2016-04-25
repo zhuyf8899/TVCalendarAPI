@@ -123,9 +123,19 @@
 					      	<th class="col-md-2">第<?php echo $episodeInfo[$i]['se_id']; ?>季，第<?php echo $episodeInfo[$i]['e_num']; ?>集</th>
 					      	<th class="col-md-3"><?php echo $episodeInfo[$i]['e_time']; ?></th>
 					      	<th class="col-md-3">
+					      	<?php
+					      	if(strtotime(date('Y-m-d H:i:s')) > strtotime($episodeInfo[$i]['e_time'])){
+					      	?>
 					      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
 					      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
 			            <a target="_blank" href="/TVCalendarAPI/index.php/UI/download?s_name=<?php echo urlencode($showInfo['s_name']);?>&se_id=<?php echo $episodeInfo[$i]['se_id']; ?>&e_num=<?php echo  $episodeInfo[$i]['e_num'];?>" class="btn btn-info" >前往下载链接&raquo;</a>
+			            	<?php
+			            	}
+			            	else
+			            	{
+			            		echo "尚未播出";
+			            	}
+			            	?>
 					      	</th>
 				    	</tr>
 				    	<?php

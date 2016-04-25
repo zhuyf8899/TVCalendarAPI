@@ -129,7 +129,7 @@ class ShowModel extends CI_Model{
 			WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
 			AND `zmz_resource_item`.`item_season` = {$se_id} 
 			AND item_episode = {$e_num}")->result_array();
-		if(!is_null($rs[0]))
+		if(!is_null($rs))
 			return $rs;
 		else
 			return null;
