@@ -10,7 +10,7 @@
     <title><?php if(isset($title))
                     echo $title;
                  else 
-                    echo"美剧日历"?>
+                    echo "美剧日历";?>
     </title>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/TVCalendarAPI/build/css/toastr.css" />

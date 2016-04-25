@@ -120,13 +120,13 @@ class ShowModel extends CI_Model{
 	}
 
 	//获取下载链接的方法
-	public function getDownloadLink($s_name,$se_id,$e_num)
+	public function getDownloadLink($r_id,$se_id,$e_num)
 	{
 		$db_download = $this->load->database('download',TRUE);
 		$rs = $db_download->query("SELECT `item_file_name`,`item_size`,`item_format`,`item_ed2k_link`,`item_magnet_link`
 			FROM `zmz_resource_item` 
 			LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
-			WHERE `zmz_resource`.`resource_en_name` = '{$s_name}' 
+			WHERE `zmz_resource`.`zmz_resourceid` = '{$r_id}' 
 			AND `zmz_resource_item`.`item_season` = {$se_id} 
 			AND item_episode = {$e_num}")->result_array();
 		if(!is_null($rs))
@@ -271,7 +271,7 @@ class ShowModel extends CI_Model{
 		$date = date('Y-m-d 08:00:00',strtotime("$date - $beforeDay day"));
 		$future = date('Y-m-d 08:00:00',strtotime("$future + $afterDay day"));
 
-		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,s_name_cn,s_sibox_image,e_num,e_time,e_status
+		$rs = $this->db->query("SELECT `shows`.`s_id`,e_id,se_id,s_name,s_name_cn,s_sibox_image,e_num,e_time,e_status,r_id
 			FROM episode 
 			LEFT JOIN shows ON `episode`.`s_id` = `shows`.`s_id` 
 			LEFT JOIN subscribe ON `shows`.`s_id` = `subscribe`.`s_id` 

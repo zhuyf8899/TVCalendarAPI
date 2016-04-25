@@ -10,7 +10,7 @@
     <title><?php if(isset($title))
                     echo $title;
                  else 
-                    echo"TVCalender中文站"?>
+                    echo "美剧日历";?>
     </title>
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/TVCalendarAPI/build/css/toastr.css" />
@@ -48,7 +48,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/TVCalendarAPI/index.php/UI/">TvCalendar中文站</a>
+            <a class="navbar-brand" href="/TVCalendarAPI/index.php/UI/">美剧日历</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">

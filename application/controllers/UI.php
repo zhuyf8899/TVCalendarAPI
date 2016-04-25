@@ -292,15 +292,15 @@ class UI extends CI_Controller {
 		$this->checkLogin();
 		$this->load->model('ShowModel');
 		
-		$s_name = urldecode($this->input->get('s_name',TRUE));
-		$s_name =  $this->filter($s_name);
-		$se_id = $this->filter($this->input->get('se_id',TRUE));
-		$e_num =  $this->filter($this->input->get('e_num',TRUE));
+		$r_id = intval($this->filter($this->input->get('r_id',TRUE)));
+		#$s_name =  $this->filter($s_name);
+		$se_id = intval($this->filter($this->input->get('se_id',TRUE)));
+		$e_num =  intval($this->filter($this->input->get('e_num',TRUE)));
 		$data = array();
-		if (!empty($s_name) && !empty($se_id) && !empty($e_num)) {
-			$data['link'] = $this->ShowModel->getDownloadLink($s_name,$se_id,$e_num);
+		if ($r_id != 0 && !empty($se_id) && !empty($e_num)) {
+			$data['link'] = $this->ShowModel->getDownloadLink($r_id,$se_id,$e_num);
 		}
-		$header['title'] = $s_name.'第'.$se_id.'季第'.$e_num.'集-下载链接';
+		$header['title'] = '第'.$se_id.'季第'.$e_num.'集-下载链接';
 		$this->load->view('header',$header);
 		$this->load->view('viewDownload',$data);
 		$this->load->view('footer');
