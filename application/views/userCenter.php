@@ -1,17 +1,5 @@
 <!--每个用户个人信息修改-->
 </div><!-- /container -->
-<script type="text/javascript">
-	var str = location.href;
-	var strArray = str.spilt('?');
-	if (strArray[1] != null) 
-	{
-		var result = strArray[1].split('=');
-		if (result[0] == 'success' && result[1] == 'true') 
-		{
-			toastr.success("修改个人信息成功","操作成功");
-		}
-	}
-</script>
 <div class="container">
  	<div class="page-header">
 		<h3>我的个人信息</h3>

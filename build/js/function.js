@@ -185,28 +185,28 @@ function check_form_usercenter()
         {
           if (result == "OK") 
           {
+            $("#inputPassword").val('');
+            $("#inputPasswordNew").val('');
+            $("#inputPasswordNewRe").val('');
             toastr.success("更新个人资料成功", "信息");
-            flag = true;
-            return true;
+            return false;
           }
           else if(result == 'WrongPw')
           {
             toastr.warning("原密码不正确", "警告");
-            flag = false;
             return false;
           }
           else
           {
             toastr.info(result, "DEBUG");
             toastr.error("参数错误", "错误");
-            flag = false;
             return false;
           }
         },
       });
     
 
-    return flag;
+    return false;
 }
 
 function subscribe(s_id,u_id,button_name)

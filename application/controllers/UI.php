@@ -307,6 +307,13 @@ class UI extends CI_Controller {
 
 	}
 
+	public function QandA()
+	{
+		$this->load->view('header');
+		$this->load->view('viewQA');
+		$this->load->view('footer');
+	}
+
 
 	//ajax验证密码并写入cookies的方法
 	public function ajaxCheckPw()
@@ -478,8 +485,8 @@ class UI extends CI_Controller {
 		$this->load->model('UserModel');
 
 		$name = $this->filter($this->input->post('name',true));
-		$pwd = $this->filter($this->input->post('pwd',true));
-		$pwdNew = $this->filter($this->input->post('pwdNew',true));
+		$pwd = md5($this->filter($this->input->post('pwd',true)));
+		$pwdNew = md5($this->filter($this->input->post('pwdNew',true)));
 		if (empty($name)) 
 		{
 			$name = "Undefined";
@@ -607,10 +614,12 @@ class UI extends CI_Controller {
 		return $mid;
 	}
 
-	public function get_code(){
+	public function get_code()
+	{
 		$this->load->library('captha_new');
 		$code = $this->captha_new->getCaptcha();
 		$this->session->set_userdata('code', $code);
 		$this->captha_new->showImg();
 	}
+
 }
