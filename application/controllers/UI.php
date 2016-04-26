@@ -351,6 +351,12 @@ class UI extends CI_Controller {
 		$u_phone = $this->filter($this->input->post('u_phone',true));
 		$u_passwd = $this->filter($this->input->post('u_passwd',true));
 		$u_name = $this->filter($this->input->post('u_name',true));
+		$code = strtolower($this->input->post('captcha'));
+		$code_check = strtolower($this->session->userdata('code'));
+		if($code != $code_check){
+			echo "WrongCaptcha";
+			exit();
+		}
 		if (!empty($u_phone) && !empty($u_passwd))
 		{
 			$u_phone = $u_phone;
@@ -599,5 +605,12 @@ class UI extends CI_Controller {
 		$mid = str_replace('?', ' ', $mid);
 		$mid = str_replace('*', ' ', $mid);
 		return $mid;
+	}
+
+	public function get_code(){
+		$this->load->library('captha_new');
+		$code = $this->captha_new->getCaptcha();
+		$this->session->set_userdata('code', $code);
+		$this->captha_new->showImg();
 	}
 }

@@ -415,6 +415,7 @@ function checkform_reg()
     var usrName = document.getElementById("usrName").value;
     var pwd =  document.getElementById("inputPassword").value;
     var pwdc = document.getElementById("passwdRepeat").value;
+    var captcha  = $("#captcha").val();
     var regPwd = new RegExp("^\\w*$");
     var regPh = new RegExp("^\\d{11,}$");
     var regName = new RegExp("'");
@@ -453,7 +454,7 @@ function checkform_reg()
         toastr.info("未输入昵称，默认使用手机号代替", "信息");
         usrName = phoneNumber;
     }
-        data = {'u_phone':phoneNumber,'u_name':usrName,'u_passwd':pwd};
+        data = {'u_phone':phoneNumber,'u_name':usrName,'u_passwd':pwd,'captcha':captcha};
         $.ajax({
         type: 'POST',
         url: '/TVCalendarAPI/index.php/UI/ajaxReg',
@@ -479,9 +480,15 @@ function checkform_reg()
                 toastr.error("该手机号已被使用", "错误");
                 flag = false;
             }
+            else if(result == 'WrongCaptcha')
+            {
+                toastr.error("验证码不正确", "错误");
+                change_captcha();
+                flag = false;
+            }
             else
             {
-                toastr.info(result, "DEBUG ");
+                toastr.info(result, "DEBUG");
                 toastr.error("参数错误", "错误");
                 flag = false;
             }
@@ -489,4 +496,9 @@ function checkform_reg()
     });
     //toastr.warning(flag.toString(), "DEBUG");
     return flag;
+}
+function change_captcha() 
+{
+    var seed = parseInt(Math.random()*50000+1); 
+    $("#captcha_img").attr('src','/TVCalendarAPI/index.php/UI/get_code?_='+seed);
 }
