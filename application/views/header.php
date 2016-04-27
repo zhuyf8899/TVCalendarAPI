@@ -72,7 +72,7 @@
             if ($this->session->u_id) {
             ?>
             <ul class="nav navbar-nav navbar-right">
-              <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <?php echo $this->session->u_name; ?><span class="caret"></span></a>
+              <li class="dropdown"><a href="#" id="username_h" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $this->session->u_name; ?><span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="/TVCalendarAPI/index.php/UI/myCenter/">个人中心</a></li>
                   <li><a href="/TVCalendarAPI/index.php/UI/myShows/">我的剧集</a></li>

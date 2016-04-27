@@ -12,6 +12,6 @@
             没有账号？<a href="/TVCalendarAPI/index.php/UI/webreg">点此注册</a>
           </label>
         </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" >Login in</button>
+    <button class="btn btn-lg btn-primary btn-block" id="loginButton" type="submit" >Login in</button>
   </form>
 </div> <!-- /container -->

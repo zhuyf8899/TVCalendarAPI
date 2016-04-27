@@ -19,6 +19,6 @@
             <input type="checkbox" value="agree" id="checkAgree" checked="checked"> 我已知晓并同意 <a href="/TVCalendarAPI/index.php/UI/docs/license">用户协定</a>.
           </label>
         </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" >注 册</button>
+    <button class="btn btn-lg btn-primary btn-block" type="submit" id="regButton" >注 册</button>
   </form>
 </div> <!-- /container -->

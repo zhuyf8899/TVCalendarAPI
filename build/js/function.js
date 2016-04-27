@@ -1,5 +1,6 @@
 function checkform_nav()
 {
+    $("#phoneNumber").attr({"disabled":"disabled"});
     var flag = false;
     phoneNumber = $("#phoneNumber").val();
     pwd = $("#pwd").val();
@@ -53,11 +54,13 @@ function checkform_nav()
         },
     });
     //toastr.warning(flag.toString(), "DEBUG");
+    $("#phoneNumber").removeAttr("disabled");
     return flag;
 }
 
 function checkform()
 {
+    $("loginButton").attr({"disabled":"disabled"});
     var flag = false;
     phoneNumber = document.getElementById("inputPhone").value;
     pwd =  document.getElementById("inputPassword").value;
@@ -110,11 +113,13 @@ function checkform()
         },
     });
     //toastr.warning(flag.toString(), "DEBUG");
+    $("#loginButton").removeAttr("disabled");
     return flag;
 }
 
 function check_form_usercenter() 
 {
+    $("#updateButton").attr({"disabled":"disabled"});
     var flag = false;
     var exName = $("#exName").val();
     var name = $("#inputName").val();
@@ -188,6 +193,7 @@ function check_form_usercenter()
             $("#inputPassword").val('');
             $("#inputPasswordNew").val('');
             $("#inputPasswordNewRe").val('');
+            $("#username_h").html(name+'<span class="caret"></span>');
             toastr.success("更新个人资料成功", "信息");
             return false;
           }
@@ -205,7 +211,7 @@ function check_form_usercenter()
         },
       });
     
-
+    $("#updateButton").removeAttr("disabled");
     return false;
 }
 
@@ -217,9 +223,10 @@ function subscribe(s_id,u_id,button_name)
     {
       toastr.error("参数传递错误", "错误");
       //toastr.info(phoneNumber, "DEBUG");
-      $("#"+button_name).focus();
+      $("button[name=s"+button_name+"]").focus();
       return false;
     }
+    $("button[name=s"+button_name+"]").attr({"disabled":"disabled"});
     data = {'u_id':u_id,'s_id':s_id};
     $.ajax({
       type: 'POST',
@@ -237,12 +244,14 @@ function subscribe(s_id,u_id,button_name)
         {
           toastr.success("订阅:"+result.substr(3), "操作成功");
           //window.location.href("/TVCalendarAPI/index.php/UI/index");
+          $("button[name=s"+button_name+"]").removeAttr("disabled");
           $("button[name=s"+button_name+"]").hide();
           $("button[name=u"+button_name+"]").show();
           flag = true;
         }
         else if(result == "Repeat")
         {
+            $("button[name=s"+button_name+"]").removeAttr("disabled");
             toastr.warning("您已订阅过:"+result.substr(3), "警告");
             $("button[name=s"+button_name+"]").hide();
             $("button[name=u"+button_name+"]").show();
@@ -250,6 +259,7 @@ function subscribe(s_id,u_id,button_name)
         }
         else
         {
+          $("button[name=s"+button_name+"]").removeAttr("disabled");
           toastr.error("未知错误", "错误");
           flag = false;
         }
@@ -270,6 +280,7 @@ function unsubscribe(s_id,u_id,button_name)
       $("#"+button_name).focus();
       return false;
     }
+    $("button[name=u"+button_name+"]").attr({"disabled":"disabled"});
     data = {'u_id':u_id,'s_id':s_id};
     $.ajax({
       type: 'POST',
@@ -287,6 +298,7 @@ function unsubscribe(s_id,u_id,button_name)
         {
           toastr.success("取消订阅:"+result.substr(3), "操作成功");
           //window.location.href("/TVCalendarAPI/index.php/UI/index");
+          $("button[name=u"+button_name+"]").removeAttr("disabled");
           $("button[name=u"+button_name+"]").hide();
           $("button[name=s"+button_name+"]").show();
           flag = true;
@@ -294,12 +306,14 @@ function unsubscribe(s_id,u_id,button_name)
         else if(result == "None")
         {
             toastr.warning("您还未订阅过:"+result.substr(3), "警告");
+            $("button[name=u"+button_name+"]").removeAttr("disabled");
             $("button[name=u"+button_name+"]").hide();
             $("button[name=s"+button_name+"]").show();
             flag = true;
         }
         else
         {
+          $("button[name=u"+button_name+"]").removeAttr("disabled");
           toastr.error("未知错误", "错误");
           flag = false;
         }
@@ -324,6 +338,8 @@ function syn(u_id,e_id)
         //toastr.info(phoneNumber, "DEBUG");
         $("#sep"+e_id).focus();
     }
+    $("button[id=s"+e_id+"]").attr({"disabled":"disabled"});
+    $("#sep"+e_id).attr({"disabled":"disabled"});
     data = {'u_id':u_id,'e_id':e_id};
     $.ajax({
         type: 'POST',
@@ -341,6 +357,8 @@ function syn(u_id,e_id)
             if (result.substr(0,3) == "OK:") 
             {
                 toastr.success("您已观看:"+result.substr(3), "同步完成");
+                $("button[id=s"+e_id+"]").removeAttr("disabled");
+                $("#sep"+e_id).removeAttr("disabled");
                 $("button[id=s"+e_id+"]").hide();
                 $("button[id=u"+e_id+"]").show();
                 $("#sep"+e_id).hide();
@@ -349,6 +367,8 @@ function syn(u_id,e_id)
             else if(result == "Repeat")
             {
                 toastr.warning("您曾观看过:"+result.substr(3), "警告");
+                $("button[id=s"+e_id+"]").removeAttr("disabled");
+                $("#sep"+e_id).removeAttr("disabled");
                 $("button[id=s"+e_id+"]").hide();
                 $("button[id=u"+e_id+"]").show();
                 $("#sep"+e_id).hide();
@@ -372,6 +392,7 @@ function unsyn(u_id,e_id)
         //toastr.info(phoneNumber, "DEBUG");
         $("#u"+e_id).focus();
     }
+    $("#u"+e_id).attr({"disabled":"disabled"});
     data = {'u_id':u_id,'e_id':e_id};
     $.ajax({
         type: 'POST',
@@ -391,12 +412,14 @@ function unsyn(u_id,e_id)
                 //window.location.href("/TVCalendarAPI/index.php/UI/index");
                 //$("button[id=u"+e_id+"]").hide();
                 //$("button[ud=s"+e_id+"]").show();
+                $("#u"+e_id).removeAttr("disabled");
                 $("#u"+e_id).hide();
                 $("#s"+e_id).show();
             }
             else if(result == "None")
             {
                 toastr.warning("您还未观看过:"+result.substr(3), "警告");
+                $("#u"+e_id).removeAttr("disabled");
                 $("#u"+e_id).hide();
                 $("#s"+e_id).show();
             }
@@ -410,6 +433,7 @@ function unsyn(u_id,e_id)
 }
 function checkform_reg()
 {
+    $("#regButton").attr({"disabled":"disabled"});
     var flag = false;
     var phoneNumber = document.getElementById("inputPhone").value;
     var usrName = document.getElementById("usrName").value;
@@ -495,6 +519,7 @@ function checkform_reg()
         },
     });
     //toastr.warning(flag.toString(), "DEBUG");
+    $("#regButton").removeAttr("disabled");
     return flag;
 }
 function change_captcha() 
