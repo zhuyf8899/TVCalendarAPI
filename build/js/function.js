@@ -527,3 +527,44 @@ function change_captcha()
     var seed = parseInt(Math.random()*50000+1); 
     $("#captcha_img").attr('src','/TVCalendarAPI/index.php/UI/get_code?_='+seed);
 }
+function add_download_count(Durl) 
+{
+    //var data = {'e_id':e_id};
+    x=getArgs();
+    var data = {'e_id':x['e_id']};
+    debugger;
+    $.ajax({
+        type: 'POST',
+        url: '/TVCalendarAPI/index.php/UI/ajaxCountDownload',
+        data: data,
+        async:true,
+        error: function(XMLHttpRequest, textStatus, errorThrown)
+        {
+            toastr.error(XMLHttpRequest.status, "连接异常");
+        },
+        success: function(result)
+        {
+            if (result == "OK") 
+            {
+                toastr.success("链接生成成功，将会调用您的\n下载软件（如果提示没有请自行安装\n迅雷等软件）", "信息");
+            }
+            else
+            {
+                toastr.info(result, "DEBUG");
+                toastr.success("链接生成成功，将会调用您的\n下载软件（如果提示没有请自行安装\n迅雷等软件）", "信息");
+            }
+        },
+    });
+    window.location.href = Durl;
+}
+
+function getArgs(){
+    var args = {};
+    var match = null;
+    var search = decodeURIComponent(location.search.substring(1));
+    var reg = /(?:([^&]+)=([^&]+))/g;
+    while((match = reg.exec(search))!==null){
+        args[match[1]] = match[2];
+    }
+    return args;
+}

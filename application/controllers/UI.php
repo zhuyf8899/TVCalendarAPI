@@ -574,6 +574,15 @@ class UI extends CI_Controller {
 		}
 	}
 
+	public function ajaxCountDownload()
+	{
+		$this->ajaxCheckLogin();
+		$this->load->model('ShowModel');
+		$e_id = intval($this->input->post('e_id',true));
+		$this->ShowModel->plusOneDownload($e_id);
+		echo "OK";
+	}
+
 	//检查是否已登录，未登录直接强制跳转至登陆界面，已登录返回false
 	public function checkLogin()
 	{
@@ -587,6 +596,11 @@ class UI extends CI_Controller {
 		{
 			return false;
 		}
+	}
+
+	public function test()
+	{
+		echo intval("'1");
 	}
 
 	//ajax方法调用前验证登陆的方法

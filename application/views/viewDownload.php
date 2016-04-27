@@ -29,9 +29,9 @@
     				<td class="col-md-2"><?php echo $oneLink['item_format']; ?></td>
     				<td class="col-md-2"><?php echo $oneLink['item_size']; ?></td>
     				<td class="col-md-2"><?php if($oneLink['item_ed2k_link'] != 'NULL'){
-    					echo "<a href=\"{$oneLink['item_ed2k_link']}\" target=\"_blank\">点击跳转下载</a>";
+    					echo "<a onclick=\"add_download_count('{$oneLink['item_ed2k_link']}');\"  target=\"_blank\">点击跳转下载</a>";
     					}elseif($oneLink['item_magnet_link'] != 'NULL'){
-    					echo "<a href=\"{$oneLink['item_magnet_link']}\" target=\"_blank\">点击跳转下载</a>";
+    					echo "<a onclick=\"add_download_count('{$oneLink['item_magnet_link']}');\"  target=\"_blank\">点击跳转下载</a>";
     					}else{
     						echo "下载链接已失效";
     						} ?>

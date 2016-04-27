@@ -432,4 +432,20 @@ class ShowModel extends CI_Model{
 		}
 		return null;
 	}
+
+	//统计下载量的方法，随便统计，保证正常使用优先
+	public function plusOneDownload($e_id)
+	{
+		$checker = $this->db->query("SELECT * FROM download_count
+			WHERE e_id = {$e_id}  LIMIT 1")->row_array();
+		if (!empty($checker)) {
+			$this->db->query("UPDATE `download_count` SET `count` = `count` + 1 WHERE `e_id` = {$e_id}" );
+			return "OK";
+		}
+		else
+		{
+			$this->db->query("INSERT INTO `download_count`(e_id,count) VALUES ({$e_id},1)" );
+			return "OK";
+		}
+	}
 }

@@ -48,7 +48,7 @@
             ?>
 	      	</td>
 	      	<td class="col-md-1"><a class="btn btn-info" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneEp['s_id'];?>">剧集详情&raquo;</a></td>
-	      	<td class="col-md-1"><a target="_blank" href="/TVCalendarAPI/index.php/UI/download?r_id=<?php echo urlencode($oneEp['r_id']);?>&se_id=<?php echo $oneEp['se_id']; ?>&e_num=<?php echo  $oneEp['e_num'];?>" class="btn btn-info" >前往下载链接&raquo;</a></td>
+	      	<td class="col-md-1"><a target="_blank" href="/TVCalendarAPI/index.php/UI/download?r_id=<?php echo urlencode($oneEp['r_id']);?>&se_id=<?php echo $oneEp['se_id']; ?>&e_num=<?php echo  $oneEp['e_num'];?>&e_id=<?php echo $oneEp['e_id'];?>" class="btn btn-info" >前往下载链接&raquo;</a></td>
         </tr>
       <?php
       }
