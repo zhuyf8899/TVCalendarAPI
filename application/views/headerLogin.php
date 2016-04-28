@@ -3,8 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="KEYWords" lang="zh-CN" contect="美剧日历,TvCalendar,美剧资源,英剧,资源,日历">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content="一个美剧更新日历，提供剧集跟踪提醒服务和下载">
+    <meta name="Robots" contect= "all">
     <meta name="author" content="zhuyifan">
     <link rel="icon" href="/TVCalendarAPI/build/image/favicon.ico">
     <title><?php if(isset($title))
