@@ -527,12 +527,11 @@ function change_captcha()
     var seed = parseInt(Math.random()*50000+1); 
     $("#captcha_img").attr('src','/TVCalendarAPI/index.php/UI/get_code?_='+seed);
 }
-function add_download_count(Durl) 
+function add_download_count(Durl,id) 
 {
-    //var data = {'e_id':e_id};
     x=getArgs();
     var data = {'e_id':x['e_id']};
-    debugger;
+    //debugger;
     $.ajax({
         type: 'POST',
         url: '/TVCalendarAPI/index.php/UI/ajaxCountDownload',
@@ -540,22 +539,26 @@ function add_download_count(Durl)
         async:true,
         error: function(XMLHttpRequest, textStatus, errorThrown)
         {
-            toastr.error(XMLHttpRequest.status, "连接异常");
+            toastr.error(XMLHttpRequest.status, "连接异常,请直接点击链接下载！");
         },
         success: function(result)
         {
             if (result == "OK") 
             {
-                toastr.success("链接生成成功，将会调用您的\n下载软件（如果提示没有请自行安装\n迅雷等软件）", "信息");
+                toastr.success("链接生成成功，如下载软件未启用，\n请点击或复制这个链接自行下载", "信息");
+                $("#down"+id).attr('href',Durl);
+                $("#down"+id).removeAttr("onclick");
+                $("#down"+id).html(Durl); 
             }
             else
             {
                 toastr.info(result, "DEBUG");
-                toastr.success("链接生成成功，将会调用您的\n下载软件（如果提示没有请自行安装\n迅雷等软件）", "信息");
+                toastr.success("链接生成成功，如下载软件未启用，\n请点击或复制这个链接自行下载", "信息");
             }
         },
     });
     window.location.href = Durl;
+    
 }
 
 function getArgs(){

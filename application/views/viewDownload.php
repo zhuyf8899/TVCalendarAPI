@@ -10,7 +10,7 @@
 	if (isset($link)) 
 	{
 		?>
-		<table class="table table-hover table-striped">
+		<table class="table table-hover table-striped" style="word-break:break-all; word-wrap:break-all;" >
 			<thead>
 		        <tr>
 			      	<td class="col-md-6">文件名</td>
@@ -21,6 +21,7 @@
 		    </thead>
     		<tbody>
     		<?php
+    		$counter = 0;
     		foreach ($link as $oneLink) 
     		{
     			?>
@@ -29,9 +30,9 @@
     				<td class="col-md-2"><?php echo $oneLink['item_format']; ?></td>
     				<td class="col-md-2"><?php echo $oneLink['item_size']; ?></td>
     				<td class="col-md-2"><?php if($oneLink['item_ed2k_link'] != 'NULL'){
-    					echo "<a onclick=\"add_download_count('{$oneLink['item_ed2k_link']}');\"  target=\"_blank\" href=\"javascript:void(0)\">点击跳转下载</a>";
+    					echo "<a id=\"down{$counter}\" onclick=\"add_download_count('{$oneLink['item_ed2k_link']}','{$counter}');\"  target=\"_blank\" href=\"javascript:void(0)\">点击跳转下载</a>";
     					}elseif($oneLink['item_magnet_link'] != 'NULL'){
-    					echo "<a onclick=\"add_download_count('{$oneLink['item_magnet_link']}');\"  target=\"_blank\" href=\"javascript:void(0)\">点击跳转下载</a>";
+    					echo "<a id=\"down{$counter}\" onclick=\"add_download_count('{$oneLink['item_magnet_link']}','{$counter}');\"  target=\"_blank\" href=\"javascript:void(0)\">点击跳转下载</a>";
     					}else{
     						echo "下载链接已失效";
     						} ?>
@@ -39,6 +40,7 @@
     			</tr>
     			
     			<?php
+    			$counter++;
     		}
 			?>
 			</tbody>
