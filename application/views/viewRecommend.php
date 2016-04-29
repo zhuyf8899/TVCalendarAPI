@@ -70,7 +70,42 @@
       		</table>
       		<?php
       		}
-      		else
+          elseif (isset($downCount)) 
+          {
+            ?>
+            <div class="page-header">
+              <h4>下载排行榜</h5>
+            </div>
+            <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th class="col-md-3">#</th>
+                <th class="col-md-2">剧名</th>
+                <th class="col-md-1">分集</th>
+                <th class="col-md-2">下载量</th>
+                <th class="col-md-1">剧集详情</th>
+              </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($downCount as $oneShow) 
+            {
+              ?>
+              <tr>
+                <th class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></th>
+                <th class="col-md-2"><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></th>
+                <th class="col-md-1"><?php echo '第'.$oneShow['se_id'].'季:第'.$oneShow['e_num'].'集'; ?></th>
+                <th class="col-md-2"><?php echo $oneShow['count']; ?></th>
+                <th class="col-md-1"><a class="btn btn-info" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></th>
+              </tr> 
+              <?php
+            }
+            ?>
+            </tbody>
+            </table>
+            <?php
+          }
+      		elseif(isset($hot))
       		{
       		?>
       		<div class="page-header">

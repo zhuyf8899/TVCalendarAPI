@@ -448,4 +448,25 @@ class ShowModel extends CI_Model{
 			return "OK";
 		}
 	}
+
+	//搜索下载排行榜的方法
+	public function getDownloadCount($limit)
+	{
+		$checker = $this->db->query("SELECT `shows`.`s_id`,`shows`.`s_name`,`shows`.`s_name_cn`,`shows`.`s_sibox_image`,`episode`.`se_id`,`episode`.`e_num`,`download_count`.`count` 
+			FROM `download_count` 
+			LEFT JOIN `episode` ON `download_count`.`e_id` = `episode`.`e_id`
+			LEFT JOIN `shows` ON `episode`.`s_id` = `shows`.`s_id`
+			ORDER BY `download_count`.`count` DESC
+			LIMIT {$limit}")->result_array();
+		if (!empty($checker)) 
+		{
+			foreach ($checker as &$one) 
+			{
+				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+			}
+			return $checker;
+		}
+		return null;
+		
+	}
 }

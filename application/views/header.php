@@ -64,6 +64,7 @@
                   <li><a href="/TVCalendarAPI/index.php/UI/recommend?area=United+Kingdom">英国热播</a></li>
                   <li role="separator" class="divider"></li>
                   <!--<li class="dropdown-header">猜我喜欢</li>-->
+                  <li><a href="/TVCalendarAPI/index.php/UI/recommend/2">下载排行榜</a></li>
                   <li><a href="/TVCalendarAPI/index.php/UI/recommend/1">猜我喜欢</a></li>
                   <!--<li><a href="/TVCalendarAPI/index.php/UI/commend?status=Returning+Series">回归</a></li>
                   <li><a href="/TVCalendarAPI/index.php/UI/commend?status=Canceled%2FEnded">完结</a></li>-->

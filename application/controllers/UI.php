@@ -250,10 +250,19 @@ class UI extends CI_Controller {
 		if ($guessILike == '1') 
 		{
 			$data['iLike'] = $this->ShowModel->getLikeRecommend($this->session->u_id,5);
+			$data['hot'] = $this->ShowModel->getHotRecommend($area,5);
 			$header['title'] = '猜我喜欢';
 		}
-
-		$data['hot'] = $this->ShowModel->getHotRecommend($area,10);
+		elseif ($guessILike == '2') 
+		{
+			$data['downCount'] = $this->ShowModel->getDownloadCount(10);
+			$header['title'] = '下载排行榜';
+		}
+		else
+		{
+			$data['hot'] = $this->ShowModel->getHotRecommend($area,10);
+		}
+		
 		$data['tag'] = $this->ShowModel->getAllTagWithStatus($this->session->u_id);
 		$data['CUrl'] = $this->CalUrl;
 		$this->load->view('header',$header);
