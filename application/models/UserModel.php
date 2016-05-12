@@ -8,7 +8,7 @@ class UserModel extends CI_Model{
 	//注册方法，密码$u_passwd为MD5散列值
 	public function register($u_name,$u_phone,$u_passwd)
 	{
-		$checker = $this->db->query("SELECT u_id FROM user WHERE u_phone = '{$u_phone}' LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_id FROM user WHERE u_phone = {$u_phone} LIMIT 1")->row_array();
 		if (!empty($checker)) {
 			return "PHONEREPEAT";
 		}
@@ -17,10 +17,10 @@ class UserModel extends CI_Model{
 			$u_token = md5($u_name.$u_phone.$u_passwd.rand(100,999));
 			$pwh = password_hash($u_passwd, PASSWORD_DEFAULT);
 			$this->db->query("INSERT into user (u_name,u_phone,u_passwd,u_token,u_status) 
-				values('{$u_name}','{$u_phone}','{$pwh}','{$u_token}',2)");
+				values({$u_name},{$u_phone},'{$pwh}','{$u_token}',2)");
 			if ($this->db->affected_rows())
 			{
-				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token,u_status FROM user WHERE u_phone = '{$u_phone}' LIMIT 1")->row_array();
+				$rs = $this->db->query("SELECT u_id,u_name,u_phone,u_token,u_status FROM user WHERE u_phone = {$u_phone} LIMIT 1")->row_array();
 				return $rs;
 			}
 		}
@@ -44,10 +44,10 @@ class UserModel extends CI_Model{
 	//新的验证函数，u_passwd是一个已经被MD5后的哈希值
 	public function login($u_phone,$u_passwd)
 	{
-		$checker = $this->db->query("SELECT u_id,u_name,u_phone,u_status,u_token,u_passwd FROM user WHERE u_phone = '{$u_phone}' AND u_status = 2 LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_id,u_name,u_phone,u_status,u_token,u_passwd FROM user WHERE u_phone = {$u_phone} AND u_status = 2 LIMIT 1")->row_array();
 		if (!empty($checker)) 
 		{
-			if (password_verify( $u_passwd, $checker['u_passwd'] )) 
+			if (password_verify($u_passwd, $checker['u_passwd'] )) 
 			{
 				unset($checker['u_passwd']);
 				return $checker;
@@ -107,12 +107,12 @@ class UserModel extends CI_Model{
 	//$u_passwd为MD5后的哈希值
 	public function updateNameOnly($u_id,$u_passwd,$u_name)
 	{
-		$checker = $this->db->query("SELECT u_passwd FROM user WHERE u_id = '{$u_id}' AND u_status = 2 LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_passwd FROM user WHERE u_id = {$u_id} AND u_status = 2 LIMIT 1")->row_array();
 		if (!empty($checker)) 
 		{
 			if (password_verify( $u_passwd, $checker['u_passwd'] )) 
 			{
-				$this->db->query("UPDATE `user` SET `u_name` = '{$u_name}' 
+				$this->db->query("UPDATE `user` SET `u_name` = {$u_name} 
 					WHERE `u_id` = {$u_id}");
 				if ($this->db->affected_rows())
 				{
@@ -153,14 +153,14 @@ class UserModel extends CI_Model{
 	//密码$u_passwd,$pwdN应当为MD5值
 	public function updateUserInfo($u_id,$u_passwd,$pwdN,$u_name)
 	{
-		$checker = $this->db->query("SELECT u_passwd FROM user WHERE u_id = '{$u_id}' AND u_status = 2 LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_passwd FROM user WHERE u_id = {$u_id} AND u_status = 2 LIMIT 1")->row_array();
 		if (!empty($checker)) 
 		{
 			if (password_verify( $u_passwd, $checker['u_passwd'] )) 
 			{
 				$u_token = md5($u_id.$u_name.$pwdN.rand(100,999));
 				$pwh = password_hash($pwdN, PASSWORD_DEFAULT);
-				$this->db->query("UPDATE `user` SET  `u_name` =  '{$u_name}',`u_passwd` = '$pwh', `u_token` = '{$u_token}' 
+				$this->db->query("UPDATE `user` SET  `u_name` =  {$u_name},`u_passwd` = '$pwh', `u_token` = '{$u_token}' 
 					WHERE `u_id` = {$u_id}");
 				if ($this->db->affected_rows())
 				{
@@ -184,7 +184,7 @@ class UserModel extends CI_Model{
 
 	public function loginByToken($uid,$token)
 	{
-		$checker = $this->db->query("SELECT u_id,u_name,u_token,u_status,u_phone FROM user WHERE u_id = '{$uid}' AND u_token = '{$token}' LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_id,u_name,u_token,u_status,u_phone FROM user WHERE u_id = {$uid} AND u_token = '{$token}' LIMIT 1")->row_array();
 		if (isset($checker['u_id'])) 
 		{
 			return $checker;

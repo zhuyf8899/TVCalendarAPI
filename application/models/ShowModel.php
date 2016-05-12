@@ -126,7 +126,7 @@ class ShowModel extends CI_Model{
 		$rs = $db_download->query("SELECT `item_file_name`,`item_size`,`item_format`,`item_ed2k_link`,`item_magnet_link`
 			FROM `zmz_resource_item` 
 			LEFT JOIN zmz_resource ON `zmz_resource_item`.`zmz_resourceid` = `zmz_resource`.`zmz_resourceid` 
-			WHERE `zmz_resource`.`zmz_resourceid` = '{$r_id}' 
+			WHERE `zmz_resource`.`zmz_resourceid` = {$r_id}
 			AND `zmz_resource_item`.`item_season` = {$se_id} 
 			AND item_episode = {$e_num}")->result_array();
 		if(!is_null($rs))
@@ -173,7 +173,7 @@ class ShowModel extends CI_Model{
 	public function insertSubscribe($u_id,$s_id,$date)
 	{
 		$this->db->query("INSERT INTO subscribe (u_id, s_id,sub_time) 
-			VALUES ('{$u_id}', '{$s_id}','{$date}')");
+			VALUES ({$u_id}, {$s_id},'{$date}')");
 		if ($this->db->affected_rows()) 
 		{
 			$rs = $this->db->query("SELECT s_name,s_name_cn FROM shows 
@@ -191,7 +191,7 @@ class ShowModel extends CI_Model{
 	public function deleteSubscribe($u_id,$s_id)
 	{
 		$this->db->query("DELETE FROM subscribe WHERE 
-			u_id = '{$u_id}' AND s_id = '{$s_id}' LIMIT 1");
+			u_id = {$u_id} AND s_id = {$s_id} LIMIT 1");
 		if ($this->db->affected_rows()) 
 		{
 			$rs = $this->db->query("SELECT s_name,s_name_cn FROM shows 
@@ -220,11 +220,12 @@ class ShowModel extends CI_Model{
 	public function insertSynchron($u_id,$e_id,$date)
 	{
 		$this->db->query("INSERT INTO synchron (u_id, e_id,syn_time) 
-			VALUES ('{$u_id}', '{$e_id}','{$date}')");
+			VALUES ({$u_id}, {$e_id},'{$date}')");
 		if ($this->db->affected_rows()) 
 		{
 			$rs = $this->db->query("SELECT se_id,e_num FROM episode 
 				WHERE e_id = {$e_id} LIMIT 1")->row_array();
+			#return "OK:S".$rs['se_id'].",E".$rs['e_num'];
 			return "OK:S".$rs['se_id'].",E".$rs['e_num'];
 		}
 		else
@@ -238,7 +239,7 @@ class ShowModel extends CI_Model{
 	public function deleteSynchron($u_id,$e_id)
 	{
 		$this->db->query("DELETE FROM synchron WHERE 
-			u_id = '{$u_id}' AND e_id = '{$e_id}' LIMIT 1");
+			u_id = {$u_id} AND e_id = {$e_id} LIMIT 1");
 		if ($this->db->affected_rows()) 
 		{
 			$rs = $this->db->query("SELECT se_id,e_num FROM episode 
@@ -419,7 +420,7 @@ class ShowModel extends CI_Model{
 	public function deleteLike($u_id,$t_id)
 	{
 		$this->db->query("DELETE FROM user_to_tag WHERE 
-			u_id = '{$u_id}' AND t_id = '{$t_id}' LIMIT 1");
+			u_id = {$u_id} AND t_id = {$t_id} LIMIT 1");
 		if ($this->db->affected_rows()) 
 		{
 			$rs = $this->db->query("SELECT t_name,t_name_cn FROM tag 

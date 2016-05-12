@@ -238,14 +238,14 @@ class UI extends CI_Controller {
 
 		$area = '';
 		$header['title'] = '推荐';
-		if ($this->filter($this->input->get('area',true))) 
+		if ($this->db->escape($this->input->get('area',true))) 
 		{
 			$area = urldecode($area);
-			$area = $this->filter($this->input->get('area',true));
+			$area = $this->db->escape($this->input->get('area',true));
 			#$area = str_replace('\'', "\\'", $area);
 			#$area = str_replace('%20', ' ', $area);
 			#$area = str_replace('%2F', '/', $area);
-			$area = "WHERE area = '".$area."'";
+			$area = "WHERE area = ".$area;
 		}
 		if ($guessILike == '1') 
 		{
@@ -301,12 +301,12 @@ class UI extends CI_Controller {
 		$this->checkLogin();
 		$this->load->model('ShowModel');
 		
-		$r_id = intval($this->filter($this->input->get('r_id',TRUE)));
-		#$s_name =  $this->filter($s_name);
-		$se_id = intval($this->filter($this->input->get('se_id',TRUE)));
-		$e_num =  intval($this->filter($this->input->get('e_num',TRUE)));
+		$r_id = $this->db->escape($this->input->get('r_id',TRUE));
+		#$s_name =  $this->db->escape($s_name);
+		$se_id = $this->db->escape($this->input->get('se_id',TRUE));
+		$e_num =  $this->db->escape($this->input->get('e_num',TRUE));
 		$data = array();
-		if ($r_id != 0 && !empty($se_id) && !empty($e_num)) {
+		if ($r_id != '0' && !empty($se_id) && !empty($e_num)) {
 			$data['link'] = $this->ShowModel->getDownloadLink($r_id,$se_id,$e_num);
 		}
 		$header['title'] = '第'.$se_id.'季第'.$e_num.'集-下载链接';
@@ -328,8 +328,11 @@ class UI extends CI_Controller {
 	public function ajaxCheckPw()
 	{
 		$this->load->model('UserModel');
-		$u_phone = $this->filter($this->input->post('u_phone',true));
-		$u_passwd = $this->filter($this->input->post('u_passwd',true));
+		$u_phone = $this->db->escape($this->input->post('u_phone',true));
+		$u_passwd = $this->db->escape($this->input->post('u_passwd',true));
+		#$u_passwd = $this->filter($this->input->post('u_passwd',true));
+		$u_passwd = substr($u_passwd, 1,-1);
+		#echo $u_passwd;
 		if (!empty($u_phone) && !empty($u_passwd))
 		#if($_GET['u_phone'] && $_GET['u_passwd'])
 		{
@@ -364,9 +367,10 @@ class UI extends CI_Controller {
 	public function ajaxReg()
 	{
 		$this->load->model('UserModel');
-		$u_phone = $this->filter($this->input->post('u_phone',true));
-		$u_passwd = $this->filter($this->input->post('u_passwd',true));
-		$u_name = $this->filter($this->input->post('u_name',true));
+		$u_phone = $this->db->escape($this->input->post('u_phone',true));
+		$u_passwd = $this->db->escape($this->input->post('u_passwd',true));
+		$u_passwd = substr($u_passwd, 1,-1);
+		$u_name = $this->db->escape($this->input->post('u_name',true));
 		$code = strtolower($this->input->post('captcha'));
 		$code_check = strtolower($this->session->userdata('code'));
 		if($code != $code_check){
@@ -408,8 +412,8 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		$u_id = $this->filter($this->input->post('u_id',true));
-		$s_id = $this->filter($this->input->post('s_id',true));
+		$u_id = $this->db->escape($this->input->post('u_id',true));
+		$s_id = $this->db->escape($this->input->post('s_id',true));
 		if (!empty($u_id) && !empty($s_id)) 
 		{
 			$rs = $this->ShowModel->insertSubscribe($u_id,$s_id,date('Y-m-d H:i:s'));
@@ -429,8 +433,8 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		$u_id = $this->filter($this->input->post('u_id',true));
-		$s_id = $this->filter($this->input->post('s_id',true));
+		$u_id = $this->db->escape($this->input->post('u_id',true));
+		$s_id = $this->db->escape($this->input->post('s_id',true));
 		if (!empty($u_id) && !empty($s_id))
 		{
 			$rs = $this->ShowModel->deleteSubscribe($u_id,$s_id);
@@ -450,8 +454,8 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		$u_id = $this->filter($this->input->post('u_id',true));
-		$e_id = $this->filter($this->input->post('e_id',true));
+		$u_id = $this->db->escape($this->input->post('u_id',true));
+		$e_id = $this->db->escape($this->input->post('e_id',true));
 		if (!empty($u_id) && !empty($this->input->post('e_id'))) 
 		{
 			$rs = $this->ShowModel->insertSynchron($u_id,$e_id,date('Y-m-d H:i:s'));
@@ -471,8 +475,8 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		$u_id = $this->filter($this->input->post('u_id',true));
-		$e_id = $this->filter($this->input->post('e_id',true));
+		$u_id = $this->db->escape($this->input->post('u_id',true));
+		$e_id = $this->db->escape($this->input->post('e_id',true));
 		if (!empty($u_id) && !empty($e_id))
 		{
 			$rs = $this->ShowModel->deleteSynchron($u_id,$e_id);
@@ -493,9 +497,14 @@ class UI extends CI_Controller {
 		$this->ajaxCheckLogin();
 		$this->load->model('UserModel');
 
-		$name = $this->filter($this->input->post('name',true));
-		$pwd = md5($this->filter($this->input->post('pwd',true)));
-		$pwdNew = md5($this->filter($this->input->post('pwdNew',true)));
+		$name = $this->db->escape($this->input->post('name',true));
+		#$name = substr($name, 1,-1);
+		$pwd = $this->db->escape($this->input->post('pwd',true));
+		$pwd = substr($pwd, 1,-1);
+		$pwd = md5($pwd);
+		$pwdNew = $this->db->escape($this->input->post('pwdNew',true));
+		$pwdNew = substr($pwdNew, 1,-1);
+		$pwdNew = md5($pwdNew);
 		if (empty($name)) 
 		{
 			$name = "Undefined";
@@ -545,8 +554,8 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		$u_id = $this->filter($this->input->post('u_id',true));
-		$t_id = $this->filter($this->input->post('t_id',true));
+		$u_id = $this->db->escape($this->input->post('u_id',true));
+		$t_id = $this->db->escape($this->input->post('t_id',true));
 
 		if (!empty($u_id) && !empty($t_id)) 
 		{
@@ -567,8 +576,8 @@ class UI extends CI_Controller {
 	{
 		$this->ajaxCheckLogin();
 		$this->load->model('ShowModel');
-		$u_id = $this->filter($this->input->post('u_id',true));
-		$t_id = $this->filter($this->input->post('t_id',true));
+		$u_id = $this->db->escape($this->input->post('u_id',true));
+		$t_id = $this->db->escape($this->input->post('t_id',true));
 		if (!empty($u_id) && !empty($t_id))
 		{
 			$rs = $this->ShowModel->deleteLike($u_id,$t_id);

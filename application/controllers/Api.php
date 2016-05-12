@@ -55,11 +55,16 @@ class Api extends CI_Controller
 	//查找某一天所有集的方法
 	public function selectOneDateEp()
 	{
-		$date = $this->filter($this->input->get('date',true));
+		$date = $this->db->escape($this->input->get('date',true));
 		$this->load->model('ShowModel');
-		if(empty($date))
+		#if(empty($date))
+		if ($date == 'NULL') 
 		{
 			$date = date('Y-m-d');
+		}
+		else
+		{
+			$date = substr($date, 1,-1);
 		}
 		$errno = 1;
 		$err = '';
@@ -77,7 +82,7 @@ class Api extends CI_Controller
 		else
 		{
 			$errno = 4;
-			$err = $this->errorList[$errno].'Date format is incorrect';
+			$err = $this->errorList[$errno].'Date format is incorrect'.$date;
 		}
 		$data['output'] = array(
 			'errno' => $errno,
@@ -91,9 +96,9 @@ class Api extends CI_Controller
 	//登陆后使用账号只看我关注的剧更新的方法,需要日期和id
 	public function selectOneDateEpWithUid()
 	{
-		$date = $this->filter($this->input->get('date',true));
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
-		$timezone = $this->filter($this->input->get('timezone',true));
+		$date = $this->db->escape($this->input->get('date',true));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$timezone = $this->db->escape($this->input->get('timezone',true));
 		$this->load->model('ShowModel');
 		if(empty($date))
 		{
@@ -127,8 +132,8 @@ class Api extends CI_Controller
 
 	public function selectDates()
 	{
-		$dateStart = $this->filter($this->input->get('dateStart',true));
-		$dateEnd = $this->filter($this->input->get('dateEnd',true));
+		$dateStart = $this->db->escape($this->input->get('dateStart',true));
+		$dateEnd = $this->db->escape($this->input->get('dateEnd',true));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -163,7 +168,7 @@ class Api extends CI_Controller
 	//通过参数id查找集的详细信息
 	public function searchByEpId($id = '')
 	{
-		$id = intval($this->filter($this->input->get('id',true)));
+		$id = intval($this->db->escape($this->input->get('id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -194,7 +199,7 @@ class Api extends CI_Controller
 	//通过id查找剧的详细信息
 	public function searchByShowId($id='')
 	{
-		$id = intval($this->filter($this->input->get('id',true)));
+		$id = intval($this->db->escape($this->input->get('id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -227,7 +232,7 @@ class Api extends CI_Controller
 	public function searchByName()
 	{
 		$words = $this->input->get('words',true);
-		$fullResult = $this->filter($this->input->get('fullResult',true));
+		$fullResult = $this->db->escape($this->input->get('fullResult',true));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -270,8 +275,8 @@ class Api extends CI_Controller
 	//订阅剧
 	public function subscribe()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
-		$s_id = intval($this->filter($this->input->get('s_id',true)));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$s_id = intval($this->db->escape($this->input->get('s_id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -314,8 +319,8 @@ class Api extends CI_Controller
 	//取消订阅剧
 	public function unsubscribe()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
-		$s_id = intval($this->filter($this->input->get('s_id',true)));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$s_id = intval($this->db->escape($this->input->get('s_id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -358,8 +363,8 @@ class Api extends CI_Controller
 	//同步集
 	public function Synchron()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
-		$e_id = intval($this->filter($this->input->get('e_id',true)));
+		$u_id = $this->db->escape($this->input->get('u_id',true));
+		$e_id = $this->db->escape($this->input->get('e_id',true));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -388,7 +393,7 @@ class Api extends CI_Controller
 		else
 		{
 			$errno = 4;
-			$err = $this->errorList[$errno].'missing parameters';
+			$err = $this->errorList[$errno].'missing parameters'.$u_id.'   '.$e_id;
 		}
 
 		$data['output'] = array(
@@ -402,8 +407,8 @@ class Api extends CI_Controller
 	//取消同步集
 	public function unsynchron()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
-		$e_id = intval($this->filter($this->input->get('e_id',true)));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$e_id = intval($this->db->escape($this->input->get('e_id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -446,8 +451,8 @@ class Api extends CI_Controller
 	//喜欢某标签的方法
 	public function like()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
-		$t_id = intval($this->filter($this->input->get('t_id',true)));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$t_id = intval($this->db->escape($this->input->get('t_id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -490,8 +495,8 @@ class Api extends CI_Controller
 	//取消喜欢某标签的方法
 	public function unlike()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
-		$t_id = intval($this->filter($this->input->get('t_id',true)));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$t_id = intval($this->db->escape($this->input->get('t_id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -534,7 +539,7 @@ class Api extends CI_Controller
 	//获得我的关注的剧集,默认是前后七天
 	public function myshows()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -574,7 +579,7 @@ class Api extends CI_Controller
 	//获得标签的方法
 	public function getTag()
 	{
-		$u_id = intval($this->filter($this->input->get('u_id',true)));
+		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -609,9 +614,9 @@ class Api extends CI_Controller
 		$errno = 1;
 		$err = '';
 		$rsm = null;
-		$u_phone = intval($this->filter($this->input->post('u_phone',true)));
-		$u_passwd = $this->filter($this->input->post('u_passwd',true));
-		$u_name = $this->filter($this->input->post('u_name',true));
+		$u_phone = intval($this->db->escape($this->input->post('u_phone',true)));
+		$u_passwd = $this->db->escape($this->input->post('u_passwd',true));
+		$u_name = $this->db->escape($this->input->post('u_name',true));
 		if (!empty($u_phone) && !empty($u_passwd))
 		{
 			$u_passwd = md5($u_passwd);
@@ -657,8 +662,8 @@ class Api extends CI_Controller
 	//使用token登陆的方法
 	public function loginByToken()
 	{
-		$u_token =  $this->filter($this->input->get('u_token',true));
-		$u_id =  intval($this->filter($this->input->get('u_id',true)));
+		$u_token =  $this->db->escape($this->input->get('u_token',true));
+		$u_id =  intval($this->db->escape($this->input->get('u_id',true)));
 		$this->load->model('UserModel');
 		$errno = 1;
 		$err = '';
@@ -693,8 +698,8 @@ class Api extends CI_Controller
 	//账号密码登陆方法（密码是密文）
 	public function loginByPassword()
 	{
-		$u_phone = $this->filter($this->input->post('u_phone',true));
-		$u_passWordHash =  $this->filter($this->input->post('u_passwd',true));
+		$u_phone = $this->db->escape($this->input->post('u_phone',true));
+		$u_passWordHash =  $this->db->escape($this->input->post('u_passwd',true));
 		$this->load->model('UserModel');
 		$errno = 1;
 		$err = '';
@@ -726,15 +731,20 @@ class Api extends CI_Controller
 		$this->load->view('apiTemplate',$data);
 	}
 
+	public function test()
+	{
+		echo $this->db->escape("llllllll\'sssssqe   and ;dad?ddd' %%%dsda");
+	}
+
 	//ajax更新用户密码以及个人信息的方法
 	public function updateUser()
 	{
 		$this->load->model('UserModel');
 
-		$u_id = intval($this->filter($this->input->post('u_id',true)));
-		$name = $this->filter($this->input->post('u_name',true));
-		$pwd = $this->filter($this->input->post('pwd',true));
-		$pwdNew = $this->filter($this->input->post('pwdNew',true));
+		$u_id = intval($this->db->escape($this->input->post('u_id',true)));
+		$name = $this->db->escape($this->input->post('u_name',true));
+		$pwd = $this->db->escape($this->input->post('pwd',true));
+		$pwdNew = $this->db->escape($this->input->post('pwdNew',true));
 		if (empty($name)) 
 		{
 			$name = "Undefined";

@@ -131,12 +131,14 @@ function check_form_usercenter()
     {
         toastr.warning("您并未对个人信息作出修改","警告");
         flag = false;
+        $("#updateButton").removeAttr("disabled");
         return false;
     }
     if (pwd == "") 
     {
         toastr.warning("请输入密码","警告");
         flag = false;
+        $("#updateButton").removeAttr("disabled");
         return false;
     }
     var data = {'name':'','pwd':'','pwdNew':''};
@@ -146,12 +148,14 @@ function check_form_usercenter()
         {
             toastr.warning("新密码输入不一致","警告");
             flag = false;
+            $("#updateButton").removeAttr("disabled");
             return false;
         }
         if (pwd == pwdNew) 
         {
             toastr.warning("您未更改密码","警告");
             flag = false;
+            $("#updateButton").removeAttr("disabled");
             return false;
         }
         var regPwd = new RegExp("^\\w*$");
@@ -159,6 +163,7 @@ function check_form_usercenter()
         {
             toastr.error("密码存在不合法字符", "错误");
             flag = false;
+            $("#updateButton").removeAttr("disabled");
             return false;
         }
         var data = {'name':name,'pwd':pwd,'pwdNew':pwdNew}
@@ -170,6 +175,7 @@ function check_form_usercenter()
         {
           toastr.warning("新昵称存在敏感字符", "警告");
           flag = false;
+          $("#updateButton").removeAttr("disabled");
           $("#inputName").focus();
           return false;
         }
@@ -195,18 +201,15 @@ function check_form_usercenter()
             $("#inputPasswordNewRe").val('');
             $("#username_h").html(name+'<span class="caret"></span>');
             toastr.success("更新个人资料成功", "信息");
-            return false;
           }
           else if(result == 'WrongPw')
           {
             toastr.warning("原密码不正确", "警告");
-            return false;
           }
           else
           {
             toastr.info(result, "DEBUG");
             toastr.error("参数错误", "错误");
-            return false;
           }
         },
       });
