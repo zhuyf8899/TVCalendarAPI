@@ -184,7 +184,7 @@ class UserModel extends CI_Model{
 
 	public function loginByToken($uid,$token)
 	{
-		$checker = $this->db->query("SELECT u_id,u_name,u_token,u_status,u_phone FROM user WHERE u_id = {$uid} AND u_token = '{$token}' LIMIT 1")->row_array();
+		$checker = $this->db->query("SELECT u_id,u_name,u_token,u_status,u_phone FROM user WHERE u_id = {$uid} AND u_token = {$token} LIMIT 1")->row_array();
 		if (isset($checker['u_id'])) 
 		{
 			return $checker;

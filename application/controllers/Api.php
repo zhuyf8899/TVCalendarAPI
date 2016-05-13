@@ -133,7 +133,9 @@ class Api extends CI_Controller
 	public function selectDates()
 	{
 		$dateStart = $this->db->escape($this->input->get('dateStart',true));
+		$dateStart = substr($dateStart, 1,-1);
 		$dateEnd = $this->db->escape($this->input->get('dateEnd',true));
+		$dateEnd = substr($dateEnd, 1,-1);
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -168,7 +170,7 @@ class Api extends CI_Controller
 	//通过参数id查找集的详细信息
 	public function searchByEpId($id = '')
 	{
-		$id = intval($this->db->escape($this->input->get('id',true)));
+		$id = intval($this->input->get('id',true));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -199,7 +201,7 @@ class Api extends CI_Controller
 	//通过id查找剧的详细信息
 	public function searchByShowId($id='')
 	{
-		$id = intval($this->db->escape($this->input->get('id',true)));
+		$id = intval($this->input->get('id',true));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -231,8 +233,10 @@ class Api extends CI_Controller
 	//输入中英文名查找剧的方法
 	public function searchByName()
 	{
-		$words = $this->input->get('words',true);
+		$words = $this->db->escape($this->input->get('words',true));
+		$words = substr($words, 1,-1);
 		$fullResult = $this->db->escape($this->input->get('fullResult',true));
+		$fullResult = substr($fullResult, 1,-1);
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -241,7 +245,7 @@ class Api extends CI_Controller
 		if (!empty($words)) 
 		{
 			$words = urldecode($words);
-			$words = str_replace('\'', "\\'", $words);
+			#$words = str_replace('\'', "\\'", $words);
 			#$words = str_replace('%20', ' ', $words);
 			#$words = str_replace('%2F', '/', $words);
 
@@ -275,9 +279,14 @@ class Api extends CI_Controller
 	//订阅剧
 	public function subscribe()
 	{
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
-		$s_id = intval($this->db->escape($this->input->get('s_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
+		$s_id = intval($this->input->get('s_id',true));
 		$this->load->model('ShowModel');
+		if ($u_id == "0" || $s_id == "0") 
+		{
+			$u_id = "";
+			$s_id = "";
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
@@ -319,9 +328,14 @@ class Api extends CI_Controller
 	//取消订阅剧
 	public function unsubscribe()
 	{
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
-		$s_id = intval($this->db->escape($this->input->get('s_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
+		$s_id = intval($this->input->get('s_id',true));
 		$this->load->model('ShowModel');
+		if ($u_id == "0" || $s_id == "0") 
+		{
+			$u_id = "";
+			$s_id = "";
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
@@ -363,9 +377,14 @@ class Api extends CI_Controller
 	//同步集
 	public function Synchron()
 	{
-		$u_id = $this->db->escape($this->input->get('u_id',true));
-		$e_id = $this->db->escape($this->input->get('e_id',true));
+		$u_id = intval($this->input->get('u_id',true));
+		$e_id = intval($this->input->get('e_id',true));
 		$this->load->model('ShowModel');
+		if ($u_id == "0" || $e_id == "0") 
+		{
+			$u_id = "";
+			$e_id = "";
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
@@ -407,9 +426,14 @@ class Api extends CI_Controller
 	//取消同步集
 	public function unsynchron()
 	{
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
-		$e_id = intval($this->db->escape($this->input->get('e_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
+		$e_id = intval($this->input->get('e_id',true));
 		$this->load->model('ShowModel');
+		if ($u_id == "0" || $e_id == "0") 
+		{
+			$u_id = "";
+			$e_id = "";
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
@@ -451,9 +475,14 @@ class Api extends CI_Controller
 	//喜欢某标签的方法
 	public function like()
 	{
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
-		$t_id = intval($this->db->escape($this->input->get('t_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
+		$t_id = intval($this->input->get('t_id',true));
 		$this->load->model('ShowModel');
+		if ($u_id == "0" || $t_id == "0") 
+		{
+			$u_id = "";
+			$t_id = "";
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
@@ -495,9 +524,14 @@ class Api extends CI_Controller
 	//取消喜欢某标签的方法
 	public function unlike()
 	{
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
-		$t_id = intval($this->db->escape($this->input->get('t_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
+		$t_id = intval($this->input->get('t_id',true));
 		$this->load->model('ShowModel');
+		if ($u_id == "0" || $t_id == "0") 
+		{
+			$u_id = "";
+			$t_id = "";
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
@@ -539,7 +573,7 @@ class Api extends CI_Controller
 	//获得我的关注的剧集,默认是前后七天
 	public function myshows()
 	{
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -579,8 +613,12 @@ class Api extends CI_Controller
 	//获得标签的方法
 	public function getTag()
 	{
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
 		$this->load->model('ShowModel');
+		if ($u_id == "0") 
+		{
+			$u_id = "";
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
@@ -614,8 +652,9 @@ class Api extends CI_Controller
 		$errno = 1;
 		$err = '';
 		$rsm = null;
-		$u_phone = intval($this->db->escape($this->input->post('u_phone',true)));
+		$u_phone = intval($this->input->post('u_phone',true));
 		$u_passwd = $this->db->escape($this->input->post('u_passwd',true));
+		$u_passwd = substr($u_passwd, 1,-1);
 		$u_name = $this->db->escape($this->input->post('u_name',true));
 		if (!empty($u_phone) && !empty($u_passwd))
 		{
@@ -663,7 +702,7 @@ class Api extends CI_Controller
 	public function loginByToken()
 	{
 		$u_token =  $this->db->escape($this->input->get('u_token',true));
-		$u_id =  intval($this->db->escape($this->input->get('u_id',true)));
+		$u_id =  intval($this->input->get('u_id',true));
 		$this->load->model('UserModel');
 		$errno = 1;
 		$err = '';
@@ -700,6 +739,7 @@ class Api extends CI_Controller
 	{
 		$u_phone = $this->db->escape($this->input->post('u_phone',true));
 		$u_passWordHash =  $this->db->escape($this->input->post('u_passwd',true));
+		$u_passWordHash = substr($u_passWordHash, 1,-1);
 		$this->load->model('UserModel');
 		$errno = 1;
 		$err = '';
