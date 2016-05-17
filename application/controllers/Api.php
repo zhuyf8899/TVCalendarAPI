@@ -16,7 +16,8 @@ class Api extends CI_Controller
 			2 => 'Wrong Request:',
 			3 => 'Empty Response:',
 			4 => 'Incorrect Parameter:',
-			5 => 'Wrong Result'
+			5 => 'Wrong Result',
+			6 => 'Login need'
 		);		
 	}
 
@@ -28,6 +29,7 @@ class Api extends CI_Controller
 	3 - 空的输出
 	4 - 传参错误
 	5 - 返回结果错误
+	6 - 未授权
 	*/
 
 	public function index()
@@ -98,7 +100,8 @@ class Api extends CI_Controller
 	{
 		$date = $this->db->escape($this->input->get('date',true));
 		$u_id = intval($this->input->get('u_id',true));
-		$timezone = $this->db->escape($this->input->get('timezone',true));
+		$timezone = urldecode($this->input->get('timezone',true));
+		$timezone = $this->db->escape($timezone);
 		$this->load->model('ShowModel');
 		if(empty($date))
 		{
@@ -289,6 +292,8 @@ class Api extends CI_Controller
 	{
 		$u_id = intval($this->input->get('u_id',true));
 		$s_id = intval($this->input->get('s_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		if ($u_id == "0" || $s_id == "0") 
 		{
@@ -338,6 +343,8 @@ class Api extends CI_Controller
 	{
 		$u_id = intval($this->input->get('u_id',true));
 		$s_id = intval($this->input->get('s_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		if ($u_id == "0" || $s_id == "0") 
 		{
@@ -387,6 +394,8 @@ class Api extends CI_Controller
 	{
 		$u_id = intval($this->input->get('u_id',true));
 		$e_id = intval($this->input->get('e_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		if ($u_id == "0" || $e_id == "0") 
 		{
@@ -436,6 +445,8 @@ class Api extends CI_Controller
 	{
 		$u_id = intval($this->input->get('u_id',true));
 		$e_id = intval($this->input->get('e_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		if ($u_id == "0" || $e_id == "0") 
 		{
@@ -485,6 +496,8 @@ class Api extends CI_Controller
 	{
 		$u_id = intval($this->input->get('u_id',true));
 		$t_id = intval($this->input->get('t_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		if ($u_id == "0" || $t_id == "0") 
 		{
@@ -534,6 +547,8 @@ class Api extends CI_Controller
 	{
 		$u_id = intval($this->input->get('u_id',true));
 		$t_id = intval($this->input->get('t_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		if ($u_id == "0" || $t_id == "0") 
 		{
@@ -582,6 +597,8 @@ class Api extends CI_Controller
 	public function myshows()
 	{
 		$u_id = intval($this->input->get('u_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -622,6 +639,8 @@ class Api extends CI_Controller
 	public function getTag()
 	{
 		$u_id = intval($this->input->get('u_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		if ($u_id == "0") 
 		{
@@ -885,8 +904,27 @@ class Api extends CI_Controller
 	//测试方法，开发时请删除此方法
 	public function test()
 	{
+		$u_id = '2';
+		$token = '333';
+		$this->checkLogin($u_id,$token);
+		
 		echo intval('');
 		echo intval();
+	}
+
+	public function checkLogin($u_id,$token)
+	{	
+		if (empty($u_id) || empty($token)) 
+		{
+			echo '{"errno":6,"err":"missing token or user identity","rsm":""}';
+			exit(-1);
+		}
+		$this->load->model('UserModel');
+		if($this->UserModel->loginByToken($u_id,$token) == 'WrongPw')
+		{
+			echo '{"errno":6,"err":"wrong token","rsm":""}';
+			exit(-2);
+		}
 	}
 
 	//已废弃，原先用于预防SQL注入，出于兼容目的保留

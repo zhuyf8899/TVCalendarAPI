@@ -160,12 +160,20 @@ class ShowModel extends CI_Model{
 
 	public function getShows($start = 0,$limit = 20)
 	{
-		$rs = $this->db->query("SELECT * FROM `shows` 
+		$rs = $this->db->query("SELECT s_id,s_name,s_name_cn,status,area,channel,s_sibox_image FROM `shows` 
 			WHERE 1 limit {$start},{$limit}")->result_array();
 		if(!is_null($rs))
+		{
+			foreach ($rs as &$one) 
+			{
+				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+			}
 			return $rs;
+		}
 		else
+		{
 			return null;
+		}
 	}
 
 	//获取一部剧是否被用户订阅的方法
