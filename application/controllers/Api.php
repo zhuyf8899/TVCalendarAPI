@@ -97,25 +97,33 @@ class Api extends CI_Controller
 	public function selectOneDateEpWithUid()
 	{
 		$date = $this->db->escape($this->input->get('date',true));
-		$u_id = intval($this->db->escape($this->input->get('u_id',true)));
+		$u_id = intval($this->input->get('u_id',true));
 		$timezone = $this->db->escape($this->input->get('timezone',true));
 		$this->load->model('ShowModel');
 		if(empty($date))
 		{
 			$date = date('Y-m-d');
 		}
+		else
+		{
+			$date = substr($date, 1,-1);
+		}
+		if (!empty($timezone)) 
+		{
+			$timezone = substr($timezone, 1,-1);
+		}
 		$errno = 1;
 		$err = '';
 		$rsm = null;
-		if(preg_match($this->dateFormat,$date) || empty($u_id) || empty($timezone))
+		if(preg_match($this->dateFormat,$date) && !empty($u_id) )
 		{	//判断是否符合日期格式
 			$rsm = $this->ShowModel->searchRecentByUid($u_id,0,1,$date,$timezone);
 			#$data['errorFlag'] = 0;
-			if (empty($rsm)) 
-			{
-				$errno = 3;
-				$err = $this->errorList[$errno].'Server response with an empty set';
-			}
+			// if (empty($rsm)) 
+			// {
+			// 	$errno = 3;
+			// 	$err = $this->errorList[$errno].'Server response with an empty set';
+			// }
 		}
 		else
 		{
@@ -302,7 +310,7 @@ class Api extends CI_Controller
 				else
 				{
 					$errno = 5;
-					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+					$err = $this->errorList[$errno].'You have subscribed this show.';
 				}
 			}
 			else
@@ -351,7 +359,7 @@ class Api extends CI_Controller
 				else
 				{
 					$errno = 5;
-					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+					$err = $this->errorList[$errno].'You have not subscribed this show yet.';
 				}
 			}
 			else
@@ -449,7 +457,7 @@ class Api extends CI_Controller
 				else
 				{
 					$errno = 5;
-					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+					$err = $this->errorList[$errno].'You have not synchroned this episode yet.';
 				}
 			}
 			else
@@ -498,7 +506,7 @@ class Api extends CI_Controller
 				else
 				{
 					$errno = 5;
-					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+					$err = $this->errorList[$errno].'You have not likeed this tag.';
 				}
 			}
 			else
@@ -547,7 +555,7 @@ class Api extends CI_Controller
 				else
 				{
 					$errno = 5;
-					$err = $this->errorList[$errno].'You have not synchroned this episode.';
+					$err = $this->errorList[$errno].'You have not liked this episode yet.';
 				}
 			}
 			else
@@ -594,11 +602,11 @@ class Api extends CI_Controller
 			}
 		}
 
-		if (empty($rsm['rescentEps']) && empty($rsm['mySubscribe'])) 
-		{
-			$errno = 3;
-			$err = $this->errorList[$errno].'The server response with an empty set.';
-		}
+		// if (empty($rsm['rescentEps']) && empty($rsm['mySubscribe'])) 
+		// {
+		// 	$errno = 3;
+		// 	$err = $this->errorList[$errno].'The server response with an empty set.';
+		// }
 
 		$data['output'] = array(
 			'errno' => $errno,

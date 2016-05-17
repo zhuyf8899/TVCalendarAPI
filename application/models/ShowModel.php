@@ -182,6 +182,10 @@ class ShowModel extends CI_Model{
 	//向subscribe插入记录的方法
 	public function insertSubscribe($u_id,$s_id,$date)
 	{
+		if($this->checkSubscribe($u_id,$s_id))
+		{
+			return "Repeat";
+		}
 		$this->db->query("INSERT INTO subscribe (u_id, s_id,sub_time) 
 			VALUES ({$u_id}, {$s_id},'{$date}')");
 		if ($this->db->affected_rows()) 
@@ -229,6 +233,10 @@ class ShowModel extends CI_Model{
 	//新增一个同步记录
 	public function insertSynchron($u_id,$e_id,$date)
 	{
+		if ($this->checkSyn($u_id,$e_id)) 
+		{
+			return "Repeat";
+		}
 		$this->db->query("INSERT INTO synchron (u_id, e_id,syn_time) 
 			VALUES ({$u_id}, {$e_id},'{$date}')");
 		if ($this->db->affected_rows()) 
@@ -410,8 +418,26 @@ class ShowModel extends CI_Model{
 			return null;
 	}
 
+	public function checkLike($u_id,$t_id)
+	{
+		$checker = $this->db->query("SELECT * FROM user_to_tag
+				WHERE u_id = {$u_id} AND t_id = {$t_id} LIMIT 1")->row_array();
+		if (!is_null($checker)) 
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
 	public function insertLike($u_id,$t_id)
 	{
+		if ($this->checkLike($u_id,$t_id)) 
+		{
+			return "Repeat";
+		}
 		$this->db->query("INSERT INTO user_to_tag (u_id, t_id) 
 			VALUES ({$u_id}, {$t_id})");
 		if ($this->db->affected_rows()) 
