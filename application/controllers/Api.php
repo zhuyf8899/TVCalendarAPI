@@ -771,11 +771,6 @@ class Api extends CI_Controller
 		$this->load->view('apiTemplate',$data);
 	}
 
-	public function test()
-	{
-		echo $this->db->escape("llllllll\'sssssqe   and ;dad?ddd' %%%dsda");
-	}
-
 	//ajax更新用户密码以及个人信息的方法
 	public function updateUser()
 	{
@@ -848,6 +843,45 @@ class Api extends CI_Controller
 		$this->load->view('apiTemplate',$data);	
 	}
 
+	//二期工程预告：从一个剧中不断添加条件之后筛选出剧的方法入口
+	//目前仅实现全部剧的搜索
+	public function showFilter()
+	{
+		$this->load->model('ShowModel');
+		$startPage = intval($this->input->get('startPage',TRUE));
+		$itemPerPage = intval($this->input->get('itemPerPage',TRUE));
+
+		if(empty($startPage))
+		{
+			$startPage = 0;
+		}
+		if (empty($itemPerPage) || $itemPerPage == 0 ) 
+		{
+			$itemPerPage = 20;
+		}
+
+		$errno = 1;
+		$err = '';
+		$rsm = array();
+		$rsm['countShow'] = $this->ShowModel->getNumberOfShows();
+		$rsm['shows'] = $this->ShowModel->getShows($startPage,$itemPerPage);
+
+		$data['output'] = array(
+			'errno' => $errno,
+			'err' => $err,
+			'rsm' => $rsm
+			);
+		$this->load->view('apiTemplate',$data);	
+	}
+
+	//测试方法，开发时请删除此方法
+	public function test()
+	{
+		echo intval('');
+		echo intval();
+	}
+
+	//已废弃，原先用于预防SQL注入，出于兼容目的保留
 	public function filter($input)
 	{
 		$mid = str_replace("'", ' ', $input);

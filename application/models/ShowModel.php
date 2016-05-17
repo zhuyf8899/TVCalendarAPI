@@ -158,6 +158,16 @@ class ShowModel extends CI_Model{
 			return null;
 	}
 
+	public function getShows($start = 0,$limit = 20)
+	{
+		$rs = $this->db->query("SELECT * FROM `shows` 
+			WHERE 1 limit {$start},{$limit}")->result_array();
+		if(!is_null($rs))
+			return $rs;
+		else
+			return null;
+	}
+
 	//获取一部剧是否被用户订阅的方法
 	public function checkSubscribe($u_id,$s_id)
 	{
