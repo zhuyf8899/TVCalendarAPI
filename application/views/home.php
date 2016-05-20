@@ -18,7 +18,7 @@
         <hr/>
         <h4>更新通知：</h4>
         <p>
-          项目计划在今日（5.17）维护升级API接口，届时手机开发者可能无法正常使用。预计今天晚间恢复。
+          因一些突发因素系统将紧急升级一次，内容为调整系统内储存剧集的格式，届时会有部分内容无法访问。
         </p>
       </div>
 
@@ -45,7 +45,7 @@
             <div class="col-md-4">
               <h3><?php echo $today[$i*3+$j]['s_name_cn']; ?></h3>
               <h5><?php echo $today[$i*3+$j]['s_name']; ?></h5>
-              <img src="<?php echo $CUrl.$today[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $today[$i*3+$j]['s_name']; ?>">
+              <img src="<?php echo $today[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $today[$i*3+$j]['s_name']; ?>">
               <p>第<?php echo $today[$i*3+$j]['se_id']; ?>季，第<?php echo $today[$i*3+$j]['e_num']; ?>集:
                 <em><?php echo $today[$i*3+$j]['e_name']."\n"; ?></em><br/>
               </p>

@@ -33,7 +33,7 @@
   	{
   	?>
 	  	<tr>
-	  		<td class="col-md-4"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name_cn'];?>"></td>
+	  		<td class="col-md-4"><img src="<?php echo $oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name_cn'];?>"></td>
 	  		<td class="col-md-6"><h4><?php echo $oneShow['s_name_cn'].'<br/>';?></h4><?php echo $oneShow['s_name']; ?><br/>地区:<?php echo $oneShow['area']; ?>&nbsp;&nbsp;&nbsp;状态:<?php echo $transStatus["{$oneShow['status']}"];?></td>
 	  		<td class="col-md-2"><a class="btn btn-info" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $oneShow['s_id']; ?>">剧集详情&raquo;</a></td>
 	  	</tr>

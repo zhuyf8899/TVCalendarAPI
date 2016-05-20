@@ -238,14 +238,19 @@ class UI extends CI_Controller {
 
 		$area = '';
 		$header['title'] = '推荐';
-		if ($this->db->escape($this->input->get('area',true))) 
+		if ($this->input->get('area',true))
 		{
 			$area = urldecode($area);
-			$area = $this->db->escape($this->input->get('area',true));
+			if ($area == 'USA') {
+				$area = 'WHERE area = USA or area = United States';
+			}else if ($area == 'United Kingdom') {
+				$area = 'WHERE area = UK or area = United Kingdom';
+			}
+			#$area = $this->db->escape($this->input->get('area',true));
 			#$area = str_replace('\'', "\\'", $area);
 			#$area = str_replace('%20', ' ', $area);
 			#$area = str_replace('%2F', '/', $area);
-			$area = "WHERE area = ".$area;
+			#$area = "".$area;
 		}
 		if ($guessILike == '1') 
 		{

@@ -23,7 +23,7 @@ class ShowModel extends CI_Model{
 				's_name' => $rs['s_name'],
 				's_name_cn' => $rs['s_name_cn'],
 				's_sibox_image' => $rs['s_sibox_image'],
-				's_vertical_image' => '/cat/imgs/vertical/'.substr($rs['s_sibox_image'], 16),
+				's_vertical_image' => str_replace('sibox', 'vertical', $rs['s_sibox_image']),
 				'area' => $rs['area'],
 				'channel' => $rs['channel']
 				);
@@ -112,7 +112,7 @@ class ShowModel extends CI_Model{
 					LIMIT 1")->row_array();
 				$rs['s_description'] = $description['resource_content'];
  			}
-			$rs['s_sibig_image'] = '/cat/imgs/sibig/'.substr($rs['s_sibox_image'], 16);
+			$rs['s_sibig_image'] = str_replace('sibox', 'sibig', $rs['s_sibox_image']);
 			return $rs;
 		}
 		else
@@ -166,7 +166,7 @@ class ShowModel extends CI_Model{
 		{
 			foreach ($rs as &$one) 
 			{
-				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+				$one['s_vertical_image'] = str_replace('sibox', 'vertical', $one['s_sibox_image']);
 			}
 			return $rs;
 		}
@@ -308,7 +308,7 @@ class ShowModel extends CI_Model{
 		{
 			foreach ($rs as &$one) 
 			{
-				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+				$one['s_vertical_image'] = str_replace('sibox', 'vertical', $one['s_sibox_image']);
 			}
 			return $rs;
 		}
@@ -339,7 +339,7 @@ class ShowModel extends CI_Model{
 		{
 			foreach ($rs as &$one) 
 			{
-				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+				$one['s_vertical_image'] = str_replace('sibox', 'vertical', $one['s_sibox_image']);
 			}
 			return $rs;
 		}
@@ -381,7 +381,7 @@ class ShowModel extends CI_Model{
 
 		foreach ($rs as &$one) 
 		{
-			$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+			$one['s_vertical_image'] = str_replace('sibox', 'vertical',$one['s_sibox_image'] ) ;
 		}
 		return $rs;
 	}
@@ -397,7 +397,7 @@ class ShowModel extends CI_Model{
 			limit {$limit}")->result_array();
 		foreach ($rs as &$one) 
 		{
-			$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+			$one['s_vertical_image'] = str_replace('sibox', 'vertical',$one['s_sibox_image'] );
 		}
 		return $rs;
 	}
@@ -507,7 +507,7 @@ class ShowModel extends CI_Model{
 		{
 			foreach ($checker as &$one) 
 			{
-				$one['s_vertical_image'] = '/cat/imgs/vertical/'.substr($one['s_sibox_image'], 16);
+				$one['s_vertical_image'] = str_replace('sibox', 'vertical',$one['s_sibox_image'] );
 			}
 			return $checker;
 		}

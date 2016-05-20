@@ -34,7 +34,7 @@
               {
       				?>
       				<tr>
-      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<!--<td class="col-md-2"><?php //if($counter >= $amount/2){echo "和您关注同一部剧的人还关注了这部剧";}else{ echo "因为您关注了“{$oneShow['t_name_cn']}”标签";}; ?></td>-->
@@ -57,7 +57,7 @@
       				$counter++;
       				?>
       				<tr>
-      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2">因为它很热门</td>
@@ -92,7 +92,7 @@
             {
               ?>
               <tr>
-                <th class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></th>
+                <th class="col-md-3"><img src="<?php echo $oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></th>
                 <th class="col-md-2"><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></th>
                 <th class="col-md-1"><?php echo '第'.$oneShow['se_id'].'季:第'.$oneShow['e_num'].'集'; ?></th>
                 <th class="col-md-2"><?php echo $oneShow['count']; ?></th>
@@ -127,7 +127,7 @@
       			{
       				?>
       				<tr>
-      					<td class="col-md-3"><img src="<?php echo $CUrl.$oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
+      					<td class="col-md-3"><img src="<?php echo $oneShow['s_vertical_image'] ;?>" alt="<?php echo $oneShow['s_name'].':'.$oneShow['s_name_cn']; ?>"></td>
       					<td class="col-md-2" ><?php echo $oneShow['s_name'].'<br/>'.$oneShow['s_name_cn']; ?></td>
       					<td class="col-md-1"><?php echo $oneShow['area'].'/'.$transStatus["{$oneShow['status']}"]; ?></td>
       					<td class="col-md-2"><?php echo $oneShow['numbers'] ?></td>
