@@ -213,6 +213,9 @@ class Api extends CI_Controller
 	public function searchByShowId($id='')
 	{
 		$id = intval($this->input->get('id',true));
+		$u_id = intval($this->input->get('id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -226,12 +229,20 @@ class Api extends CI_Controller
 		{
 			$rsm['show'] = $this->ShowModel->searchByShowId($id);
 			$rsm['episodes'] = $this->ShowModel->searchEpsBySid($rsm['show']['s_id']);
+			if ($this->ShowModel->checkSubscribe($id,$s_id)) 
+			{
+				$rsm['subscribed'] = True;
+			}else
+			{
+				$rsm['subscribed'] = False;
+			}
 			if (empty($rsm['show'])) 
 			{
 				$errno = 3;
 				$err = $this->errorList[$errno].'Server response with an empty set';
 			}
 		}
+		
 
 		$data['output'] = array(
 			'errno' => $errno,
