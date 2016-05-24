@@ -100,6 +100,8 @@ class Api extends CI_Controller
 	{
 		$date = $this->db->escape($this->input->get('date',true));
 		$u_id = intval($this->input->get('u_id',true));
+		$token = $this->db->escape($this->input->get('u_token',true));
+		$this->checkLogin($u_id,$token);
 		$timezone = urldecode($this->input->get('timezone',true));
 		$timezone = $this->db->escape($timezone);
 		$this->load->model('ShowModel');
@@ -213,9 +215,12 @@ class Api extends CI_Controller
 	public function searchByShowId($id='')
 	{
 		$id = intval($this->input->get('id',true));
-		$u_id = intval($this->input->get('id',true));
+		$u_id = intval($this->input->get('u_id',true));
 		$token = $this->db->escape($this->input->get('u_token',true));
-		$this->checkLogin($u_id,$token);
+		if (!empty($u_id)) 
+		{
+			$this->checkLogin($u_id,$token);
+		}
 		$this->load->model('ShowModel');
 		$errno = 1;
 		$err = '';
@@ -225,14 +230,22 @@ class Api extends CI_Controller
 			$errno = 4;
 			$err = $this->errorList[$errno].'missing parameters';
 		}
-		else if($id)
+		else
 		{
 			$rsm['show'] = $this->ShowModel->searchByShowId($id);
 			$rsm['episodes'] = $this->ShowModel->searchEpsBySid($rsm['show']['s_id']);
-			if ($this->ShowModel->checkSubscribe($id,$s_id)) 
+			if (!empty($u_id)) 
 			{
-				$rsm['subscribed'] = True;
-			}else
+				if ($this->ShowModel->checkSubscribe($id,$u_id)) 
+				{
+					$rsm['subscribed'] = True;
+				}
+				else
+				{
+					$rsm['subscribed'] = False;
+				}
+			}
+			else
 			{
 				$rsm['subscribed'] = False;
 			}
