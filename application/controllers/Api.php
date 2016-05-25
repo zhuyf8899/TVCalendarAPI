@@ -123,6 +123,10 @@ class Api extends CI_Controller
 		if(preg_match($this->dateFormat,$date) && !empty($u_id) )
 		{	//判断是否符合日期格式
 			$rsm = $this->ShowModel->searchRecentByUid($u_id,0,1,$date,$timezone);
+			foreach ($rsm as &$oneShow) 
+			{
+				$oneShow['percent'] = $this->ShowModel->getSynPercent($u_id,$oneShow['s_id']);
+			}
 			#$data['errorFlag'] = 0;
 			// if (empty($rsm)) 
 			// {
@@ -236,7 +240,7 @@ class Api extends CI_Controller
 			$rsm['episodes'] = $this->ShowModel->searchEpsBySid($rsm['show']['s_id']);
 			if (!empty($u_id)) 
 			{
-				if ($this->ShowModel->checkSubscribe($id,$u_id)) 
+				if ($this->ShowModel->checkSubscribe($u_id,$id)) 
 				{
 					$rsm['subscribed'] = True;
 				}

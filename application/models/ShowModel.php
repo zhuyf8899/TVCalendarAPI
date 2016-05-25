@@ -514,4 +514,22 @@ class ShowModel extends CI_Model{
 		return null;
 		
 	}
+
+	public function getSynPercent($u_id,$s_id)
+	{
+		$numerator = $this->db->query("SELECT COUNT(*) AS `numerator`
+			FROM `episode` 
+			LEFT JOIN `synchron` ON `episode`.`e_id` = `synchron`.`e_id` 
+			WHERE u_id = {$u_id} AND s_id = {$s_id}")->row_array();
+		$denominator = $this->db->query("SELECT COUNT(*) AS `denominator`
+			FROM `episode` 
+			WHERE s_id = {$s_id}")->row_array();
+		// $result = array(
+		// 	'numerator' => $numerator['numerator'],
+		// 	'denominator' => $denominator['denominator']
+		// );
+		if ($denominator['denominator'] == 0)
+			return 0.0;
+		return $numerator['numerator']/$denominator['denominator'];
+	}
 }
