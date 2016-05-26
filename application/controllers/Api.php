@@ -918,7 +918,7 @@ class Api extends CI_Controller
 		$errno = 1;
 		$err = '';
 		$rsm = array();
-		$rsm['countShow'] = $this->ShowModel->getNumberOfShows();
+		$rsm['countShow'] = ceil($this->ShowModel->getNumberOfShows()/$itemPerPage);
 		$rsm['shows'] = $this->ShowModel->getShows($startPage,$itemPerPage);
 
 		$data['output'] = array(
