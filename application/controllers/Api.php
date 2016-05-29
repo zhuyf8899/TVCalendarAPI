@@ -125,6 +125,14 @@ class Api extends CI_Controller
 			$rsm = $this->ShowModel->searchRecentByUid($u_id,0,1,$date,$timezone);
 			foreach ($rsm as &$oneShow) 
 			{
+				if ($this->ShowModel->checkSyn($u_id,$oneShow['e_id']))
+				{
+					$oneShow['syned'] = 'True';
+				}
+				else
+				{
+					$oneShow['syned'] = 'False';
+				}
 				$oneShow['percent'] = $this->ShowModel->getSynPercent($u_id,$oneShow['s_id']);
 			}
 			#$data['errorFlag'] = 0;
