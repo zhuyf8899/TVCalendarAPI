@@ -7,6 +7,7 @@
   <h5>蓝色背景表格为今日播出剧</h5>
   </div>
   <?php 
+  $trans_week = array('Monday' => '周一','Tuesday' => '周二','Wednesday' => '周三','Thursday' => '周四','Friday' => '周五','Saturday' => '周六','Sunday' => '周日' );
   if(isset($rescentEps))
   {
   ?>
@@ -77,9 +78,21 @@
             <div class="col-md-4">
               <h3><?php echo $mySubscribe[$i*3+$j]['s_name_cn']; ?></h3>
               <h5><?php echo $mySubscribe[$i*3+$j]['s_name']; ?></h5>
-              <img src="<?php echo $CUrl.$mySubscribe[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $mySubscribe[$i*3+$j]['s_name']; ?>">
+              <img style="width:100%" src="<?php echo $mySubscribe[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $mySubscribe[$i*3+$j]['s_name']; ?>">
               <p>地区：<?php echo $mySubscribe[$i*3+$j]['area']; ?> 电视台：<?php echo $mySubscribe[$i*3+$j]['channel']; ?></p>
-              <p>每周<?php echo $mySubscribe[$i*3+$j]['update_time']; ?>（格林尼治时间）</p>
+              <p>每<?php echo $trans_week[$mySubscribe[$i*3+$j]['update_time']]; ?></p>
+              <p>观看进度：
+                <div class="progress">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em; width: <?php echo 100 * $mySubscribe[$i*3+$j]['percent']; ?>%;">
+                        <?php if(strlen($mySubscribe[$i*3+$j]['percent'])>4) 
+                              {   
+                                echo 100*substr($mySubscribe[$i*3+$j]['percent'],0,4);
+                              }else{
+                                echo 100*$mySubscribe[$i*3+$j]['percent'];
+                              }?>%
+                  </div>
+                </div>
+              </p>
               <p><a class="btn btn-default" target="_blank" href="/TVCalendarAPI/index.php/UI/showSummary/<?php echo $mySubscribe[$i*3+$j]['s_id']; ?>" role="button">点击前往 &raquo;</a></p>
             </div>
         <?php

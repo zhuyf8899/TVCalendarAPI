@@ -133,7 +133,6 @@ class Api extends CI_Controller
 				{
 					$oneShow['syned'] = 'False';
 				}
-				$oneShow['percent'] = $this->ShowModel->getSynPercent($u_id,$oneShow['s_id']);
 			}
 			#$data['errorFlag'] = 0;
 			// if (empty($rsm)) 
@@ -654,6 +653,12 @@ class Api extends CI_Controller
 				$anEpisode['syn'] = 0;
 			}
 		}
+
+		foreach ($rsm['mySubscribe'] as &$oneSubcribe) 
+		{
+			$oneSubcribe['percent'] = $this->ShowModel->getSynPercent($u_id,$oneSubcribe['s_id']);
+		}
+		
 
 		// if (empty($rsm['rescentEps']) && empty($rsm['mySubscribe'])) 
 		// {

@@ -165,6 +165,10 @@ class UI extends CI_Controller {
 				$anEpisode['syn'] = 0;
 			}
 		}
+		foreach ($data['mySubscribe'] as &$oneSubcribe) 
+		{
+			$oneSubcribe['percent'] = $this->ShowModel->getSynPercent($this->session->u_id,$oneSubcribe['s_id']);
+		}
 
 		$data['CUrl'] = $this->CalUrl;
 		$header['title'] = '我的剧集';

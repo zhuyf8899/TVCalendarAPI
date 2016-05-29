@@ -18,7 +18,7 @@
         <hr/>
         <h4>更新通知：</h4>
         <p>
-          升级已完成，如有问题请及时联系管理员~
+          是不是发现我的剧集里面增加了一个观看进度的工具条吖~，如有问题请及时联系管理员~
         </p>
       </div>
 
@@ -45,7 +45,7 @@
             <div class="col-md-4">
               <h3><?php echo $today[$i*3+$j]['s_name_cn']; ?></h3>
               <h5><?php echo $today[$i*3+$j]['s_name']; ?></h5>
-              <img src="<?php echo $today[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $today[$i*3+$j]['s_name']; ?>">
+              <img style="width:100%" src="<?php echo $today[$i*3+$j]['s_sibox_image']; ?>" alt="<?php echo $today[$i*3+$j]['s_name']; ?>">
               <p>第<?php echo $today[$i*3+$j]['se_id']; ?>季，第<?php echo $today[$i*3+$j]['e_num']; ?>集:
                 <em><?php echo $today[$i*3+$j]['e_name']."\n"; ?></em><br/>
               </p>
