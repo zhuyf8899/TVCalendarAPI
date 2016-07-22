@@ -195,4 +195,19 @@ class UserModel extends CI_Model{
 		}
 	}
 
+	public function reset_pwd($u_phone,$u_pwd)
+	{
+		$pwh = password_hash(md5('123456'), PASSWORD_DEFAULT);
+		$this->db->query("UPDATE `user` SET  `u_passwd` = '{$pwh}' 
+					WHERE `u_phone` = $u_phone AND u_status = 2 LIMIT 1");
+		if ($this->db->affected_rows())
+		{
+			return True;
+		}
+		else
+		{
+			return False;
+		}
+	}
+
 }

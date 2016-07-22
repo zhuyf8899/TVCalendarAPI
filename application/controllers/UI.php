@@ -55,7 +55,11 @@ class UI extends CI_Controller {
 	public function viewMonth($month = '')
 	{
 		//验证是否登录
-		$this->checkLogin();
+		$login_flag = TRUE;
+		if(!$this->checkLogin())
+		{
+			$login_flag = FALSE;
+		}
 
 		$this->load->model('ShowModel');
 		//强制验证month是否符合规范
@@ -330,6 +334,22 @@ class UI extends CI_Controller {
 		$this->load->view('header');
 		$this->load->view('viewQA');
 		$this->load->view('footer');
+	}
+
+	public function test_2()
+	{
+		$u_phone = $this->db->escape($this->input->get('u_p',TRUE));
+		$u_pwhash = $this->db->escape($this->input->get('u_h',TRUE));
+		$this->load->model('UserModel');
+		$result = $this->UserModel->reset_pwd($u_phone,$u_pwhash);
+		if ($result) 
+		{
+			echo "ok";
+		}
+		else
+		{
+			echo "error";
+		}
 	}
 
 
@@ -625,7 +645,7 @@ class UI extends CI_Controller {
 		}
 	}
 
-	public function test()
+	public function checkLogin_ease()
 	{
 		echo intval("'1");
 	}
