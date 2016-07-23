@@ -12,7 +12,7 @@
   <div class="page-header">
     <h1 class="header-left"><?php $transStatus = array('Canceled/Ended' => '已完结/已停播', 'Returning Series' => '回归剧(正在连载)', 'New Series' => '新剧(正在连载)','Final Season' => '完结季(正在连载)' ); if(isset($showInfo['s_name_cn'])){echo $showInfo['s_name_cn'].':';}if(isset($showInfo['s_name'])){echo $showInfo['s_name'];} ?></h1>
     <div class="header-right">
-      <button type="button" class="btn btn-lg btn-success" id="sub" name="s999999" onclick="subscribe(<?php if(isset($s_id)){echo $s_id.','.$this->session->u_id.',999999';} ?>);" style="<?php if($subOrNot){echo "display:none";} ?>" >订阅本剧</button>
+      <button type="button" class="btn btn-lg btn-success" id="sub" name="s999999" onclick="subscribe(<?php if(isset($s_id)){echo $s_id.','.$this->session->u_id.',999999';} ?>);" style="<?php if($subOrNot){echo "display:none";}?>"<?php if (!$login_flag) {echo ' disabled="disabled"';} ?> ><?php if (!$login_flag) {echo ' 登陆后方可';}?>订阅本剧</button>
       <button type="button" class="btn btn-lg btn-warning" id="unsub" name="u999999" onclick="unsubscribe(<?php if(isset($s_id)){echo $s_id.','.$this->session->u_id.',999999';} ?>);" style="<?php if(!$subOrNot){echo "display:none";} ?>" >不再订阅</button>
     </div>
   </div>
@@ -126,9 +126,9 @@
 					      	<?php
 					      	if(strtotime(date('Y-m-d H:i:s')) > strtotime($episodeInfo[$i]['e_time'])){
 					      	?>
-					      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";} ?> >我看完了</button>
+					      	<button type="button" id="s<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-success" onclick="syn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 1){echo "style=\"display:none\"";};if (!$login_flag) {echo ' disabled="disabled"';} ?> ><?php if (!$login_flag) {echo '未登录';}else{echo '我看完了';} ?></button>
 					      	<button type="button" id="u<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-warning" onclick="unsyn(<?php echo $this->session->u_id.','.$episodeInfo[$i]['e_id']; ?>);" <?php if( $episodeInfo[$i]['syn'] == 0){echo "style=\"display:none\"";} ?> >取消同步</button>
-			            <a target="_blank" href="/TVCalendarAPI/index.php/UI/download?r_id=<?php echo urlencode($showInfo['r_id']);?>&se_id=<?php echo $episodeInfo[$i]['se_id']; ?>&e_num=<?php echo  $episodeInfo[$i]['e_num'];?>&e_id=<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-info" >前往下载链接&raquo;</a>
+			            <a target="_blank" href="/TVCalendarAPI/index.php/UI/download?r_id=<?php echo urlencode($showInfo['r_id']);?>&se_id=<?php echo $episodeInfo[$i]['se_id']; ?>&e_num=<?php echo  $episodeInfo[$i]['e_num'];?>&e_id=<?php echo $episodeInfo[$i]['e_id']; ?>" class="btn btn-info" <?php if (!$login_flag) {echo ' disabled="disabled"';} ?> ><?php if (!$login_flag) {echo '登录可前往下载链接';}else{echo '前往下载链接&raquo;';} ?></a>
 			            	<?php
 			            	}
 			            	else

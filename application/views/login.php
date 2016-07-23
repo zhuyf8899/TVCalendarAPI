@@ -1,6 +1,6 @@
 <div class="container">
 
-  <form class="form-signin" action="/TVCalendarAPI/index.php/UI/index" method="GET" onsubmit="return checkform();">
+  <form class="form-signin" action="<?php echo $url; ?>" method="GET" onsubmit="return checkform();">
     <h2 class="form-signin-heading">用户登入：</h2>
     <label for="inputEmail" class="sr-only">手机号码</label>
     <input type="text" id="inputPhone" class="form-control" placeholder="手机号码" required autofocus>

@@ -90,7 +90,7 @@
             {
             ?>
             <div id="navbar" class="navbar-collapse collapse"><!--nav navbar-nav navbar-right-->
-              <form class="navbar-form navbar-right" action="/TVCalendarAPI/index.php/UI" method="GET" onsubmit="return checkform_nav();">
+              <form class="navbar-form navbar-right" action="" method="GET" onsubmit="return checkform_nav();">
                 <div class="form-group">
                   <input type="text" placeholder="手机号码" id="phoneNumber" class="form-control" required >
                 </div>

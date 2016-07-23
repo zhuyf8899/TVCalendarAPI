@@ -202,11 +202,11 @@ class UserModel extends CI_Model{
 					WHERE `u_phone` = $u_phone AND u_status = 2 LIMIT 1");
 		if ($this->db->affected_rows())
 		{
-			return True;
+			return TRUE;
 		}
 		else
 		{
-			return False;
+			return FALSE;
 		}
 	}
 

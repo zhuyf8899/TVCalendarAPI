@@ -24,12 +24,21 @@ class UI extends CI_Controller {
 		$this->load->view('footer');
 	}
 
-	//登陆页面
+	//登陆页面,可以跳转
 	public function webLogin()
 	{
+		$url = $this->input->get('url',TRUE);
+		if ($url == '') 
+		{
+			$data['url'] = '/TVCalendarAPI/index.php/UI/index';
+		}
+		else
+		{
+			$data['url'] = $url;
+		}
 		$header['title'] = '用户登录';
 		$this->load->view('headerLogin',$header);
-		$this->load->view('login');
+		$this->load->view('login',$data);
 		$this->load->view('footer_simple');
 
 	}
@@ -55,11 +64,7 @@ class UI extends CI_Controller {
 	public function viewMonth($month = '')
 	{
 		//验证是否登录
-		$login_flag = TRUE;
-		if(!$this->checkLogin())
-		{
-			$login_flag = FALSE;
-		}
+		$login_flag = $this->checkLogin(FALSE,'');
 
 		$this->load->model('ShowModel');
 		//强制验证month是否符合规范
@@ -86,17 +91,26 @@ class UI extends CI_Controller {
 		{
 			foreach ($oneday as &$aShow) 
 			{
-				$flag = $this->ShowModel->checkSubscribe($this->session->u_id,$aShow['s_id']);
-				if ($flag) 
+				if ($login_flag) 
 				{
-					$aShow['sub'] = "1";
+					$flag = $this->ShowModel->checkSubscribe($this->session->u_id,$aShow['s_id']);
+					if ($flag) 
+					{
+						$aShow['sub'] = "1";
+					}
+					else
+					{
+						$aShow['sub'] = "0";
+					}
 				}
 				else
 				{
 					$aShow['sub'] = "0";
 				}
+				
 			}
 		}
+		$data['login_flag'] = $login_flag;
 		$data['shows'] = $shows;
 		$data['dateStart'] = $dateStart;
 		$header['title'] = $month."月剧集";
@@ -109,7 +123,7 @@ class UI extends CI_Controller {
 	public function showSummary($sid)
 	{
 		//验证是否登录
-		$this->checkLogin();
+		$login_flag = $this->checkLogin(FALSE,'');
 
 		$this->load->model('ShowModel');
 		//验证sid是否符合规范
@@ -121,22 +135,38 @@ class UI extends CI_Controller {
 			exit();
 		}
 
+		$data['login_flag'] = $login_flag;
 		$data['showInfo'] = $this->ShowModel->searchByShowId($sid);
 		$data['episodeInfo'] = $this->ShowModel->searchEpsBySid($sid);
-		$data['subOrNot'] = $this->ShowModel->checkSubscribe($this->session->u_id,$sid);
+		if ($login_flag) 
+		{
+			$data['subOrNot'] = $this->ShowModel->checkSubscribe($this->session->u_id,$sid);
+		}
+		else
+		{
+			$data['subOrNot'] = FALSE;
+		}
 		$data['s_id'] = $sid;
 
 		foreach ($data['episodeInfo'] as &$anEpisode) 
 		{
-			$synFlag = $this->ShowModel->checkSyn($this->session->u_id,$anEpisode['e_id']);
-			if ($synFlag) 
+			if ($login_flag) 
 			{
-				$anEpisode['syn'] = 1;
+				$synFlag = $this->ShowModel->checkSyn($this->session->u_id,$anEpisode['e_id']);
+				if ($synFlag) 
+				{
+					$anEpisode['syn'] = 1;
+				}
+				else
+				{
+					$anEpisode['syn'] = 0;
+				}
 			}
 			else
 			{
 				$anEpisode['syn'] = 0;
 			}
+			
 		}
 
 		$data['CUrl'] = $this->CalUrl;
@@ -151,7 +181,8 @@ class UI extends CI_Controller {
 	public function myShows()
 	{
 		//验证是否登录
-		$this->checkLogin();
+		$this_url = '/TVCalendarAPI/index.php/'.$this->uri->uri_string();
+		$this->checkLogin(TRUE,$this_url);
 		$this->load->model('ShowModel');
 
 		$data['rescentEps'] = $this->ShowModel->searchRecentByUid($this->session->u_id,7,7,date('Y-m-d'),'+00');
@@ -187,7 +218,8 @@ class UI extends CI_Controller {
 	public function myCenter()
 	{
 		//验证是否登录
-		$this->checkLogin();
+		$this_url = '/TVCalendarAPI/index.php/'.$this->uri->uri_string();
+		$this->checkLogin(TRUE,$this_url);
 		$this->load->model('UserModel');
 
 		$data['userInfo'] = $this->UserModel->getUserData($this->session->u_id);
@@ -201,8 +233,8 @@ class UI extends CI_Controller {
 	//搜索
 	public function search($words='',$fullResult='')
 	{
-		//验证是否登录
-		$this->checkLogin();
+		//不验证是否登录
+		
 		$this->load->model('ShowModel');
 
 		$data['result'] = array();
@@ -241,7 +273,9 @@ class UI extends CI_Controller {
 	public function recommend($guessILike='0')
 	{
 		//验证是否登录
-		$this->checkLogin();
+		$login_flag = $this->checkLogin(FALSE,'');
+		$this_url = '/TVCalendarAPI/index.php/'.$this->uri->uri_string();
+		//$this->checkLogin();
 		$this->load->model('ShowModel');
 
 		$area = '';
@@ -262,6 +296,7 @@ class UI extends CI_Controller {
 		}
 		if ($guessILike == '1') 
 		{
+			$this->checkLogin(TRUE,$this_url);
 			$data['iLike'] = $this->ShowModel->getLikeRecommend($this->session->u_id,5);
 			$data['hot'] = $this->ShowModel->getHotRecommend($area,5);
 			$header['title'] = '猜我喜欢';
@@ -275,8 +310,15 @@ class UI extends CI_Controller {
 		{
 			$data['hot'] = $this->ShowModel->getHotRecommend($area,10);
 		}
+		if ($login_flag) 
+		{
+			$data['tag'] = $this->ShowModel->getAllTagWithStatus($this->session->u_id);
+		}
+		else
+		{
+			$data['tag'] = [];
+		}
 		
-		$data['tag'] = $this->ShowModel->getAllTagWithStatus($this->session->u_id);
 		$data['CUrl'] = $this->CalUrl;
 		$this->load->view('header',$header);
 		$this->load->view('viewRecommend',$data);
@@ -309,9 +351,11 @@ class UI extends CI_Controller {
 		$this->load->view('footer_simple');
 	}
 
+	//浏览下载链接的方法
 	public function download()
 	{
-		$this->checkLogin();
+		$this_url = '/TVCalendarAPI/index.php/'.$this->uri->uri_string();
+		$this->checkLogin(TRUE,$this_url);
 		$this->load->model('ShowModel');
 		
 		$r_id = $this->db->escape($this->input->get('r_id',TRUE));
@@ -630,18 +674,24 @@ class UI extends CI_Controller {
 		echo "OK";
 	}
 
-	//检查是否已登录，未登录直接强制跳转至登陆界面，已登录返回false
-	public function checkLogin()
+	//检查是否已登录，
+	//第一个参数为是否强制验证，强制验证模式下未登录强制跳转到$redirect_url
+	//非强制验证模式下未登录返回FALSE，已登录返回TRUE
+	public function checkLogin($is_enforce = TRUE,$redirect_url = '/')
 	{
 		if ($this->session->userdata('u_id') == null)
 		{
-			header("Location: /TVCalendarAPI/index.php/UI/webLogin");
-			exit();
-			return true;
+			if ($is_enforce) 
+			{
+				header("Location: /TVCalendarAPI/index.php/UI/webLogin?url={$redirect_url}");
+				exit();
+			}
+			
+			return FALSE;
 		}
 		else
 		{
-			return false;
+			return TRUE;
 		}
 	}
 
